@@ -1,0 +1,6 @@
+**/__pycache__/*
+**/carebt.egg-info/*
+htmlcov/*
+.pytest_cache
+.coverage
+dist
