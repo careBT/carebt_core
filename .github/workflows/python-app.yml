@@ -1,4 +1,4 @@
-name: CareBT (Core)
+name: build
 
 on:
   push:
