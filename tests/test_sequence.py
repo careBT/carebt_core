@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from test.global_mock import mock
-from test.helloActions import HelloWorldAction
-from test.helloActions import LongRunningHelloWorldAction
-from test.helloActions import SayHelloAction
+from tests.global_mock import mock
+from tests.helloActions import HelloWorldAction
+from tests.helloActions import LongRunningHelloWorldAction
+from tests.helloActions import SayHelloAction
 
 from unittest.mock import call
 

@@ -1,4 +1,4 @@
-from test.global_mock import mock
+from tests.global_mock import mock
 
 from carebt.actionNode import ActionNode
 from carebt.nodeStatus import NodeStatus

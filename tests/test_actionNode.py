@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from test.addNumbersAction import AddTwoNumbersAction
-from test.global_mock import mock
-from test.helloActions import HelloWorldAction
-from test.helloActions import LongRunningHelloWorldAction
-from test.helloActions import MultiTickHelloWorldAction
-from test.helloActions import MultiTickThrottledHelloWorldAction
-from test.helloActions import SayHelloAction
+from tests.addNumbersAction import AddTwoNumbersAction
+from tests.global_mock import mock
+from tests.helloActions import HelloWorldAction
+from tests.helloActions import LongRunningHelloWorldAction
+from tests.helloActions import MultiTickHelloWorldAction
+from tests.helloActions import MultiTickThrottledHelloWorldAction
+from tests.helloActions import SayHelloAction
 
 from unittest.mock import call
 

@@ -1,6 +1,6 @@
-from test.global_mock import mock
-from test.helloActions import LongRunningHelloWorldAction
-from test.helloActions import MultiTickHelloWorldAction
+from tests.global_mock import mock
+from tests.helloActions import LongRunningHelloWorldAction
+from tests.helloActions import MultiTickHelloWorldAction
 
 from unittest.mock import call
 

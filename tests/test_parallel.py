@@ -1,5 +1,5 @@
-from test.global_mock import mock
-from test.helloActions import SayHelloAction
+from tests.global_mock import mock
+from tests.helloActions import SayHelloAction
 
 from unittest.mock import call
 
