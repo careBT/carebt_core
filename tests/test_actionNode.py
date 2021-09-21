@@ -168,7 +168,7 @@ class TestActionNode:
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: abort'),  # noqa: E501
-                                       call('on_abort LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('abort_handler LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt._instance.get_status() == NodeStatus.ABORTED

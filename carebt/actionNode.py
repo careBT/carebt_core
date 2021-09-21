@@ -51,7 +51,8 @@ class ActionNode(TreeNode):  # abstract
 
     def _on_abort(self) -> None:
         self.bt.get_logger().info(1, 'aborting {}'.format(self.__class__.__name__))
-        self.on_abort()
+        if(self._abort_handler is not None):
+            exec('self.{}()'.format(self._abort_handler))
         self.set_status(NodeStatus.ABORTED)
 
     # PUBLIC
@@ -59,6 +60,3 @@ class ActionNode(TreeNode):  # abstract
     # @abstractmethod
     def on_tick(self) -> None:
         raise NotImplementedError
-
-    def on_abort(self) -> None:
-        pass

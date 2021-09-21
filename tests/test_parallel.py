@@ -58,6 +58,7 @@ class SimpleParallel(ParallelNode):
         super().__init__(bt, 2, '?name')
         self.add_child(SayHelloAction, '"Alice"')
         self.add_child(SayHelloAction, '?name')
+        self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
 
         self.attach_rule_handler(SayHelloAction,
@@ -71,8 +72,8 @@ class SimpleParallel(ParallelNode):
         self.abort()
         self.set_message('WRONG_NAME')
 
-    def on_abort(self) -> None:
-        mock('on_abort {}'.format(self.__class__.__name__))
+    def abort_handler(self) -> None:
+        mock('abort_handler {}'.format(self.__class__.__name__))
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -129,7 +130,7 @@ class TestParallelNode:
                                        call('__del__ SayHelloAction'),
                                        call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
-                                       call('on_abort SimpleParallel'),
+                                       call('abort_handler SimpleParallel'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]

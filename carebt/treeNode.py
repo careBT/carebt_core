@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Callable
 from typing import final
 from typing import TYPE_CHECKING
 
@@ -31,6 +32,7 @@ class TreeNode():  # abstract
         self.__params = params
         self.__in_params = []
         self.__out_params = []
+        self._abort_handler = None
 
         # create local variables
         if(self.__params is not None):
@@ -75,8 +77,9 @@ class TreeNode():  # abstract
     def abort(self) -> None:
         self._on_abort()
 
-    def on_abort(self) -> None:
-        pass
+    @final
+    def attach_abort_handler(self, function: Callable) -> None:
+        self._abort_handler = function.__name__
 
     @final
     def get_bt(self) -> 'BehaviorTree':

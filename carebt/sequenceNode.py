@@ -78,7 +78,8 @@ class SequenceNode(ControlNode):  # abstract
             self._child_ec_list[self._child_ptr].instance._on_abort()
         self.set_status(NodeStatus.ABORTED)
         self.set_message(self._child_ec_list[self._child_ptr].instance.get_message())
-        self.on_abort()
+        if(self._abort_handler is not None):
+            exec('self.{}()'.format(self._abort_handler))
 
     # add a child to the list
     def add_child(self, child_as_class: TreeNode, params: str = None) -> None:

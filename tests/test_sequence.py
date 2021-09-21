@@ -34,6 +34,7 @@ class LongRunningSequence(SequenceNode):
     def __init__(self, bt):
         super().__init__(bt, '?name')
         self.add_child(LongRunningHelloWorldAction, '?name')
+        self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
 
         self.attach_rule_handler(LongRunningHelloWorldAction,
@@ -54,8 +55,8 @@ class LongRunningSequence(SequenceNode):
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
 
-    def on_abort(self) -> None:
-        mock('on_abort LongRunningSequence')
+    def abort_handler(self) -> None:
+        mock('abort_handler LongRunningSequence')
 
     def rule_handler_success(self):
         mock('rule_handler_success')
@@ -171,7 +172,7 @@ class TestSequenceNode:
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
                                        call('rule_handler_failure_bob'),  # noqa: E501
-                                       call('on_abort LongRunningSequence'),  # noqa: E501
+                                       call('abort_handler LongRunningSequence'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501

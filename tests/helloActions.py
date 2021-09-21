@@ -30,6 +30,7 @@ class LongRunningHelloWorldAction(ActionNode):
     def __init__(self, bt):
         super().__init__(bt, '?name')
         self._name = 'Default Name'
+        self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
 
     def on_tick(self) -> None:
@@ -37,8 +38,8 @@ class LongRunningHelloWorldAction(ActionNode):
         self.set_status(NodeStatus.SUSPENDED)
         Timer(2, self.hello_done_callback).start()
 
-    def on_abort(self) -> None:
-        mock('on_abort LongRunningHelloWorldAction')
+    def abort_handler(self) -> None:
+        mock('abort_handler LongRunningHelloWorldAction')
 
     def hello_done_callback(self) -> None:
         mock('LongRunningHelloWorldAction: Hello World DONE !!!')
@@ -117,6 +118,7 @@ class SayHelloAction(ActionNode):
     def __init__(self, bt):
         super().__init__(bt, '?name')
         self._name = 'Default Name'
+        self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
 
     def on_tick(self) -> None:
@@ -140,8 +142,8 @@ class SayHelloAction(ActionNode):
             print('Hello {}!'.format(self._name))
             self.set_status(NodeStatus.SUCCESS)
 
-    def on_abort(self) -> None:
-        mock('on_abort - {}'.format(self._name))
+    def abort_handler(self) -> None:
+        mock('abort_handler - {}'.format(self._name))
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
