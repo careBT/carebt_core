@@ -19,8 +19,8 @@ from typing import TYPE_CHECKING
 from carebt.nodeStatus import NodeStatus
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree
-    from carebt.behaviorTree import Logger
+    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
+    from carebt.behaviorTree import Logger  # pragma: no cover
 
 
 class TreeNode():  # abstract

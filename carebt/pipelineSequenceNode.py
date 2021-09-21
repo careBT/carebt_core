@@ -20,7 +20,7 @@ from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree
+    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
 
 
 class PipelineSequenceNode(SequenceNode):  # abstract

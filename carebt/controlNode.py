@@ -23,7 +23,7 @@ from carebt.nodeStatus import NodeStatus
 from carebt.treeNode import TreeNode
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree
+    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
 
 
 class ControlNode(TreeNode):  # abstract
