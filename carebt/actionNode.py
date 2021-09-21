@@ -32,9 +32,6 @@ class ActionNode(TreeNode):  # abstract
         self.__last_ts = datetime.min
         self.set_status(NodeStatus.IDLE)
 
-    def set_throttle_ms(self, throttle_ms: int) -> None:
-        self.__throttle_ms = throttle_ms
-
     # PROTECTED
 
     def _on_tick(self) -> None:
@@ -56,6 +53,9 @@ class ActionNode(TreeNode):  # abstract
         self.set_status(NodeStatus.ABORTED)
 
     # PUBLIC
+
+    def set_throttle_ms(self, throttle_ms: int) -> None:
+        self.__throttle_ms = throttle_ms
 
     # @abstractmethod
     def on_tick(self) -> None:
