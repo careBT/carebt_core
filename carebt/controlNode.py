@@ -150,10 +150,6 @@ class ControlNode(TreeNode):  # abstract
                                         message,
                                         function.__name__))
 
-    @final
-    def abort(self) -> None:
-        self._on_abort()
-
     def set_child_status(self, status: NodeStatus) -> None:
         self._child_ec_list[self._child_ptr].instance.set_status(status)
 

@@ -37,12 +37,22 @@ class LongRunningHelloWorldAction(ActionNode):
         self.set_status(NodeStatus.SUSPENDED)
         Timer(2, self.hello_done_callback).start()
 
+    def on_abort(self) -> None:
+        mock('on_abort LongRunningHelloWorldAction')
+
     def hello_done_callback(self) -> None:
         mock('LongRunningHelloWorldAction: Hello World DONE !!!')
-        if(self._name == 'Chuck'):
+        if(self._name == 'Bob'):
+            self.set_status(NodeStatus.FAILURE)
+            self.set_message('BOB_IS_NOT_ALLOWED')
+            mock('LongRunningHelloWorldAction: NodeStatus.FAILURE')
+        elif(self._name == 'Chuck'):
             self.set_status(NodeStatus.FAILURE)
             self.set_message('CHUCK_IS_NOT_ALLOWED')
             mock('LongRunningHelloWorldAction: NodeStatus.FAILURE')
+        elif(self._name == 'Dave'):
+            mock('LongRunningHelloWorldAction: abort')
+            self.abort()
         else:
             self.set_status(NodeStatus.SUCCESS)
             mock('LongRunningHelloWorldAction: NodeStatus.SUCCESS')

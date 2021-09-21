@@ -150,6 +150,30 @@ class TestActionNode:
         assert bt._instance.get_status() == NodeStatus.SUCCESS
         assert bt._instance.get_message() == ''
 
+    def test_long_running_hello_world_dave(self):
+        mock.reset_mock()
+        bt = BehaviorTree()
+        assert bt.get_tick_count() == 0
+        bt.set_tick_rate_ms(50)
+        start = datetime.now()
+        bt.run(LongRunningHelloWorldAction, '"Dave"')
+        mock('bt finished')
+        end = datetime.now()
+        delta = end - start
+        assert int(delta.total_seconds() * 1000) > 1900
+        assert int(delta.total_seconds() * 1000) < 2100
+        assert bt.get_tick_count() >= 35
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
+                                       call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
+                                       call('LongRunningHelloWorldAction: abort'),  # noqa: E501
+                                       call('on_abort LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('bt finished')]  # noqa: E501
+        assert bt._instance.get_status() == NodeStatus.ABORTED
+        assert bt._instance.get_message() == ''
+
     def test_multi_tick_hello_world(self):
         mock.reset_mock()
         bt = BehaviorTree()

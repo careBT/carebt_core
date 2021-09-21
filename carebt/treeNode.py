@@ -71,6 +71,10 @@ class TreeNode():  # abstract
 
     # PUBLIC
 
+    @final
+    def abort(self) -> None:
+        self._on_abort()
+
     def on_abort(self) -> None:
         pass
 

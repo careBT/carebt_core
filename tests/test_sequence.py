@@ -43,17 +43,29 @@ class LongRunningSequence(SequenceNode):
 
         self.attach_rule_handler(LongRunningHelloWorldAction,
                                  [NodeStatus.FAILURE],
-                                 '*',
-                                 self.rule_handler_failure)
+                                 'BOB_IS_NOT_ALLOWED',
+                                 self.rule_handler_failure_bob)
+
+        self.attach_rule_handler(LongRunningHelloWorldAction,
+                                 [NodeStatus.FAILURE],
+                                 'CHUCK_IS_NOT_ALLOWED',
+                                 self.rule_handler_failure_chuck)
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
 
+    def on_abort(self) -> None:
+        mock('on_abort LongRunningSequence')
+
     def rule_handler_success(self):
         mock('rule_handler_success')
 
-    def rule_handler_failure(self):
-        mock('rule_handler_failure')
+    def rule_handler_failure_bob(self):
+        mock('rule_handler_failure_bob')
+        self.abort()
+
+    def rule_handler_failure_chuck(self):
+        mock('rule_handler_failure_chuck')
 
 ########################################################################
 
@@ -129,7 +141,7 @@ class TestSequenceNode:
         assert bt._instance.get_status() == NodeStatus.SUCCESS
         assert bt._instance.get_message() == ''
 
-    def test_long_running_sequence_failure(self):
+    def test_long_running_sequence_failure_chuck(self):
         mock.reset_mock()
         bt = BehaviorTree()
         bt.run(LongRunningSequence, '"Chuck"')
@@ -140,9 +152,28 @@ class TestSequenceNode:
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
-                                       call('rule_handler_failure'),  # noqa: E501
+                                       call('rule_handler_failure_chuck'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt._instance.get_status() == NodeStatus.FAILURE
         assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+
+    def test_long_running_sequence_failure_bob(self):
+        mock.reset_mock()
+        bt = BehaviorTree()
+        bt.run(LongRunningSequence, '"Bob"')
+        mock('bt finished')
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
+                                       call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
+                                       call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
+                                       call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
+                                       call('rule_handler_failure_bob'),  # noqa: E501
+                                       call('on_abort LongRunningSequence'),  # noqa: E501
+                                       call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('__del__ LongRunningSequence'),  # noqa: E501
+                                       call('bt finished')]  # noqa: E501
+        assert bt._instance.get_status() == NodeStatus.ABORTED
+        assert bt._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
