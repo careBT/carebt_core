@@ -35,9 +35,6 @@ class ActionNode(TreeNode):  # abstract
     def set_throttle_ms(self, throttle_ms: int) -> None:
         self.__throttle_ms = throttle_ms
 
-    def get_throttle_ms(self) -> int:
-        return self.__throttle_ms
-
     # PROTECTED
 
     def _on_tick(self) -> None:
