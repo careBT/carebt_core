@@ -27,7 +27,7 @@ class ActionNode(TreeNode):  # abstract
 
     def __init__(self, bt: 'BehaviorTree', params: str = None):
         super().__init__(bt, params)
-        self.get_logger().info(1, 'creating {}'.format(self.__class__.__name__))
+        self.get_logger().info('creating {}'.format(self.__class__.__name__))
         self.__throttle_ms = None
         self.__last_ts = datetime.min
         self.set_status(NodeStatus.IDLE)
@@ -40,14 +40,14 @@ class ActionNode(TreeNode):  # abstract
                 int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__throttle_ms):
             if(self.get_status() == NodeStatus.IDLE or
                     self.get_status() == NodeStatus.RUNNING):
-                self.bt.get_logger().info(1, 'ticking {} - {}'
+                self.bt.get_logger().info('ticking {} - {}'
                                           .format(self.__class__.__name__,
                                                   self.get_status()))
                 self.on_tick()
                 self.__last_ts = current_ts
 
     def _on_abort(self) -> None:
-        self.bt.get_logger().info(1, 'aborting {}'.format(self.__class__.__name__))
+        self.bt.get_logger().info('aborting {}'.format(self.__class__.__name__))
         if(self._abort_handler is not None):
             exec('self.{}()'.format(self._abort_handler))
         self.set_status(NodeStatus.ABORTED)

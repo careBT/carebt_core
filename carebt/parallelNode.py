@@ -32,7 +32,7 @@ class ParallelNode(ControlNode):  # abstract
         self._fail_count = 0
 
     def _on_tick(self) -> None:
-        self.get_logger().info(1, 'ticking {}'.format(self.__class__.__name__))
+        self.get_logger().info('ticking {}'.format(self.__class__.__name__))
 
         ################################################
         # create all children
@@ -60,13 +60,13 @@ class ParallelNode(ControlNode):  # abstract
         # finally, check how to proceed
         if(self.get_status() != NodeStatus.ABORTED):
             if(self._success_count >= self._success_threshold):
-                self.get_logger().debug(2, '_success_count >= _success_threshold -- {} >= {}'
+                self.get_logger().debug('_success_count >= _success_threshold -- {} >= {}'
                                         .format(self._success_count,
                                                 self._success_threshold))
                 self.set_status(NodeStatus.SUCCESS)
             elif(self._fail_count >
                  len(self._child_ec_list) - self._success_threshold):
-                self.get_logger().debug(2, '_fail_count > len(_current_children) - '
+                self.get_logger().debug('_fail_count > len(_current_children) - '
                                         '_success_threshold -- {} > {} - {}'
                                         .format(self._fail_count,
                                                 len(self._child_ec_list),
@@ -74,7 +74,7 @@ class ParallelNode(ControlNode):  # abstract
                 self.set_status(NodeStatus.FAILURE)
 
     def _on_abort(self) -> None:
-        self.get_logger().info(1, 'aborting {}'.format(self.__class__.__name__))
+        self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort children if RUNNING or SUSPENDED
         for child_ec in self._child_ec_list:
             if(child_ec.instance is not None and

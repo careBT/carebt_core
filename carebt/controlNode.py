@@ -55,7 +55,7 @@ class ControlNode(TreeNode):  # abstract
 
     def _bind_in_params(self, child_ec: ExecutionContext) -> None:
         if(len(child_ec.call_in_params) != len(child_ec.instance.get_in_params())):
-            self.get_logger().warn(1, '{} takes {} argument(s), but {} was/were provided'
+            self.get_logger().warn('{} takes {} argument(s), but {} was/were provided'
                                    .format(child_ec.node_as_class.__name__,
                                            len(child_ec.instance.get_in_params()),
                                            len(child_ec.call_in_params)))
@@ -70,7 +70,7 @@ class ControlNode(TreeNode):  # abstract
         for i, var in enumerate(child_ec.instance.get_out_params()):
             var = var.replace('?', '_')
             if(getattr(child_ec.instance, var) is None):
-                self.get_logger().warn(1, '{} output {} is not set'
+                self.get_logger().warn('{} output {} is not set'
                                        .format(child_ec.node_as_class.__name__,
                                                var.replace('_', '?')))
             setattr(self, child_ec.call_out_params[i].replace('?', '_'),
@@ -95,7 +95,7 @@ class ControlNode(TreeNode):  # abstract
 
     @final
     def _apply_rules(self, child_ec: ExecutionContext):
-        self.get_logger().debug(1, 'searching rule-handler for: {} - {} - {}'
+        self.get_logger().debug('searching rule-handler for: {} - {} - {}'
                                 .format(child_ec.instance.__class__.__name__,
                                         child_ec.instance.get_status(),
                                         child_ec.instance.get_message()))
@@ -112,7 +112,7 @@ class ControlNode(TreeNode):  # abstract
                     rule_handler[0].__name__)
             regexMessage = self.__wildcard_to_regex(rule_handler[2])
 
-            self.get_logger().debug(2, 'rule_handler: {} -{} - {}'
+            self.get_logger().debug('rule_handler: {} -{} - {}'
                                     .format(regexClassName.pattern,
                                             rule_handler[1],
                                             regexMessage.pattern))
@@ -122,12 +122,12 @@ class ControlNode(TreeNode):  # abstract
                     and child_ec.instance.get_status() in rule_handler[1]
                     and bool(re.match(regexMessage,
                                       child_ec.instance.get_message()))):
-                self.get_logger().debug(1, '{} -> run rule_handler {}'
+                self.get_logger().debug('{} -> run rule_handler {}'
                                         .format(child_ec.instance.__class__.__name__,
                                                 rule_handler[3]))
                 # execute function attached to the rule-handler
                 exec('self.{}()'.format(rule_handler[3]))
-                self.get_logger().info(1, 'after rule_handler {} - {} - {}'
+                self.get_logger().info('after rule_handler {} - {} - {}'
                                        .format(child_ec.instance.__class__.__name__,
                                                child_ec.instance.get_status(),
                                                child_ec.instance.get_message()))

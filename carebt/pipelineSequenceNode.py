@@ -39,7 +39,7 @@ class PipelineSequenceNode(SequenceNode):  # abstract
         self.__max_cycles = max_cycles
 
     def _on_tick(self) -> None:
-        self.get_logger().info(1, 'ticking PipelineSequenceNode {}'
+        self.get_logger().info('ticking PipelineSequenceNode {}'
                                .format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
 
@@ -103,6 +103,6 @@ class PipelineSequenceNode(SequenceNode):  # abstract
             if(self.get_status() == NodeStatus.SUCCESS or
                self.get_status() == NodeStatus.FAILURE or
                self.get_status() == NodeStatus.ABORTED):
-                self.get_logger().info(1, 'finished {}'.format(self.__class__.__name__))
+                self.get_logger().info('finished {}'.format(self.__class__.__name__))
                 for child_ec in self._child_ec_list:
                     child_ec.instance = None

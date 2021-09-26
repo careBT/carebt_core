@@ -100,7 +100,7 @@ class TestParallelNode:
     def test_parallel_ss(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
+        bt.set_verbosity(True)
         bt.run(SimpleParallel, '"Dave"')
         mock('bt finished')
         print(mock.call_args_list)

@@ -35,7 +35,7 @@ class RateControlNode(ControlNode):  # abstract
         self.set_status(NodeStatus.IDLE)
 
     def _on_tick(self) -> None:
-        self.get_logger().info(1, 'ticking {}'.format(self.__class__.__name__))
+        self.get_logger().info('ticking {}'.format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
 
         ################################################
@@ -73,11 +73,11 @@ class RateControlNode(ControlNode):  # abstract
         if(self.get_status() == NodeStatus.SUCCESS or
                 self.get_status() == NodeStatus.FAILURE or
                 self.get_status() == NodeStatus.ABORTED):
-            self.get_logger().info(1, 'finished {}'.format(self.__class__.__name__))
+            self.get_logger().info('finished {}'.format(self.__class__.__name__))
             self._child_ec_list[0].instance = None
 
     def _on_abort(self) -> None:
-        self.get_logger().info(1, 'aborting {}'.format(self.__class__.__name__))
+        self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort child if RUNNING or SUSPENDED
         if(self._child_ec_list[0].instance.get_status() == NodeStatus.RUNNING or
            self._child_ec_list[0].instance.get_status() == NodeStatus.SUSPENDED):
