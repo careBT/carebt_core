@@ -16,7 +16,8 @@ class AddTwoNumbersAction(ActionNode):
 
     def on_tick(self) -> None:
         mock('on_tick - {} + {}'.format(self._x, self._y))
-        self._z = self._x + self._y
+        if(self._x != 123 and self._y != 123):
+            self._z = self._x + self._y
         self.set_status(NodeStatus.SUCCESS)
 
     def __del__(self):

@@ -127,6 +127,21 @@ class TestActionNode:
         assert bt._instance.get_status() == NodeStatus.SUCCESS
         assert bt._instance.get_message() == ''
 
+    def test_action_add_two_numbers_no_output(self):
+        mock.reset_mock()
+        bt = BehaviorTree()
+        bt._instance._result = None  # to supress the no-member warning
+        bt.run(AddTwoNumbersAction, '123 123 => ?result')
+        mock('bt finished')
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
+                                       call('on_tick - 123 + 123'),
+                                       call('__del__ AddTwoNumbersAction'),
+                                       call('bt finished')]
+        assert bt._instance._result is None
+        assert bt._instance.get_status() == NodeStatus.SUCCESS
+        assert bt._instance.get_message() == ''
+
     def test_long_running_hello_world(self):
         mock.reset_mock()
         bt = BehaviorTree()
