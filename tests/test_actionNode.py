@@ -81,7 +81,6 @@ class TestActionNode:
     def test_action_add_two_numbers(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, '3 5 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
@@ -96,7 +95,6 @@ class TestActionNode:
     def test_action_add_two_numbers_one_missing_input(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, '3 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
@@ -111,7 +109,6 @@ class TestActionNode:
     def test_action_add_two_numbers_missing_input(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, ' => ?result')
         mock('bt finished')
         print(mock.call_args_list)
@@ -126,7 +123,6 @@ class TestActionNode:
     def test_action_add_two_numbers_zeros(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, '0 0 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
@@ -141,7 +137,6 @@ class TestActionNode:
     def test_action_add_two_numbers_no_output(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, '123 123 => ?result')
         mock('bt finished')
         print(mock.call_args_list)

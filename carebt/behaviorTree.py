@@ -29,7 +29,6 @@ class RootSequence(SequenceNode):
 class BehaviorTree:
 
     def __init__(self):
-        self._instance = RootSequence(self)
         self._tick_rate_ms = 50
         self._tick_count = 0
         self._logger = Logger()
@@ -47,6 +46,9 @@ class BehaviorTree:
         return self._logger
 
     def run(self, root_node: TreeNode, params: str = None) -> None:
+        self._instance = RootSequence(self)
+        self._instance.set_status(NodeStatus.IDLE)
+        self._instance.set_message('')
         self._instance.add_child(root_node, params)
         self._tick_count = 0
 
