@@ -18,7 +18,7 @@ from tests.helloActions import SayHelloAction
 from unittest.mock import call
 
 from carebt.actionNode import ActionNode
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.parallelNode import ParallelNode
 
@@ -113,8 +113,8 @@ class TestParallelNode:
 
     def test_parallel_ss(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SimpleParallel, '"Dave"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SimpleParallel, '"Dave"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleParallel'),
@@ -126,13 +126,13 @@ class TestParallelNode:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_parallel_sf(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SimpleParallel, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SimpleParallel, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleParallel'),
@@ -146,13 +146,13 @@ class TestParallelNode:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'WRONG_NAME'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'WRONG_NAME'
 
     def test_tick_counting_parallel(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(TickCountingParallel)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(TickCountingParallel)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ TickCountingParallel'),
@@ -175,5 +175,5 @@ class TestParallelNode:
                                        call('__del__ TickCountingParallel'),
                                        call('__del__ TickCountingAction'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''

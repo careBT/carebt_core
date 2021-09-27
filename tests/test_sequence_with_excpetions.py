@@ -17,7 +17,7 @@ from tests.helloActions import HelloWorldAction, SayHelloAction
 
 from unittest.mock import call
 
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
@@ -26,8 +26,8 @@ from carebt.sequenceNode import SequenceNode
 
 class SequenceWithExceptionHandler(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name1 ?name2')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name1 ?name2')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name1')
         self.add_child(SayHelloAction, '"Alice"')
@@ -81,8 +81,8 @@ class TestSequenceNodeWithExceptions:
     # sequence runs straight forward
     def test_sequence_dave_heidi(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Dave" "Heidi"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Dave" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -103,15 +103,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     # name = Bob creates a FAILURE, but the exceptionHandler fixes
     # the issue and the sequence continues
     def test_sequence_failure_bob_heidi(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Bob" "Heidi"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Bob" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -133,15 +133,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     # name = Chuck creates a FAILURE and the exceptionHandler
     # aborts the sequence
     def test_sequence_failure_chuck_heidi(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Chuck" "Heidi"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Chuck" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -154,16 +154,16 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # name = Eve creates a FAILURE and the exceptionHandler
     # removes all subsequent children and adds a SayHelloAction
     # action with name = Frank
     def test_sequence_failure_eve_heidi(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Eve" "Heidi"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Eve" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -179,15 +179,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     # name = Ivan creates a FAILURE and there is no exceptionHandler
     # thus the whole sequence fails
     def test_sequence_failure_ivan_heidi(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Ivan" "Heidi"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Ivan" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -199,15 +199,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'IVAN_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'IVAN_IS_NOT_ALLOWED'
 
     # name = Judy creates a FAILURE and there is no exceptionHandler
     # thus the whole sequence fails
     def test_sequence_failure_judy_heidi(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Judy" "Heidi"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Judy" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -219,15 +219,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'JUDY_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'JUDY_IS_NOT_ALLOWED'
 
     # name = Bob creates a FAILURE in the last child, but the exceptionHandler
     # fixes the issue and the sequence continues and has finally SUCCESS
     def test_sequence_failure_heidi_bob(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Heidi" "Bob"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Heidi" "Bob"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -249,15 +249,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     # name = Chuck creates a FAILURE in the last child and the exceptionHandler
     # aborts the sequence
     def test_sequence_failure_heidi_chuck(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Heidi" "Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Heidi" "Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -279,16 +279,16 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # name = Eve creates a FAILURE in the last child and the exceptionHandler
     # removes all subsequent children (which are none) and adds a
     # SayHelloAction action with name = Frank
     def test_sequence_failure_heidi_eve(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Heidi" "Eve"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Heidi" "Eve"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -313,15 +313,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     # name = Ivan creates a FAILURE in the last child and there
     # is no exceptionHandler thus the whole sequence fails
     def test_sequence_failure_heidi_ivan(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Heidi" "Ivan"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Heidi" "Ivan"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -342,15 +342,15 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'IVAN_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'IVAN_IS_NOT_ALLOWED'
 
     # name = Judy creates a FAILURE and there is no exceptionHandler
     # thus the whole sequence fails
     def test_sequence_failure_heidi_judy(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWithExceptionHandler, '"Heidi" "Judy"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithExceptionHandler, '"Heidi" "Judy"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
@@ -371,5 +371,5 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'JUDY_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'JUDY_IS_NOT_ALLOWED'

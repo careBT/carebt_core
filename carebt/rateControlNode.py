@@ -22,13 +22,13 @@ from carebt.nodeStatus import NodeStatus
 from carebt.treeNode import TreeNode
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
+    from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
 class RateControlNode(ControlNode):  # abstract
 
-    def __init__(self, bt: 'BehaviorTree', rate_ms: int, params: str = None):
-        super().__init__(bt, params)
+    def __init__(self, bt_runner: 'BehaviorTreeRunner', rate_ms: int, params: str = None):
+        super().__init__(bt_runner, params)
 
         self.__rate_ms = rate_ms
         self.__last_ts = datetime.min
@@ -43,7 +43,7 @@ class RateControlNode(ControlNode):  # abstract
         if(self._child_ec_list[0].instance is None):
             # create node instance
             self._child_ec_list[0].instance = \
-                self._child_ec_list[0].node_as_class(self.get_bt())
+                self._child_ec_list[0].node_as_class(self.get_bt_runner())
 
         # tick child if __rate_ms has elapsed
         current_ts = datetime.now()

@@ -16,7 +16,7 @@ from tests.global_mock import mock
 from tests.helloActions import HelloWorldAction
 
 from carebt.logger import AbstractLogger, LogLevel
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.logger import Logger
 from carebt.nodeStatus import NodeStatus
 
@@ -117,19 +117,19 @@ class TestLogger:
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_logger_level_off(self, mock_print):
-        bt = BehaviorTree()
-        bt.get_logger().set_log_level(LogLevel.OFF)
-        bt.run(HelloWorldAction)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.OFF)
+        bt_runner.run(HelloWorldAction)
         regex = re.compile('Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_logger_level_debug(self, mock_print):
-        bt = BehaviorTree()
-        bt.get_logger().set_log_level(LogLevel.DEBUG)
-        bt.run(HelloWorldAction)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
+        bt_runner.run(HelloWorldAction)
         regex = re.compile('....-..-.. ..:..:.. INFO ---------------------------------- tick-count: 1\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ticking RootSequence\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
@@ -144,29 +144,29 @@ class TestLogger:
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n')  # noqa: E501
         print(mock_print.getvalue())
         assert bool(re.match(regex, mock_print.getvalue()))
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_custom_logger_level_off(self, mock_print):
-        bt = BehaviorTree()
+        bt_runner = BehaviorTreeRunner()
         cl = CustomLogger()
         cl.set_log_level(LogLevel.OFF)
-        bt.set_logger(cl)
-        bt.run(HelloWorldAction)
+        bt_runner.set_logger(cl)
+        bt_runner.run(HelloWorldAction)
         regex = re.compile('Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_custom_logger_level_debug(self, mock_print):
         mock.reset_mock()
-        bt = BehaviorTree()
+        bt_runner = BehaviorTreeRunner()
         cl = CustomLogger()
         cl.set_log_level(LogLevel.DEBUG)
-        bt.set_logger(cl)
-        bt.run(HelloWorldAction)
+        bt_runner.set_logger(cl)
+        bt_runner.run(HelloWorldAction)
         regex = re.compile('Hello World !!!\n')
         mock('bt finished')
         print(mock_print.getvalue())
@@ -187,5 +187,5 @@ class TestLogger:
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''

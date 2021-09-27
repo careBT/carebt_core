@@ -23,13 +23,13 @@ from carebt.nodeStatus import NodeStatus
 from carebt.treeNode import TreeNode
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
+    from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
 class ControlNode(TreeNode):  # abstract
 
-    def __init__(self, bt: 'BehaviorTree', params: str = None):
-        super().__init__(bt, params)
+    def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        super().__init__(bt_runner, params)
 
         # list for the child nodes
         self._child_ec_list = []

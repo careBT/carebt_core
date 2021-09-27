@@ -17,7 +17,7 @@ from tests.global_mock import mock
 from unittest.mock import call
 
 from carebt.actionNode import ActionNode
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.pipelineSequenceNode import PipelineSequenceNode
 
@@ -29,8 +29,8 @@ success_queue = []
 
 class HelloWorldAction(ActionNode):
 
-    def __init__(self, bt):
-        super().__init__(bt)
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
         mock('__init__ {}'.format(self.__class__.__name__))
 
     def on_tick(self) -> None:
@@ -45,8 +45,8 @@ class HelloWorldAction(ActionNode):
 
 class MultiTickHelloWorldAction(ActionNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?success')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?success')
         self._success = 0
         self.attempts = 1
         mock('__init__ {}'.format(self.__class__.__name__))
@@ -76,8 +76,8 @@ class MultiTickHelloWorldAction(ActionNode):
 
 class ExamplePipelineSequence(PipelineSequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt)
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
         self.set_period_ms(500)
         self.set_max_cycles(3)
         self.add_child(HelloWorldAction)
@@ -98,8 +98,8 @@ class TestPipelineSequenceNode:
         success_queue.clear()
         success_queue.append(True)
         success_queue.append(True)
-        bt = BehaviorTree()
-        bt.run(ExamplePipelineSequence)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(ExamplePipelineSequence)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501
@@ -121,16 +121,16 @@ class TestPipelineSequenceNode:
                                        call('__del__ ExamplePipelineSequence'),  # noqa: E501
                                        call('bt finished')  # noqa: E501
                                        ]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_pipeline_sequence_ftt(self):
         mock.reset_mock()
         success_queue.append(False)
         success_queue.append(True)
         success_queue.append(True)
-        bt = BehaviorTree()
-        bt.run(ExamplePipelineSequence)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(ExamplePipelineSequence)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501,
@@ -156,8 +156,8 @@ class TestPipelineSequenceNode:
                                        call('__del__ ExamplePipelineSequence'),  # noqa: E501
                                        call('bt finished')  # noqa: E501
                                        ]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_pipeline_sequence_ftftt(self):
         mock.reset_mock()
@@ -166,8 +166,8 @@ class TestPipelineSequenceNode:
         success_queue.append(False)
         success_queue.append(True)
         success_queue.append(True)
-        bt = BehaviorTree()
-        bt.run(ExamplePipelineSequence)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(ExamplePipelineSequence)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501
@@ -203,8 +203,8 @@ class TestPipelineSequenceNode:
                                        call('__del__ ExamplePipelineSequence'),  # noqa: E501
                                        call('bt finished')  # noqa: E501
                                        ]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_pipeline_sequence_fff(self):
         mock.reset_mock()
@@ -212,8 +212,8 @@ class TestPipelineSequenceNode:
         success_queue.append(False)
         success_queue.append(False)
         success_queue.append(False)
-        bt = BehaviorTree()
-        bt.run(ExamplePipelineSequence)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(ExamplePipelineSequence)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501
@@ -239,5 +239,5 @@ class TestPipelineSequenceNode:
                                        call('__del__ ExamplePipelineSequence'),  # noqa: E501
                                        call('bt finished')  # noqa: E501
                                        ]
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'HELLO_FAILS'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'HELLO_FAILS'

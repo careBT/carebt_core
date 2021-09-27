@@ -20,13 +20,13 @@ from carebt.nodeStatus import NodeStatus
 from carebt.treeNode import TreeNode
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
+    from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
 class SequenceNode(ControlNode):  # abstract
 
-    def __init__(self, bt: 'BehaviorTree', params: str = None):
-        super().__init__(bt, params)
+    def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        super().__init__(bt_runner, params)
 
     def _on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
@@ -37,7 +37,7 @@ class SequenceNode(ControlNode):  # abstract
         if(self._child_ec_list[self._child_ptr].instance is None):
             # create node instance
             self._child_ec_list[self._child_ptr].instance = \
-                self._child_ec_list[self._child_ptr].node_as_class(self.get_bt())
+                self._child_ec_list[self._child_ptr].node_as_class(self.get_bt_runner())
 
         # tick child
         self._tick_child(self._child_ec_list[self._child_ptr])

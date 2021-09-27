@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.controlNode import ControlNode
 from carebt.executionContext import ExecutionContext
 from carebt.nodeStatus import NodeStatus
@@ -21,8 +21,9 @@ from carebt.treeNode import TreeNode
 
 class ParallelNode(ControlNode):  # abstract
 
-    def __init__(self, bt: 'BehaviorTree', success_threshold: int, params: str = None):
-        super().__init__(bt, params)
+    def __init__(self, bt_runner: 'BehaviorTreeRunner',
+                 success_threshold: int, params: str = None):
+        super().__init__(bt_runner, params)
 
         # list for the child nodes
         self._child_ec_list = []
@@ -39,7 +40,7 @@ class ParallelNode(ControlNode):  # abstract
         if(self.get_status() == NodeStatus.IDLE):
             for self._child_ptr, child_ec in enumerate(self._child_ec_list):
                 # create node instance
-                child_ec.instance = child_ec.node_as_class(self.get_bt())
+                child_ec.instance = child_ec.node_as_class(self.get_bt_runner())
             self.set_status(NodeStatus.RUNNING)
 
         ################################################

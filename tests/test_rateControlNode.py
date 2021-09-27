@@ -19,7 +19,7 @@ from tests.helloActions import MultiTickHelloWorldAction
 
 from unittest.mock import call
 
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.rateControlNode import RateControlNode
 
@@ -28,8 +28,8 @@ from carebt.rateControlNode import RateControlNode
 
 class RateControlledMultiTickHelloWorld(RateControlNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, 500)
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 500)
         self.set_child(MultiTickHelloWorldAction)
         mock('__init__ {}'.format(self.__class__.__name__))
 
@@ -43,9 +43,9 @@ class TestSequenceNode:
 
     def test_rate_controlled_multi_tick_hello_world(self):
         mock.reset_mock()
-        bt = BehaviorTree()
+        bt_runner = BehaviorTreeRunner()
         start = datetime.now()
-        bt.run(RateControlledMultiTickHelloWorld)
+        bt_runner.run(RateControlledMultiTickHelloWorld)
         mock('bt finished')
         end = datetime.now()
         delta = end - start
@@ -61,5 +61,5 @@ class TestSequenceNode:
                                        call('__del__ MultiTickHelloWorldAction'),  # noqa: E501
                                        call('__del__ RateControlledMultiTickHelloWorld'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''

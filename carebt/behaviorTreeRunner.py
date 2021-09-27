@@ -22,11 +22,11 @@ from carebt.treeNode import TreeNode
 
 class RootSequence(SequenceNode):
 
-    def __init__(self, bt: 'BehaviorTree'):
-        super().__init__(bt)
+    def __init__(self, bt_runner: 'BehaviorTreeRunner'):
+        super().__init__(bt_runner)
 
 
-class BehaviorTree:
+class BehaviorTreeRunner:
 
     def __init__(self):
         self._tick_rate_ms = 50

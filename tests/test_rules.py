@@ -18,7 +18,7 @@ from tests.helloActions import MultiTickHelloWorldAction
 
 from unittest.mock import call
 
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
@@ -27,8 +27,8 @@ from carebt.sequenceNode import SequenceNode
 
 class MultiTickSequence(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(MultiTickHelloWorldAction)
         mock('__init__ {}'.format(self.__class__.__name__))
 
@@ -56,8 +56,8 @@ class MultiTickSequence(SequenceNode):
 
 class LongRunningHelloWorldSequence(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(LongRunningHelloWorldAction, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
@@ -87,8 +87,8 @@ class TestActionNode:
 
     def test_multi_tick_sequence(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(MultiTickSequence)
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(MultiTickSequence)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickSequence'),  # noqa: E501
@@ -104,14 +104,14 @@ class TestActionNode:
                                        call('__del__ MultiTickHelloWorldAction'),  # noqa: E501
                                        call('__del__ MultiTickSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_long_running_sequence(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.set_tick_rate_ms(100)
-        bt.run(LongRunningHelloWorldSequence, '"Alice"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.set_tick_rate_ms(100)
+        bt_runner.run(LongRunningHelloWorldSequence, '"Alice"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldSequence'),  # noqa: E501
@@ -143,5 +143,5 @@ class TestActionNode:
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''

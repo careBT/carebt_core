@@ -21,7 +21,7 @@ from tests.helloActions import SayHelloAction
 
 from unittest.mock import call
 
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
@@ -30,8 +30,8 @@ from carebt.sequenceNode import SequenceNode
 
 class SimpleSequence(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -45,8 +45,8 @@ class SimpleSequence(SequenceNode):
 
 class LongRunningSequence(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(LongRunningHelloWorldAction, '?name')
         self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
@@ -89,8 +89,8 @@ class TestSequenceNode:
 
     def test_sequence(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SimpleSequence, '"Dave"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SimpleSequence, '"Dave"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleSequence'),
@@ -105,13 +105,13 @@ class TestSequenceNode:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleSequence'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_sequence_failure(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SimpleSequence, '"Bob"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SimpleSequence, '"Bob"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleSequence'),
@@ -123,25 +123,25 @@ class TestSequenceNode:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleSequence'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
 
     def test_tick_rate_and_count(self):
-        bt = BehaviorTree()
-        assert bt.get_tick_count() == 0
-        bt.set_tick_rate_ms(1000)
+        bt_runner = BehaviorTreeRunner()
+        assert bt_runner.get_tick_count() == 0
+        bt_runner.set_tick_rate_ms(1000)
         start = datetime.now()
-        bt.run(SimpleSequence, '"Dave"')
+        bt_runner.run(SimpleSequence, '"Dave"')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 2950
         assert int(delta.total_seconds() * 1000) < 3050
-        assert bt.get_tick_count() == 3
+        assert bt_runner.get_tick_count() == 3
 
     def test_long_running_sequence_success(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(LongRunningSequence, '"Alice"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(LongRunningSequence, '"Alice"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
@@ -153,13 +153,13 @@ class TestSequenceNode:
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
-        assert bt._instance.get_status() == NodeStatus.SUCCESS
-        assert bt._instance.get_message() == ''
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_message() == ''
 
     def test_long_running_sequence_failure_chuck(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(LongRunningSequence, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(LongRunningSequence, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
@@ -171,13 +171,13 @@ class TestSequenceNode:
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
-        assert bt._instance.get_status() == NodeStatus.FAILURE
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     def test_long_running_sequence_failure_bob(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(LongRunningSequence, '"Bob"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(LongRunningSequence, '"Bob"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
@@ -190,5 +190,5 @@ class TestSequenceNode:
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'BOB_IS_NOT_ALLOWED'

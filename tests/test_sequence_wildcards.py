@@ -17,7 +17,7 @@ from tests.helloActions import HelloWorldAction, SayHelloAction
 
 from unittest.mock import call
 
-from carebt.behaviorTree import BehaviorTree
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
@@ -26,8 +26,8 @@ from carebt.sequenceNode import SequenceNode
 
 class SequenceWildcards_1(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -51,8 +51,8 @@ class SequenceWildcards_1(SequenceNode):
 
 class SequenceWildcards_2(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -76,8 +76,8 @@ class SequenceWildcards_2(SequenceNode):
 
 class SequenceWildcards_3(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -101,8 +101,8 @@ class SequenceWildcards_3(SequenceNode):
 
 class SequenceWildcards_4(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -126,8 +126,8 @@ class SequenceWildcards_4(SequenceNode):
 
 class SequenceWildcards_5(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -151,8 +151,8 @@ class SequenceWildcards_5(SequenceNode):
 
 class SequenceWildcards_6(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -176,8 +176,8 @@ class SequenceWildcards_6(SequenceNode):
 
 class SequenceWildcards_7(SequenceNode):
 
-    def __init__(self, bt):
-        super().__init__(bt, '?name')
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?name')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -204,8 +204,8 @@ class TestSequenceNodeWildcard:
     # SequenceWildcards_1; name = Chuck
     def test_sequence_chuck_1(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_1, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_1, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_1'),
@@ -218,14 +218,14 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_1'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_2; name = Chuck
     def test_sequence_chuck_2(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_2, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_2, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_2'),
@@ -238,14 +238,14 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_2'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_3; name = Chuck
     def test_sequence_chuck_3(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_3, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_3, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_3'),
@@ -258,14 +258,14 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_3'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_4; name = Chuck
     def test_sequence_chuck_4(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_4, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_4, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_4'),
@@ -278,14 +278,14 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_4'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_5; name = Chuck
     def test_sequence_chuck_5(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_5, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_5, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_5'),
@@ -298,14 +298,14 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_5'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_6; name = Chuck
     def test_sequence_chuck_6(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_6, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_6, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_6'),
@@ -318,14 +318,14 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_6'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_7; name = Chuck
     def test_sequence_chuck_7(self):
         mock.reset_mock()
-        bt = BehaviorTree()
-        bt.run(SequenceWildcards_7, '"Chuck"')
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWildcards_7, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_7'),
@@ -338,5 +338,5 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_7'),
                                        call('bt finished')]
-        assert bt._instance.get_status() == NodeStatus.ABORTED
-        assert bt._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_status() == NodeStatus.ABORTED
+        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'

@@ -19,14 +19,14 @@ from typing import TYPE_CHECKING
 from carebt.nodeStatus import NodeStatus
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
-    from carebt.behaviorTree import Logger  # pragma: no cover
+    from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
+    from carebt.logger import Logger  # pragma: no cover
 
 
 class TreeNode():  # abstract
 
-    def __init__(self, bt: 'BehaviorTree', params: str = None):
-        self.bt = bt
+    def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        self.bt_runner = bt_runner
         self.set_status(NodeStatus.IDLE)
         self.__error_message = ''
         self.__params = params
@@ -82,12 +82,12 @@ class TreeNode():  # abstract
         self._abort_handler = function.__name__
 
     @final
-    def get_bt(self) -> 'BehaviorTree':
-        return self.bt
+    def get_bt_runner(self) -> 'BehaviorTreeRunner':
+        return self.bt_runner
 
     @final
     def get_logger(self) -> 'Logger':
-        return self.bt.get_logger()
+        return self.bt_runner.get_logger()
 
     @final
     def get_status(self) -> NodeStatus:

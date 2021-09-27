@@ -20,13 +20,13 @@ from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
 if TYPE_CHECKING:
-    from carebt.behaviorTree import BehaviorTree  # pragma: no cover
+    from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
 class PipelineSequenceNode(SequenceNode):  # abstract
 
-    def __init__(self, bt: 'BehaviorTree', params: str = None):
-        super().__init__(bt, params)
+    def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        super().__init__(bt_runner, params)
         self.__period_ms = None
         self.__current_cycle = 1
         self.__max_cycles = None
@@ -53,7 +53,7 @@ class PipelineSequenceNode(SequenceNode):  # abstract
             if(self._child_ec_list[self._child_ptr].instance is None):
                 # create node instance
                 self._child_ec_list[self._child_ptr].instance = \
-                    self._child_ec_list[self._child_ptr].node_as_class(self.get_bt())
+                    self._child_ec_list[self._child_ptr].node_as_class(self.get_bt_runner())
 
             # tick child
             self._tick_child(self._child_ec_list[self._child_ptr])
