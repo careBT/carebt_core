@@ -40,6 +40,7 @@ class SequenceWithExceptionHandler(SequenceNode):
         mock('handle_name_is_bob')
         print('No Problem Bob, keep going!')
         self.set_child_status(NodeStatus.SUCCESS)
+        self.set_child_message(None)
         self.clear_child_message()
 
     def handle_name_is_chuck(self) -> None:
