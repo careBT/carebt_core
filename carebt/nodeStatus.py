@@ -16,9 +16,23 @@ from enum import Enum
 
 
 class NodeStatus(Enum):
-    IDLE = 0,
-    RUNNING = 1,
-    SUSPENDED = 2,
-    SUCCESS = 3,
-    FAILURE = 4,
+    """An Enum representing the status of a careBT node
+    """
+
+    IDLE = 0
+    """Waiting for first execution"""
+
+    RUNNING = 1
+    """Currently executing"""
+
+    SUSPENDED = 2
+    """Currently executing, but on_tick() is not called"""
+
+    SUCCESS = 3
+    """finished with SUCCESS"""
+
+    FAILURE = 4
+    """finished with FAILURE"""
+
     ABORTED = 5
+    """finished with ABORTED"""
