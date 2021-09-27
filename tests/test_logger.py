@@ -1,7 +1,7 @@
 from tests.global_mock import mock
 from tests.helloActions import HelloWorldAction
 
-from carebt.logger import AbstractLogger
+from carebt.logger import AbstractLogger, LogLevel
 from carebt.behaviorTree import BehaviorTree
 from carebt.logger import Logger
 from carebt.nodeStatus import NodeStatus
@@ -22,28 +22,28 @@ class CustomLogger(AbstractLogger):
     # PUBLIC
 
     def debug(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level == LogLevel.DEBUG):
             mock('DEBUG {}'.format(msg))
 
     def info(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level <= LogLevel.INFO):
             mock('INFO {}'.format(msg))
 
     def warn(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level <= LogLevel.WARN):
             mock('WARN {}'.format(msg))
 
     def error(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level <= LogLevel.ERROR):
             mock('ERROR {}'.format(msg))
 
 
 class TestLogger:
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger(self, mock_print):
+    def test_logger_debug(self, mock_print):
         self.logger = Logger()
-        self.logger.set_verbosity(True)
+        self.logger.set_log_level(LogLevel.DEBUG)
         self.logger.debug('debug test')
         self.logger.info('info test')
         self.logger.warn('warn test')
@@ -55,8 +55,56 @@ class TestLogger:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_action_logger_verbosity_false(self, mock_print):
+    def test_logger_info(self, mock_print):
+        self.logger = Logger()
+        self.logger.set_log_level(LogLevel.INFO)
+        self.logger.debug('debug test')
+        self.logger.info('info test')
+        self.logger.warn('warn test')
+        self.logger.error('error test')
+        regex = re.compile('....-..-.. ..:..:.. INFO info test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_logger_warn(self, mock_print):
+        self.logger = Logger()
+        self.logger.set_log_level(LogLevel.WARN)
+        self.logger.debug('debug test')
+        self.logger.info('info test')
+        self.logger.warn('warn test')
+        self.logger.error('error test')
+        regex = re.compile('....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_logger_error(self, mock_print):
+        self.logger = Logger()
+        self.logger.set_log_level(LogLevel.ERROR)
+        self.logger.debug('debug test')
+        self.logger.info('info test')
+        self.logger.warn('warn test')
+        self.logger.error('error test')
+        regex = re.compile('....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_logger_off(self, mock_print):
+        self.logger = Logger()
+        self.logger.set_log_level(LogLevel.OFF)
+        self.logger.debug('debug test')
+        self.logger.info('info test')
+        self.logger.warn('warn test')
+        self.logger.error('error test')
+        regex = re.compile('')
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_action_logger_level_off(self, mock_print):
         bt = BehaviorTree()
+        bt.get_logger().set_log_level(LogLevel.OFF)
         bt.run(HelloWorldAction)
         regex = re.compile('Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
@@ -64,9 +112,9 @@ class TestLogger:
         assert bt._instance.get_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_action_logger_verbosity_true(self, mock_print):
+    def test_action_logger_level_debug(self, mock_print):
         bt = BehaviorTree()
-        bt.set_verbosity(True)
+        bt.get_logger().set_log_level(LogLevel.DEBUG)
         bt.run(HelloWorldAction)
         regex = re.compile('....-..-.. ..:..:.. INFO ---------------------------------- tick-count: 1\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ticking RootSequence\n'  # noqa: E501
@@ -86,9 +134,10 @@ class TestLogger:
         assert bt._instance.get_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_action_custom_logger_verbosity_false(self, mock_print):
+    def test_action_custom_logger_level_off(self, mock_print):
         bt = BehaviorTree()
         cl = CustomLogger()
+        cl.set_log_level(LogLevel.OFF)
         bt.set_logger(cl)
         bt.run(HelloWorldAction)
         regex = re.compile('Hello World !!!\n')
@@ -97,12 +146,12 @@ class TestLogger:
         assert bt._instance.get_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_action_custom_logger_verbosity_true(self, mock_print):
+    def test_action_custom_logger_level_debug(self, mock_print):
         mock.reset_mock()
         bt = BehaviorTree()
         cl = CustomLogger()
+        cl.set_log_level(LogLevel.DEBUG)
         bt.set_logger(cl)
-        bt.set_verbosity(True)
         bt.run(HelloWorldAction)
         regex = re.compile('Hello World !!!\n')
         mock('bt finished')

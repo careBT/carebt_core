@@ -100,7 +100,6 @@ class TestParallelNode:
     def test_parallel_ss(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(True)
         bt.run(SimpleParallel, '"Dave"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -119,7 +118,6 @@ class TestParallelNode:
     def test_parallel_sf(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(2)
         bt.run(SimpleParallel, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -140,7 +138,6 @@ class TestParallelNode:
     def test_tick_counting_parallel(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(2)
         bt.run(TickCountingParallel)
         mock('bt finished')
         print(mock.call_args_list)

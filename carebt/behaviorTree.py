@@ -34,9 +34,6 @@ class BehaviorTree:
         self._tick_count = 0
         self._logger = Logger()
 
-    def set_verbosity(self, verbosity: int):
-        self._logger.set_verbosity(verbosity)
-
     def set_tick_rate_ms(self, tick_rate_ms: int) -> None:
         self._tick_rate_ms = tick_rate_ms
 

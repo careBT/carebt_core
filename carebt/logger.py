@@ -17,14 +17,27 @@ from abc import abstractmethod
 
 from datetime import datetime
 
+from enum import IntEnum
+
+
+class LogLevel(IntEnum):
+    """An Enum representing the logging levels
+    """
+
+    DEBUG = 0
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+    OFF = 4
+
 
 class AbstractLogger(ABC):
 
     def __init__(self):
-        self._verbosity: bool = False
+        self._log_level: LogLevel = LogLevel.INFO
 
-    def set_verbosity(self, verbosity: bool):
-        self._verbosity = verbosity
+    def set_log_level(self, log_level: LogLevel):
+        self._log_level = log_level
 
     @abstractmethod
     def debug(self, msg: str):
@@ -57,17 +70,17 @@ class Logger(AbstractLogger):
     # PUBLIC
 
     def debug(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level == LogLevel.DEBUG):
             print('{} DEBUG {}'.format(self._get_time(), msg))
 
     def info(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level <= LogLevel.INFO):
             print('{} INFO {}'.format(self._get_time(), msg))
 
     def warn(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level <= LogLevel.WARN):
             print('{} WARN {}'.format(self._get_time(), msg))
 
     def error(self, msg: str):
-        if(self._verbosity):
+        if(self._log_level <= LogLevel.ERROR):
             print('{} ERROR {}'.format(self._get_time(), msg))

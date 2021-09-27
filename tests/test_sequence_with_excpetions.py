@@ -68,7 +68,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_dave_heidi(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Dave" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -98,7 +97,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_bob_heidi(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Bob" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -129,7 +127,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_chuck_heidi(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Chuck" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -152,7 +149,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_eve_heidi(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Eve" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -177,7 +173,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_ivan_heidi(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Ivan" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -198,7 +193,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_judy_heidi(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Judy" "Heidi"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -219,7 +213,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_heidi_bob(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Heidi" "Bob"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -250,7 +243,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_heidi_chuck(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Heidi" "Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -282,7 +274,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_heidi_eve(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Heidi" "Eve"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -316,7 +307,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_heidi_ivan(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Heidi" "Ivan"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -346,7 +336,6 @@ class TestSequenceNodeWithExceptions:
     def test_sequence_failure_heidi_judy(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWithExceptionHandler, '"Heidi" "Judy"')
         mock('bt finished')
         print(mock.call_args_list)

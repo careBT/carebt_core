@@ -191,7 +191,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_1(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_1, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -212,7 +211,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_2(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_2, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -233,7 +231,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_3(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_3, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -254,7 +251,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_4(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_4, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -275,7 +271,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_5(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_5, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -296,7 +291,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_6(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_6, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
@@ -317,7 +311,6 @@ class TestSequenceNodeWildcard:
     def test_sequence_chuck_7(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt.run(SequenceWildcards_7, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)

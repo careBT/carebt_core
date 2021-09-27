@@ -19,7 +19,6 @@ class TestActionNode:
     def test_action(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(2)
         bt.run(HelloWorldAction)
         assert mock.called
         assert mock.call_count == 3
@@ -83,7 +82,6 @@ class TestActionNode:
     def test_action_add_two_numbers_one_missing_input(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, '3 => ?result')
         mock('bt finished')
@@ -99,7 +97,6 @@ class TestActionNode:
     def test_action_add_two_numbers_missing_input(self):
         mock.reset_mock()
         bt = BehaviorTree()
-        bt.set_verbosity(1)
         bt._instance._result = None  # to supress the no-member warning
         bt.run(AddTwoNumbersAction, ' => ?result')
         mock('bt finished')
