@@ -112,7 +112,7 @@ class ControlNode(TreeNode):  # abstract
                     rule_handler[0].__name__)
             regexMessage = self.__wildcard_to_regex(rule_handler[2])
 
-            self.get_logger().debug('rule_handler: {} -{} - {}'
+            self.get_logger().debug('checking rule_handler: {} -{} - {}'
                                     .format(regexClassName.pattern,
                                             rule_handler[1],
                                             regexMessage.pattern))
@@ -122,15 +122,15 @@ class ControlNode(TreeNode):  # abstract
                     and child_ec.instance.get_status() in rule_handler[1]
                     and bool(re.match(regexMessage,
                                       child_ec.instance.get_message()))):
-                self.get_logger().debug('{} -> run rule_handler {}'
-                                        .format(child_ec.instance.__class__.__name__,
-                                                rule_handler[3]))
+                self.get_logger().info('{} -> run rule_handler {}'
+                                       .format(child_ec.instance.__class__.__name__,
+                                               rule_handler[3]))
                 # execute function attached to the rule-handler
                 exec('self.{}()'.format(rule_handler[3]))
-                self.get_logger().info('after rule_handler {} - {} - {}'
-                                       .format(child_ec.instance.__class__.__name__,
-                                               child_ec.instance.get_status(),
-                                               child_ec.instance.get_message()))
+                self.get_logger().debug('after rule_handler {} - {} - {}'
+                                        .format(child_ec.instance.__class__.__name__,
+                                                child_ec.instance.get_status(),
+                                                child_ec.instance.get_message()))
                 break
 
         # if child status is SUCCESS
