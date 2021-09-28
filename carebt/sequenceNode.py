@@ -87,17 +87,6 @@ class SequenceNode(ControlNode):  # abstract
     def add_child(self, child_as_class: TreeNode, params: str = None) -> None:
         self._child_ec_list.append(ExecutionContext(child_as_class, params))
 
-    # remove child by index from the list
-    def remove_child(self, pos: int) -> None:
-        del self._child_ec_list[pos]
-        if(pos <= self._child_ptr):
-            self._child_ptr -= 1
-
-    # remove all children from the list
-    def remove_all_children(self) -> None:
-        self._child_ptr = 0
-        self._child_ec_list.clear()
-
     # remove all susequent children from the list
     def remove_susequent_children(self) -> None:
         for _ in range(self._child_ptr, len(self._child_ec_list) - 1):
