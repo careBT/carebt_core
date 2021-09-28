@@ -61,25 +61,25 @@ class ControlNode(TreeNode):  # abstract
                                            len(child_ec.call_in_params)))
         for i, var in enumerate(child_ec.call_in_params):
             if(isinstance(var, str) and var[0] == '?'):
-                var = var.replace('?', '_')
+                var = var.replace('?', '_', 1)
                 var = getattr(self, var)
             setattr(child_ec.instance,
-                    child_ec.instance.get_in_params()[i].replace('?', '_'), var)
+                    child_ec.instance.get_in_params()[i].replace('?', '_', 1), var)
 
     def _bind_out_params(self, child_ec: ExecutionContext) -> None:
         for i, var in enumerate(child_ec.instance.get_out_params()):
-            var = var.replace('?', '_')
+            var = var.replace('?', '_', 1)
             if(getattr(child_ec.instance, var) is None):
                 self.get_logger().warn('{} output {} is not set'
                                        .format(child_ec.node_as_class.__name__,
-                                               var.replace('_', '?')))
+                                               var.replace('_', '?', 1)))
             else:
                 if(len(child_ec.call_out_params) <= i):
                     self.get_logger().warn('{} output {} not provided'
                                            .format(child_ec.node_as_class.__name__,
                                                    i))
                 else:
-                    setattr(self, child_ec.call_out_params[i].replace('?', '_'),
+                    setattr(self, child_ec.call_out_params[i].replace('?', '_', 1),
                             getattr(child_ec.instance, var))
 
     # PROTECTED

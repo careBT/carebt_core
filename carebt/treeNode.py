@@ -51,13 +51,13 @@ class TreeNode():  # abstract
 
             # create in params
             for p in filter(None, self.__in_params):
-                p = p.replace('?', '_')
+                p = p.replace('?', '_', 1)
                 self.get_logger().trace('in: {}'.format(p))
                 exec('self.{} = None'.format(p))
 
             # create out params
             for p in filter(None, self.__out_params):
-                p = p.replace('?', '_')
+                p = p.replace('?', '_', 1)
                 self.get_logger().trace('out: {}'.format(p))
                 exec('self.{} = None'.format(p))
 
