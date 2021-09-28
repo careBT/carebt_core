@@ -42,23 +42,23 @@ class TreeNode():  # abstract
             if len(_params) == 2:
                 self.__out_params = _params[1].strip().split(' ')
 
-            # self.get_logger().debug('{} in_params:  {}'
-            #                         .format(self.__class__.__name__,
-            #                                 self.__in_params))
-            # self.get_logger().debug('{} out_params: {}'
-            #                         .format(self.__class__.__name__,
-            #                                 self.__out_params))
+            self.get_logger().trace('{} in_params:  {}'
+                                    .format(self.__class__.__name__,
+                                            self.__in_params))
+            self.get_logger().trace('{} out_params: {}'
+                                    .format(self.__class__.__name__,
+                                            self.__out_params))
 
             # create in params
             for p in filter(None, self.__in_params):
                 p = p.replace('?', '_')
-                # self.get_logger().debug('in: {}'.format(p))
+                self.get_logger().trace('in: {}'.format(p))
                 exec('self.{} = None'.format(p))
 
             # create out params
             for p in filter(None, self.__out_params):
                 p = p.replace('?', '_')
-                # self.get_logger().debug('out: {}'.format(p))
+                self.get_logger().trace('out: {}'.format(p))
                 exec('self.{} = None'.format(p))
 
     # PROTECTED

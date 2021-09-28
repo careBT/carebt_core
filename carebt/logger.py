@@ -24,11 +24,12 @@ class LogLevel(IntEnum):
     """An Enum representing the logging levels
     """
 
-    DEBUG = 0
-    INFO = 1
-    WARN = 2
-    ERROR = 3
-    OFF = 4
+    TRACE = 0
+    DEBUG = 1
+    INFO = 2
+    WARN = 3
+    ERROR = 4
+    OFF = 5
 
 
 class AbstractLogger(ABC):
@@ -38,6 +39,10 @@ class AbstractLogger(ABC):
 
     def set_log_level(self, log_level: LogLevel):
         self._log_level = log_level
+
+    @abstractmethod
+    def trace(self, msg: str):
+        raise NotImplementedError
 
     @abstractmethod
     def debug(self, msg: str):
@@ -69,8 +74,12 @@ class Logger(AbstractLogger):
 
     # PUBLIC
 
+    def trace(self, msg: str):
+        if(self._log_level <= LogLevel.TRACE):
+            print('{} TRACE {}'.format(self._get_time(), msg))
+
     def debug(self, msg: str):
-        if(self._log_level == LogLevel.DEBUG):
+        if(self._log_level <= LogLevel.DEBUG):
             print('{} DEBUG {}'.format(self._get_time(), msg))
 
     def info(self, msg: str):

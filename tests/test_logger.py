@@ -35,6 +35,10 @@ class CustomLogger(AbstractLogger):
 
     # PUBLIC
 
+    def trace(self, msg: str):
+        if(self._log_level == LogLevel.TRACE):
+            mock('TRACE {}'.format(msg))
+
     def debug(self, msg: str):
         if(self._log_level == LogLevel.DEBUG):
             mock('DEBUG {}'.format(msg))
@@ -53,6 +57,22 @@ class CustomLogger(AbstractLogger):
 
 
 class TestLogger:
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_logger_trace(self, mock_print):
+        self.logger = Logger()
+        self.logger.set_log_level(LogLevel.TRACE)
+        self.logger.trace('trace test')
+        self.logger.debug('debug test')
+        self.logger.info('info test')
+        self.logger.warn('warn test')
+        self.logger.error('error test')
+        regex = re.compile('....-..-.. ..:..:.. TRACE trace test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. DEBUG debug test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. INFO info test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
+                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+        assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_logger_debug(self, mock_print):
