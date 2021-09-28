@@ -46,8 +46,10 @@ class ParallelNode(ControlNode):  # abstract
         ################################################
         # tick all children
         for self._child_ptr, child_ec in enumerate(self._child_ec_list):
+            self._bind_in_params(child_ec)
             self._tick_child(child_ec)
             self._apply_rules(child_ec)
+            self._bind_out_params(child_ec)
             cur_child_state = child_ec.instance.get_status()
             if(cur_child_state == NodeStatus.SUCCESS):
                 child_ec.instance = None

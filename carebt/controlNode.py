@@ -73,8 +73,14 @@ class ControlNode(TreeNode):  # abstract
                 self.get_logger().warn('{} output {} is not set'
                                        .format(child_ec.node_as_class.__name__,
                                                var.replace('_', '?')))
-            setattr(self, child_ec.call_out_params[i].replace('?', '_'),
-                    getattr(child_ec.instance, var))
+            else:
+                if(len(child_ec.call_out_params) <= i):
+                    self.get_logger().warn('{} output {} not provided'
+                                           .format(child_ec.node_as_class.__name__,
+                                                   i))
+                else:
+                    setattr(self, child_ec.call_out_params[i].replace('?', '_'),
+                            getattr(child_ec.instance, var))
 
     # PROTECTED
 
@@ -84,14 +90,8 @@ class ControlNode(TreeNode):  # abstract
         # if child status is IDLE or RUNNING -> tick it
         if(child_ec.instance.get_status() == NodeStatus.IDLE or
            child_ec.instance.get_status() == NodeStatus.RUNNING):
-            # bind in params
-            self._bind_in_params(child_ec)
-
             # tick child
             child_ec.instance._on_tick()
-
-        # bind out params
-        self._bind_out_params(child_ec)
 
     @final
     def _apply_rules(self, child_ec: ExecutionContext):
@@ -132,11 +132,6 @@ class ControlNode(TreeNode):  # abstract
                                                 child_ec.instance.get_status(),
                                                 child_ec.instance.get_message()))
                 break
-
-        # if child status is SUCCESS
-        if(child_ec.instance.get_status() == NodeStatus.SUCCESS):
-            # bind out params
-            self._bind_out_params(child_ec)
 
     # PUBLIC
 

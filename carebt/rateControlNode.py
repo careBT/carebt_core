@@ -44,6 +44,7 @@ class RateControlNode(ControlNode):  # abstract
             # create node instance
             self._child_ec_list[0].instance = \
                 self._child_ec_list[0].node_as_class(self.get_bt_runner())
+            self._bind_in_params(self._child_ec_list[self._child_ptr])
 
         # tick child if __rate_ms has elapsed
         current_ts = datetime.now()
@@ -68,6 +69,7 @@ class RateControlNode(ControlNode):  # abstract
 
             # if the current child tick returned with SUCCESS
             elif(cur_child_state == NodeStatus.SUCCESS):
+                self._bind_out_params(self._child_ec_list[self._child_ptr])
                 self.set_status(NodeStatus.SUCCESS)
 
         if(self.get_status() == NodeStatus.SUCCESS or

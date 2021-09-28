@@ -38,6 +38,7 @@ class SequenceNode(ControlNode):  # abstract
             # create node instance
             self._child_ec_list[self._child_ptr].instance = \
                 self._child_ec_list[self._child_ptr].node_as_class(self.get_bt_runner())
+            self._bind_in_params(self._child_ec_list[self._child_ptr])
 
         # tick child
         self._tick_child(self._child_ec_list[self._child_ptr])
@@ -56,6 +57,7 @@ class SequenceNode(ControlNode):  # abstract
 
             # if the current child tick returned with SUCCESS
             elif(cur_child_state == NodeStatus.SUCCESS):
+                self._bind_out_params(self._child_ec_list[self._child_ptr])
                 self._child_ec_list[self._child_ptr].instance = None
                 # check if there is at least one more node to run
                 if(self._child_ptr + 1 < len(self._child_ec_list)):

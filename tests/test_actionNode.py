@@ -144,7 +144,6 @@ class TestActionNode:
                                        call('on_tick - 123 + 123'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
-        assert bt_runner._instance._result is None
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_message() == ''
 
