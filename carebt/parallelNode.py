@@ -51,7 +51,8 @@ class ParallelNode(ControlNode):  # abstract
             self._apply_contingencies(child_ec)
             self._bind_out_params(child_ec)
             cur_child_state = child_ec.instance.get_status()
-            if(cur_child_state == NodeStatus.SUCCESS):
+            if(cur_child_state == NodeStatus.SUCCESS
+               or cur_child_state == NodeStatus.FIXED):
                 child_ec.instance = None
                 self._success_count += 1
             elif(cur_child_state == NodeStatus.FAILURE or

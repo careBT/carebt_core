@@ -74,9 +74,13 @@ class PipelineSequenceNode(SequenceNode):  # abstract
                     # the whole pipeline sequence gets state ABORTED
                     self.set_status(NodeStatus.ABORTED)
 
-                # if the current child tick returned with SUCCESS
-                elif(cur_child_state == NodeStatus.SUCCESS):
-                    self._bind_out_params(self._child_ec_list[self._child_ptr])
+                # if the current child tick returned with SUCCESS or FIXED
+                elif(cur_child_state == NodeStatus.SUCCESS
+                     or cur_child_state == NodeStatus.FIXED):
+                    # if current child state is FIXED -> do not bind out_params
+                    # as the 'fix' implementation is done in the contingency-handler
+                    if(cur_child_state != NodeStatus.FIXED):
+                        self._bind_out_params(self._child_ec_list[self._child_ptr])
                     # check if there is at least one more node to run
                     if(self._child_ptr + 1 < len(self._child_ec_list)):
                         self._child_ptr += 1
@@ -102,9 +106,10 @@ class PipelineSequenceNode(SequenceNode):  # abstract
                         self.set_message(self._child_ec_list[self._child_ptr]
                                          .instance.get_message())
 
-            if(self.get_status() == NodeStatus.SUCCESS or
-               self.get_status() == NodeStatus.FAILURE or
-               self.get_status() == NodeStatus.ABORTED):
+            if(self.get_status() == NodeStatus.SUCCESS
+               or self.get_status() == NodeStatus.FAILURE
+               or self.get_status() == NodeStatus.ABORTED
+               or self.get_status() == NodeStatus.FIXED):
                 self.get_logger().info('finished {}'.format(self.__class__.__name__))
                 for child_ec in self._child_ec_list:
                     child_ec.instance = None

@@ -67,14 +67,19 @@ class RateControlNode(ControlNode):  # abstract
                 self.set_status(cur_child_state)
                 self.set_message(self._child_ec_list[0].instance.get_message())
 
-            # if the current child tick returned with SUCCESS
-            elif(cur_child_state == NodeStatus.SUCCESS):
-                self._bind_out_params(self._child_ec_list[self._child_ptr])
+            # if the current child tick returned with SUCCESS or FIXED
+            elif(cur_child_state == NodeStatus.SUCCESS
+                 or cur_child_state == NodeStatus.FIXED):
+                # if current child state is FIXED -> do not bind out_params
+                # as the 'fix' implementation is done in the contingency-handler
+                if(cur_child_state != NodeStatus.FIXED):
+                    self._bind_out_params(self._child_ec_list[self._child_ptr])
                 self.set_status(NodeStatus.SUCCESS)
 
-        if(self.get_status() == NodeStatus.SUCCESS or
-                self.get_status() == NodeStatus.FAILURE or
-                self.get_status() == NodeStatus.ABORTED):
+        if(self.get_status() == NodeStatus.SUCCESS
+           or self.get_status() == NodeStatus.FAILURE
+           or self.get_status() == NodeStatus.ABORTED
+           or self.get_status() == NodeStatus.FIXED):
             self.get_logger().info('finished {}'.format(self.__class__.__name__))
             self._child_ec_list[0].instance = None
 

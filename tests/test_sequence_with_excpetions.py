@@ -53,9 +53,7 @@ class SequenceWithExceptionHandler(SequenceNode):
     def handle_name_is_bob(self) -> None:
         mock('handle_name_is_bob')
         print('No Problem Bob, keep going!')
-        self.set_child_status(NodeStatus.SUCCESS)
-        self.set_child_message(None)
-        self.clear_child_message()
+        self.fix_current_child()
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -67,8 +65,7 @@ class SequenceWithExceptionHandler(SequenceNode):
         print('Oh Eve, you are Frank')
         self.remove_susequent_children()
         self.add_child(SayHelloAction, '"Frank"')
-        self.set_child_status(NodeStatus.SUCCESS)
-        self.clear_child_message()
+        self.fix_current_child()
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))

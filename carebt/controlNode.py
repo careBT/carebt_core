@@ -145,11 +145,6 @@ class ControlNode(TreeNode):  # abstract
                                                message,
                                                function.__name__))
 
-    def set_child_status(self, status: NodeStatus) -> None:
-        self._child_ec_list[self._child_ptr].instance.set_status(status)
-
-    def set_child_message(self, msg: str) -> None:
-        self._child_ec_list[self._child_ptr].instance.set_message(msg)
-
-    def clear_child_message(self) -> None:
+    def fix_current_child(self) -> None:
+        self._child_ec_list[self._child_ptr].instance.set_status(NodeStatus.FIXED)
         self._child_ec_list[self._child_ptr].instance.set_message('')

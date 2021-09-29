@@ -50,14 +50,18 @@ class SequenceNode(ControlNode):  # abstract
             cur_child_state = self._child_ec_list[self._child_ptr].instance.get_status()
 
             # if the current child tick returned with FAILURE or ABORTED
-            if(cur_child_state == NodeStatus.FAILURE or
-               cur_child_state == NodeStatus.ABORTED):
+            if(cur_child_state == NodeStatus.FAILURE
+               or cur_child_state == NodeStatus.ABORTED):
                 self.set_status(cur_child_state)
                 self.set_message(self._child_ec_list[self._child_ptr].instance.get_message())
 
-            # if the current child tick returned with SUCCESS
-            elif(cur_child_state == NodeStatus.SUCCESS):
-                self._bind_out_params(self._child_ec_list[self._child_ptr])
+            # if the current child tick returned with SUCCESS or FIXED
+            elif(cur_child_state == NodeStatus.SUCCESS
+                 or cur_child_state == NodeStatus.FIXED):
+                # if current child state is FIXED -> do not bind out_params
+                # as the 'fix' implementation is done in the contingency-handler
+                if(cur_child_state != NodeStatus.FIXED):
+                    self._bind_out_params(self._child_ec_list[self._child_ptr])
                 self._child_ec_list[self._child_ptr].instance = None
                 # check if there is at least one more node to run
                 if(self._child_ptr + 1 < len(self._child_ec_list)):
@@ -66,9 +70,10 @@ class SequenceNode(ControlNode):  # abstract
                     # no more nodes to run -> sequence = SUCCESS
                     self.set_status(NodeStatus.SUCCESS)
 
-        if(self.get_status() == NodeStatus.SUCCESS or
-           self.get_status() == NodeStatus.FAILURE or
-           self.get_status() == NodeStatus.ABORTED):
+        if(self.get_status() == NodeStatus.SUCCESS
+           or self.get_status() == NodeStatus.FAILURE
+           or self.get_status() == NodeStatus.ABORTED
+           or self.get_status() == NodeStatus.FIXED):
             self.get_logger().info('finished {}'.format(self.__class__.__name__))
             self._child_ec_list[self._child_ptr].instance = None
 
