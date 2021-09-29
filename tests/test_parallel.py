@@ -75,10 +75,10 @@ class SimpleParallel(ParallelNode):
         self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_IS_NOT_ALLOWED',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_IS_NOT_ALLOWED',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')

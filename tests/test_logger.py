@@ -155,7 +155,7 @@ class TestLogger:
                            '....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ticking HelloWorldAction - NodeStatus.IDLE\n'  # noqa: E501
                            'Hello World !!!\n'  # noqa: E501
-                           '....-..-.. ..:..:.. DEBUG searching rule-handler for: HelloWorldAction - NodeStatus.SUCCESS - \n'  # noqa: E501
+                           '....-..-.. ..:..:.. DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - \n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO finished RootSequence\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO bt execution finished\n'  # noqa: E501
@@ -197,7 +197,7 @@ class TestLogger:
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('INFO ticking HelloWorldAction - NodeStatus.IDLE'),  # noqa: E501
                                        call('on_tick - Hello World'),  # noqa: E501
-                                       call('DEBUG searching rule-handler for: HelloWorldAction - NodeStatus.SUCCESS - '),  # noqa: E501
+                                       call('DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - '),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
                                        call('INFO finished RootSequence'),  # noqa: E501
                                        call('INFO ---------------------------------------------------'),  # noqa: E501

@@ -58,7 +58,7 @@ class PipelineSequenceNode(SequenceNode):  # abstract
 
             # tick child
             self._tick_child(self._child_ec_list[self._child_ptr])
-            self._apply_rules(self._child_ec_list[self._child_ptr])
+            self._apply_contingencies(self._child_ec_list[self._child_ptr])
 
             ################################################
             # finally, check how to proceed

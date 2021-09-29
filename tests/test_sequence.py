@@ -51,20 +51,20 @@ class LongRunningSequence(SequenceNode):
         self.attach_abort_handler(self.abort_handler)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler(LongRunningHelloWorldAction,
-                                 [NodeStatus.SUCCESS],
-                                 '*',
-                                 self.rule_handler_success)
+        self.attach_contingency_handler(LongRunningHelloWorldAction,
+                                        [NodeStatus.SUCCESS],
+                                        '*',
+                                        self.contingency_handler_success)
 
-        self.attach_rule_handler(LongRunningHelloWorldAction,
-                                 [NodeStatus.FAILURE],
-                                 'BOB_IS_NOT_ALLOWED',
-                                 self.rule_handler_failure_bob)
+        self.attach_contingency_handler(LongRunningHelloWorldAction,
+                                        [NodeStatus.FAILURE],
+                                        'BOB_IS_NOT_ALLOWED',
+                                        self.contingency_handler_failure_bob)
 
-        self.attach_rule_handler(LongRunningHelloWorldAction,
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_IS_NOT_ALLOWED',
-                                 self.rule_handler_failure_chuck)
+        self.attach_contingency_handler(LongRunningHelloWorldAction,
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_IS_NOT_ALLOWED',
+                                        self.contingency_handler_failure_chuck)
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -72,15 +72,15 @@ class LongRunningSequence(SequenceNode):
     def abort_handler(self) -> None:
         mock('abort_handler LongRunningSequence')
 
-    def rule_handler_success(self):
-        mock('rule_handler_success')
+    def contingency_handler_success(self):
+        mock('contingency_handler_success')
 
-    def rule_handler_failure_bob(self):
-        mock('rule_handler_failure_bob')
+    def contingency_handler_failure_bob(self):
+        mock('contingency_handler_failure_bob')
         self.abort()
 
-    def rule_handler_failure_chuck(self):
-        mock('rule_handler_failure_chuck')
+    def contingency_handler_failure_chuck(self):
+        mock('contingency_handler_failure_chuck')
 
 ########################################################################
 
@@ -149,7 +149,7 @@ class TestSequenceNode:
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.SUCCESS'),  # noqa: E501
-                                       call('rule_handler_success'),  # noqa: E501
+                                       call('contingency_handler_success'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
@@ -167,7 +167,7 @@ class TestSequenceNode:
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
-                                       call('rule_handler_failure_chuck'),  # noqa: E501
+                                       call('contingency_handler_failure_chuck'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
@@ -185,7 +185,7 @@ class TestSequenceNode:
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
-                                       call('rule_handler_failure_bob'),  # noqa: E501
+                                       call('contingency_handler_failure_bob'),  # noqa: E501
                                        call('abort_handler LongRunningSequence'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501

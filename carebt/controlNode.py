@@ -37,7 +37,7 @@ class ControlNode(TreeNode):  # abstract
         # the current child pointer
         self._child_ptr = 0
 
-        self._rule_handler_list = []
+        self._contingency_handler_list = []
 
         self.set_status(NodeStatus.IDLE)
 
@@ -94,40 +94,40 @@ class ControlNode(TreeNode):  # abstract
             child_ec.instance._on_tick()
 
     @final
-    def _apply_rules(self, child_ec: ExecutionContext):
-        self.get_logger().debug('searching rule-handler for: {} - {} - {}'
+    def _apply_contingencies(self, child_ec: ExecutionContext):
+        self.get_logger().debug('searching contingency-handler for: {} - {} - {}'
                                 .format(child_ec.instance.__class__.__name__,
                                         child_ec.instance.get_status(),
                                         child_ec.instance.get_message()))
 
-        # iterate over rule_handler_list
-        for rule_handler in self._rule_handler_list:
+        # iterate over contingency_handler_list
+        for contingency_handler in self._contingency_handler_list:
 
             # handle wildcards
-            if(isinstance(rule_handler[0], str)):
+            if(isinstance(contingency_handler[0], str)):
                 regexClassName = self.__wildcard_to_regex(
-                    rule_handler[0])
+                    contingency_handler[0])
             else:
                 regexClassName = self.__wildcard_to_regex(
-                    rule_handler[0].__name__)
-            regexMessage = self.__wildcard_to_regex(rule_handler[2])
+                    contingency_handler[0].__name__)
+            regexMessage = self.__wildcard_to_regex(contingency_handler[2])
 
-            self.get_logger().debug('checking rule_handler: {} -{} - {}'
+            self.get_logger().debug('checking contingency_handler: {} -{} - {}'
                                     .format(regexClassName.pattern,
-                                            rule_handler[1],
+                                            contingency_handler[1],
                                             regexMessage.pattern))
-            # check if rule-handler matches
+            # check if contingency-handler matches
             if(bool(re.match(regexClassName,
                              child_ec.instance.__class__.__name__))
-                    and child_ec.instance.get_status() in rule_handler[1]
+                    and child_ec.instance.get_status() in contingency_handler[1]
                     and bool(re.match(regexMessage,
                                       child_ec.instance.get_message()))):
-                self.get_logger().info('{} -> run rule_handler {}'
+                self.get_logger().info('{} -> run contingency_handler {}'
                                        .format(child_ec.instance.__class__.__name__,
-                                               rule_handler[3]))
-                # execute function attached to the rule-handler
-                exec('self.{}()'.format(rule_handler[3]))
-                self.get_logger().debug('after rule_handler {} - {} - {}'
+                                               contingency_handler[3]))
+                # execute function attached to the contingency-handler
+                exec('self.{}()'.format(contingency_handler[3]))
+                self.get_logger().debug('after contingency_handler {} - {} - {}'
                                         .format(child_ec.instance.__class__.__name__,
                                                 child_ec.instance.get_status(),
                                                 child_ec.instance.get_message()))
@@ -136,14 +136,14 @@ class ControlNode(TreeNode):  # abstract
     # PUBLIC
 
     @final
-    def attach_rule_handler(self, node_as_class: TreeNode, node_status_list: NodeStatus,
-                            message: str, function: Callable) -> None:
+    def attach_contingency_handler(self, node_as_class: TreeNode, node_status_list: NodeStatus,
+                                   message: str, function: Callable) -> None:
         # for the function only store the name, thus there is no 'bound method' to self
         # which increases the ref count and prevents the gc to delete the object
-        self._rule_handler_list.append((node_as_class,
-                                        node_status_list,
-                                        message,
-                                        function.__name__))
+        self._contingency_handler_list.append((node_as_class,
+                                               node_status_list,
+                                               message,
+                                               function.__name__))
 
     def set_child_status(self, status: NodeStatus) -> None:
         self._child_ec_list[self._child_ptr].instance.set_status(status)

@@ -35,20 +35,20 @@ class SequenceWithExceptionHandler(SequenceNode):
         self.add_child(SayHelloAction, '?name2')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 'BOB_IS_NOT_ALLOWED',
-                                 self.handle_name_is_bob)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        'BOB_IS_NOT_ALLOWED',
+                                        self.handle_name_is_bob)
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_IS_NOT_ALLOWED',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_IS_NOT_ALLOWED',
+                                        self.handle_name_is_chuck)
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 'EVE_IS_NOT_ALLOWED',
-                                 self.handle_name_is_eve)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        'EVE_IS_NOT_ALLOWED',
+                                        self.handle_name_is_eve)
 
     def handle_name_is_bob(self) -> None:
         mock('handle_name_is_bob')

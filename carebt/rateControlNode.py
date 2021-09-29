@@ -50,11 +50,11 @@ class RateControlNode(ControlNode):  # abstract
         current_ts = datetime.now()
         if(int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__rate_ms):
             self._tick_child(self._child_ec_list[0])
-            self._apply_rules(self._child_ec_list[0])
+            self._apply_contingencies(self._child_ec_list[0])
             self.__last_ts = current_ts
         else:
             self._bind_out_params(self._child_ec_list[0])
-            self._apply_rules(self._child_ec_list[0])
+            self._apply_contingencies(self._child_ec_list[0])
 
         ################################################
         # finally, check how to proceed in the sequence

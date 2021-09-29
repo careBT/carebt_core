@@ -33,10 +33,10 @@ class SequenceWildcards_1(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_IS_NOT_ALLOWED',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_IS_NOT_ALLOWED',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -58,10 +58,10 @@ class SequenceWildcards_2(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_*',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_*',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -83,10 +83,10 @@ class SequenceWildcards_3(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler(SayHelloAction,
-                                 [NodeStatus.FAILURE],
-                                 '*',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler(SayHelloAction,
+                                        [NodeStatus.FAILURE],
+                                        '*',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -108,10 +108,10 @@ class SequenceWildcards_4(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler('SayHelloAction',
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_IS_NOT_ALLOWED',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler('SayHelloAction',
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_IS_NOT_ALLOWED',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -133,10 +133,10 @@ class SequenceWildcards_5(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler('Say*',
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_*',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler('Say*',
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_*',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -158,10 +158,10 @@ class SequenceWildcards_6(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler('*',
-                                 [NodeStatus.FAILURE],
-                                 '*',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler('*',
+                                        [NodeStatus.FAILURE],
+                                        '*',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -183,10 +183,10 @@ class SequenceWildcards_7(SequenceNode):
         self.add_child(SayHelloAction, '"Alice"')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-        self.attach_rule_handler('Say?ello?ction',
-                                 [NodeStatus.FAILURE],
-                                 'CHUCK_*_A??OWED',
-                                 self.handle_name_is_chuck)
+        self.attach_contingency_handler('Say?ello?ction',
+                                        [NodeStatus.FAILURE],
+                                        'CHUCK_*_A??OWED',
+                                        self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
