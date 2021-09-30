@@ -84,7 +84,7 @@ class SimpleParallel(ParallelNode):
         mock('handle_name_is_chuck')
         print('Oh Chuck, lets stop!')
         self.abort()
-        self.set_message('WRONG_NAME')
+        self.set_contingency_message('WRONG_NAME')
 
     def abort_handler(self) -> None:
         mock('abort_handler {}'.format(self.__class__.__name__))
@@ -127,7 +127,7 @@ class TestParallelNode:
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_parallel_sf(self):
         mock.reset_mock()
@@ -147,7 +147,7 @@ class TestParallelNode:
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'WRONG_NAME'
+        assert bt_runner._instance.get_contingency_message() == 'WRONG_NAME'
 
     def test_tick_counting_parallel(self):
         mock.reset_mock()
@@ -176,4 +176,4 @@ class TestParallelNode:
                                        call('__del__ TickCountingAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''

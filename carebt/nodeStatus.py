@@ -19,20 +19,33 @@ class NodeStatus(Enum):
     """
     An Enum representing the status of a careBT node
 
-    `IDLE`:      Waiting for first execution
-    `RUNNING`:   Currently executing
-    `SUSPENDED`: Currently executing, but on_tick() is not called
-    `SUCCESS`:   Completed with SUCCESS
-    `FAILURE`:   Completed with FAILURE
-    `ABORTED`:   Completed with ABORTED
-    `FIXED`:     Completed with FIXED (by contingency-handler)
+    `IDLE`:      Node is waiting for first execution
+    `RUNNING`:   Node is currently executing
+    `SUSPENDED`: Node is currently executing, but on_tick() is not called
+    `SUCCESS`:   Node has completed with SUCCESS
+    `FAILURE`:   Node has completed with FAILURE
+    `ABORTED`:   Node has completed with ABORTED
+    `FIXED`:     Node has completed with FIXED (by contingency-handler)
 
     """
 
     IDLE = 0
+    """Node is waiting for first execution"""
+
     RUNNING = 1
+    """Node is currently executing"""
+
     SUSPENDED = 2
+    """Node is currently executing, but on_tick() is not called"""
+
     SUCCESS = 3
+    """Node has completed with SUCCESS"""
+
     FAILURE = 4
+    """Node has completed with FAILURE"""
+
     ABORTED = 5
+    """Node has completed with ABORTED"""
+
     FIXED = 6
+    """Node has completed with FIXED (by contingency-handler)"""

@@ -106,7 +106,7 @@ class TestSequenceNode:
                                        call('__del__ SimpleSequence'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_sequence_failure(self):
         mock.reset_mock()
@@ -124,7 +124,7 @@ class TestSequenceNode:
                                        call('__del__ SimpleSequence'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'BOB_IS_NOT_ALLOWED'
 
     def test_tick_rate_and_count(self):
         bt_runner = BehaviorTreeRunner()
@@ -154,7 +154,7 @@ class TestSequenceNode:
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_long_running_sequence_failure_chuck(self):
         mock.reset_mock()
@@ -172,7 +172,7 @@ class TestSequenceNode:
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     def test_long_running_sequence_failure_bob(self):
         mock.reset_mock()
@@ -191,4 +191,4 @@ class TestSequenceNode:
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'BOB_IS_NOT_ALLOWED'

@@ -37,7 +37,7 @@ class TestActionNode:
         assert mock.called
         assert mock.call_count == 3
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_with_in_param_success(self):
         mock.reset_mock()
@@ -50,7 +50,7 @@ class TestActionNode:
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_with_in_param_failure(self):
         mock.reset_mock()
@@ -63,7 +63,7 @@ class TestActionNode:
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'BOB_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'BOB_IS_NOT_ALLOWED'
 
     def test_action_with_missing_param(self):
         mock.reset_mock()
@@ -76,7 +76,7 @@ class TestActionNode:
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_add_two_numbers(self):
         mock.reset_mock()
@@ -90,7 +90,7 @@ class TestActionNode:
                                        call('bt finished')]
         assert bt_runner._instance._result == 8
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_add_two_numbers_one_missing_input(self):
         mock.reset_mock()
@@ -104,7 +104,7 @@ class TestActionNode:
                                        call('bt finished')]
         assert bt_runner._instance._result == 1002
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_add_two_numbers_missing_input(self):
         mock.reset_mock()
@@ -118,7 +118,7 @@ class TestActionNode:
                                        call('bt finished')]
         assert bt_runner._instance._result == 1998
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_add_two_numbers_zeros(self):
         mock.reset_mock()
@@ -132,7 +132,7 @@ class TestActionNode:
                                        call('bt finished')]
         assert bt_runner._instance._result == 0
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_action_add_two_numbers_no_output(self):
         mock.reset_mock()
@@ -145,7 +145,7 @@ class TestActionNode:
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_long_running_hello_world(self):
         mock.reset_mock()
@@ -168,7 +168,7 @@ class TestActionNode:
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_long_running_hello_world_dave(self):
         mock.reset_mock()
@@ -192,7 +192,7 @@ class TestActionNode:
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_multi_tick_hello_world(self):
         mock.reset_mock()
@@ -216,7 +216,7 @@ class TestActionNode:
                                        call('__del__ MultiTickHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_multi_tick_throtteled_hello_world(self):
         mock.reset_mock()
@@ -237,4 +237,4 @@ class TestActionNode:
                                        call('__del__ MultiTickThrottledHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''

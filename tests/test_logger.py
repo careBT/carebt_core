@@ -15,10 +15,11 @@
 from tests.global_mock import mock
 from tests.helloActions import HelloWorldAction
 
-from carebt.logger import AbstractLogger, LogLevel
+from carebt.abstractLogger import AbstractLogger
+from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
-from carebt.logger import Logger
 from carebt.nodeStatus import NodeStatus
+from carebt.simplePrintLogger import SimplePrintLogger
 
 from io import StringIO
 
@@ -59,8 +60,8 @@ class CustomLogger(AbstractLogger):
 class TestLogger:
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger_trace(self, mock_print):
-        self.logger = Logger()
+    def test_simpleprintlogger_trace(self, mock_print):
+        self.logger = SimplePrintLogger()
         self.logger.set_log_level(LogLevel.TRACE)
         self.logger.trace('trace test')
         self.logger.debug('debug test')
@@ -75,8 +76,8 @@ class TestLogger:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger_debug(self, mock_print):
-        self.logger = Logger()
+    def test_simpleprintlogger_debug(self, mock_print):
+        self.logger = SimplePrintLogger()
         self.logger.set_log_level(LogLevel.DEBUG)
         self.logger.debug('debug test')
         self.logger.info('info test')
@@ -89,8 +90,8 @@ class TestLogger:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger_info(self, mock_print):
-        self.logger = Logger()
+    def test_simpleprintlogger_info(self, mock_print):
+        self.logger = SimplePrintLogger()
         self.logger.set_log_level(LogLevel.INFO)
         self.logger.debug('debug test')
         self.logger.info('info test')
@@ -102,8 +103,8 @@ class TestLogger:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger_warn(self, mock_print):
-        self.logger = Logger()
+    def test_simpleprintlogger_warn(self, mock_print):
+        self.logger = SimplePrintLogger()
         self.logger.set_log_level(LogLevel.WARN)
         self.logger.debug('debug test')
         self.logger.info('info test')
@@ -114,8 +115,8 @@ class TestLogger:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger_error(self, mock_print):
-        self.logger = Logger()
+    def test_simpleprintlogger_error(self, mock_print):
+        self.logger = SimplePrintLogger()
         self.logger.set_log_level(LogLevel.ERROR)
         self.logger.debug('debug test')
         self.logger.info('info test')
@@ -125,8 +126,8 @@ class TestLogger:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_logger_off(self, mock_print):
-        self.logger = Logger()
+    def test_simpleprintlogger_off(self, mock_print):
+        self.logger = SimplePrintLogger()
         self.logger.set_log_level(LogLevel.OFF)
         self.logger.debug('debug test')
         self.logger.info('info test')
@@ -143,7 +144,7 @@ class TestLogger:
         regex = re.compile('Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_logger_level_debug(self, mock_print):
@@ -151,12 +152,12 @@ class TestLogger:
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
         bt_runner.run(HelloWorldAction)
         regex = re.compile('....-..-.. ..:..:.. INFO ---------------------------------- tick-count: 1\n'  # noqa: E501
-                           '....-..-.. ..:..:.. INFO ticking RootSequence\n'  # noqa: E501
+                           '....-..-.. ..:..:.. INFO ticking RootNode\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ticking HelloWorldAction - NodeStatus.IDLE\n'  # noqa: E501
                            'Hello World !!!\n'  # noqa: E501
                            '....-..-.. ..:..:.. DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - \n'  # noqa: E501
-                           '....-..-.. ..:..:.. INFO finished RootSequence\n'  # noqa: E501
+                           '....-..-.. ..:..:.. INFO finished RootNode\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO bt execution finished\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO status:  NodeStatus.SUCCESS\n'  # noqa: E501
@@ -165,7 +166,7 @@ class TestLogger:
         print(mock_print.getvalue())
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_custom_logger_level_off(self, mock_print):
@@ -177,7 +178,7 @@ class TestLogger:
         regex = re.compile('Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_action_custom_logger_level_debug(self, mock_print):
@@ -192,14 +193,14 @@ class TestLogger:
         print(mock_print.getvalue())
         print(mock.call_args_list)
         assert mock.call_args_list == [call('INFO ---------------------------------- tick-count: 1'),  # noqa: E501
-                                       call('INFO ticking RootSequence'),  # noqa: E501
+                                       call('INFO ticking RootNode'),  # noqa: E501
                                        call('INFO creating HelloWorldAction'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('INFO ticking HelloWorldAction - NodeStatus.IDLE'),  # noqa: E501
                                        call('on_tick - Hello World'),  # noqa: E501
                                        call('DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - '),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
-                                       call('INFO finished RootSequence'),  # noqa: E501
+                                       call('INFO finished RootNode'),  # noqa: E501
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
                                        call('INFO bt execution finished'),  # noqa: E501
                                        call('INFO status:  NodeStatus.SUCCESS'),  # noqa: E501
@@ -208,4 +209,4 @@ class TestLogger:
                                        call('bt finished')]  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''

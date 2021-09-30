@@ -59,11 +59,11 @@ class LongRunningHelloWorldAction(ActionNode):
         mock('LongRunningHelloWorldAction: Hello World DONE !!!')
         if(self._name == 'Bob'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('BOB_IS_NOT_ALLOWED')
+            self.set_contingency_message('BOB_IS_NOT_ALLOWED')
             mock('LongRunningHelloWorldAction: NodeStatus.FAILURE')
         elif(self._name == 'Chuck'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('CHUCK_IS_NOT_ALLOWED')
+            self.set_contingency_message('CHUCK_IS_NOT_ALLOWED')
             mock('LongRunningHelloWorldAction: NodeStatus.FAILURE')
         elif(self._name == 'Dave'):
             mock('LongRunningHelloWorldAction: abort')
@@ -139,19 +139,19 @@ class SayHelloAction(ActionNode):
         mock('on_tick - {}'.format(self._name))
         if(self._name == 'Chuck'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('CHUCK_IS_NOT_ALLOWED')
+            self.set_contingency_message('CHUCK_IS_NOT_ALLOWED')
         elif(self._name == 'Judy'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('JUDY_IS_NOT_ALLOWED')
+            self.set_contingency_message('JUDY_IS_NOT_ALLOWED')
         elif(self._name == 'Bob'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('BOB_IS_NOT_ALLOWED')
+            self.set_contingency_message('BOB_IS_NOT_ALLOWED')
         elif(self._name == 'Eve'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('EVE_IS_NOT_ALLOWED')
+            self.set_contingency_message('EVE_IS_NOT_ALLOWED')
         elif(self._name == 'Ivan'):
             self.set_status(NodeStatus.FAILURE)
-            self.set_message('IVAN_IS_NOT_ALLOWED')
+            self.set_contingency_message('IVAN_IS_NOT_ALLOWED')
         else:
             print('Hello {}!'.format(self._name))
             self.set_status(NodeStatus.SUCCESS)

@@ -64,7 +64,7 @@ class MultiTickHelloWorldAction(ActionNode):
             else:
                 mock('MultiTickHelloWorldAction: Hello World FAILURE !!!')
                 self.set_status(NodeStatus.FAILURE)
-                self.set_message('HELLO_FAILS')
+                self.set_contingency_message('HELLO_FAILS')
         else:
             self.attempts += 1
 
@@ -122,7 +122,7 @@ class TestPipelineSequenceNode:
                                        call('bt finished')  # noqa: E501
                                        ]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_pipeline_sequence_ftt(self):
         mock.reset_mock()
@@ -157,7 +157,7 @@ class TestPipelineSequenceNode:
                                        call('bt finished')  # noqa: E501
                                        ]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_pipeline_sequence_ftftt(self):
         mock.reset_mock()
@@ -204,7 +204,7 @@ class TestPipelineSequenceNode:
                                        call('bt finished')  # noqa: E501
                                        ]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_pipeline_sequence_fff(self):
         mock.reset_mock()
@@ -240,4 +240,4 @@ class TestPipelineSequenceNode:
                                        call('bt finished')  # noqa: E501
                                        ]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'HELLO_FAILS'
+        assert bt_runner._instance.get_contingency_message() == 'HELLO_FAILS'

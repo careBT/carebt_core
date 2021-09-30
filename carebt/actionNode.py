@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+
 from datetime import datetime
 
 from typing import TYPE_CHECKING
@@ -23,7 +25,13 @@ if TYPE_CHECKING:
     from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
-class ActionNode(TreeNode):  # abstract
+class ActionNode(TreeNode, ABC):
+    """
+    `ActionNodes` are the leafs in a careBT behavior tree. They execute
+    the actions in the 'world' the behavior tree is running in. This includes
+    manipulating the environment or actively perceiving it.
+
+    """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         super().__init__(bt_runner, params)
@@ -55,8 +63,27 @@ class ActionNode(TreeNode):  # abstract
     # PUBLIC
 
     def set_throttle_ms(self, throttle_ms: int) -> None:
+        """
+        Reduces the ticks the `ActionNode`s on_tick method is called to the
+        provided throttle_ms value. For example, to reduce the calls to the
+        `on_tick` callback to 500 milliseconds, the throttle_ms should be set
+        to 500.
+
+        Parameters
+        ----------
+        throttle_ms: int
+            The throttle rate in milliseconds
+
+        """
+
         self.__throttle_ms = throttle_ms
 
     # @abstractmethod
     def on_tick(self) -> None:
+        """
+        The `on_tick` callback is called every time the `ActionNode` is ticked by
+        its parent node, considering the optional throttle rate.
+
+        """
+
         raise NotImplementedError

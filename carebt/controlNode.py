@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+
 import re
 
 from typing import Callable
@@ -26,7 +28,12 @@ if TYPE_CHECKING:
     from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
-class ControlNode(TreeNode):  # abstract
+class ControlNode(TreeNode, ABC):
+    """
+    `ControlNode` is the basic class for all nodes in careBT which provide a
+    control flow functionality, like `SequenceNode`and `ParallelNode`.
+
+    """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         super().__init__(bt_runner, params)
@@ -43,9 +50,9 @@ class ControlNode(TreeNode):  # abstract
 
     # PRIVATE
 
-    """ allowed wildcards:
-        ? one character
-        * one or many charactres"""
+    # allowed wildcards:
+    # ? one character
+    # * one or many characters
     def __wildcard_to_regex(self, wildcard: str) -> re:
         # replace wildcards
         wildcard = wildcard.replace('?', '.')
@@ -54,20 +61,20 @@ class ControlNode(TreeNode):  # abstract
         return re.compile(wildcard)
 
     def _bind_in_params(self, child_ec: ExecutionContext) -> None:
-        if(len(child_ec.call_in_params) != len(child_ec.instance.get_in_params())):
+        if(len(child_ec.call_in_params) != len(child_ec.instance._get_in_params())):
             self.get_logger().warn('{} takes {} argument(s), but {} was/were provided'
                                    .format(child_ec.node_as_class.__name__,
-                                           len(child_ec.instance.get_in_params()),
+                                           len(child_ec.instance._get_in_params()),
                                            len(child_ec.call_in_params)))
         for i, var in enumerate(child_ec.call_in_params):
             if(isinstance(var, str) and var[0] == '?'):
                 var = var.replace('?', '_', 1)
                 var = getattr(self, var)
             setattr(child_ec.instance,
-                    child_ec.instance.get_in_params()[i].replace('?', '_', 1), var)
+                    child_ec.instance._get_in_params()[i].replace('?', '_', 1), var)
 
     def _bind_out_params(self, child_ec: ExecutionContext) -> None:
-        for i, var in enumerate(child_ec.instance.get_out_params()):
+        for i, var in enumerate(child_ec.instance._get_out_params()):
             var = var.replace('?', '_', 1)
             if(getattr(child_ec.instance, var) is None):
                 self.get_logger().warn('{} output {} is not set'
@@ -98,7 +105,7 @@ class ControlNode(TreeNode):  # abstract
         self.get_logger().debug('searching contingency-handler for: {} - {} - {}'
                                 .format(child_ec.instance.__class__.__name__,
                                         child_ec.instance.get_status(),
-                                        child_ec.instance.get_message()))
+                                        child_ec.instance.get_contingency_message()))
 
         # iterate over contingency_handler_list
         for contingency_handler in self._contingency_handler_list:
@@ -121,7 +128,7 @@ class ControlNode(TreeNode):  # abstract
                              child_ec.instance.__class__.__name__))
                     and child_ec.instance.get_status() in contingency_handler[1]
                     and bool(re.match(regexMessage,
-                                      child_ec.instance.get_message()))):
+                                      child_ec.instance.get_contingency_message()))):
                 self.get_logger().info('{} -> run contingency_handler {}'
                                        .format(child_ec.instance.__class__.__name__,
                                                contingency_handler[3]))
@@ -130,21 +137,54 @@ class ControlNode(TreeNode):  # abstract
                 self.get_logger().debug('after contingency_handler {} - {} - {}'
                                         .format(child_ec.instance.__class__.__name__,
                                                 child_ec.instance.get_status(),
-                                                child_ec.instance.get_message()))
+                                                child_ec.instance.get_contingency_message()))
                 break
 
     # PUBLIC
 
     @final
-    def attach_contingency_handler(self, node_as_class: TreeNode, node_status_list: NodeStatus,
-                                   message: str, function: Callable) -> None:
+    def attach_contingency_handler(self,
+                                   node: TreeNode,
+                                   node_status_list: NodeStatus,
+                                   contingency_message: str,
+                                   contingency_function: Callable) -> None:
+        """
+        Attaches a function which is called in case the provided contingency information
+        are met. The attached contingency handlers are tried to match to the current situation
+        in the order they are attached.
+
+        For the parameters `node` and `contingency_message` the following wildcards can be used:
+        ? one character
+        * one or many characters
+
+        Parameters
+        ----------
+        node: TreeNode, str
+            The node the contingency handler triggersis triggered on. In case of using wildcards
+            the name has to be provided as string.
+        node_status_list:  [NodeStatus]
+            A list of NodeStatus the contingency handler is triggered on
+        contingency_message: str
+
+        contingency_function: Callable
+            The function which should be called
+
+        """
+
         # for the function only store the name, thus there is no 'bound method' to self
         # which increases the ref count and prevents the gc to delete the object
-        self._contingency_handler_list.append((node_as_class,
+        self._contingency_handler_list.append((node,
                                                node_status_list,
-                                               message,
-                                               function.__name__))
+                                               contingency_message,
+                                               contingency_function.__name__))
 
+    @final
     def fix_current_child(self) -> None:
+        """
+        Mark the current child node as FIXED. This function should be called inside
+        of a contingency handler in case the handler fixes the situation and the
+        control flow of the current `ControlNode` can be continued.
+
+        """
+
         self._child_ec_list[self._child_ptr].instance.set_status(NodeStatus.FIXED)
-        self._child_ec_list[self._child_ptr].instance.set_message('')

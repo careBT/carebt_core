@@ -101,7 +101,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     # name = Bob creates a FAILURE, but the exceptionHandler fixes
     # the issue and the sequence continues
@@ -131,7 +131,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     # name = Chuck creates a FAILURE and the exceptionHandler
     # aborts the sequence
@@ -152,7 +152,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # name = Eve creates a FAILURE and the exceptionHandler
     # removes all subsequent children and adds a SayHelloAction
@@ -177,7 +177,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     # name = Ivan creates a FAILURE and there is no exceptionHandler
     # thus the whole sequence fails
@@ -197,7 +197,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'IVAN_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'IVAN_IS_NOT_ALLOWED'
 
     # name = Judy creates a FAILURE and there is no exceptionHandler
     # thus the whole sequence fails
@@ -217,7 +217,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'JUDY_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'JUDY_IS_NOT_ALLOWED'
 
     # name = Bob creates a FAILURE in the last child, but the exceptionHandler
     # fixes the issue and the sequence continues and has finally SUCCESS
@@ -247,7 +247,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     # name = Chuck creates a FAILURE in the last child and the exceptionHandler
     # aborts the sequence
@@ -277,7 +277,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # name = Eve creates a FAILURE in the last child and the exceptionHandler
     # removes all subsequent children (which are none) and adds a
@@ -311,7 +311,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     # name = Ivan creates a FAILURE in the last child and there
     # is no exceptionHandler thus the whole sequence fails
@@ -340,7 +340,7 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'IVAN_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'IVAN_IS_NOT_ALLOWED'
 
     # name = Judy creates a FAILURE and there is no exceptionHandler
     # thus the whole sequence fails
@@ -369,4 +369,4 @@ class TestSequenceNodeWithExceptions:
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
-        assert bt_runner._instance.get_message() == 'JUDY_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'JUDY_IS_NOT_ALLOWED'

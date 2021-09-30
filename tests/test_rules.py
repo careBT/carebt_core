@@ -105,7 +105,7 @@ class TestActionNode:
                                        call('__del__ MultiTickSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''
 
     def test_long_running_sequence(self):
         mock.reset_mock()
@@ -144,4 +144,4 @@ class TestActionNode:
                                        call('__del__ LongRunningHelloWorldSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''

@@ -62,4 +62,4 @@ class TestSequenceNode:
                                        call('__del__ RateControlledMultiTickHelloWorld'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_message() == ''
+        assert bt_runner._instance.get_contingency_message() == ''

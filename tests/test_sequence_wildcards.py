@@ -219,7 +219,7 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_1'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_2; name = Chuck
     def test_sequence_chuck_2(self):
@@ -239,7 +239,7 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_2'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_3; name = Chuck
     def test_sequence_chuck_3(self):
@@ -259,7 +259,7 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_3'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_4; name = Chuck
     def test_sequence_chuck_4(self):
@@ -279,7 +279,7 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_4'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_5; name = Chuck
     def test_sequence_chuck_5(self):
@@ -299,7 +299,7 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_5'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_6; name = Chuck
     def test_sequence_chuck_6(self):
@@ -319,7 +319,7 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_6'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'
 
     # SequenceWildcards_7; name = Chuck
     def test_sequence_chuck_7(self):
@@ -339,4 +339,4 @@ class TestSequenceNodeWildcard:
                                        call('__del__ SequenceWildcards_7'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
-        assert bt_runner._instance.get_message() == 'CHUCK_IS_NOT_ALLOWED'
+        assert bt_runner._instance.get_contingency_message() == 'CHUCK_IS_NOT_ALLOWED'

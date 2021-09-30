@@ -15,13 +15,20 @@
 from abc import ABC
 from abc import abstractmethod
 
-from datetime import datetime
-
 from enum import IntEnum
 
 
 class LogLevel(IntEnum):
-    """An Enum representing the logging levels
+    """
+    An Enum representing the logging levels
+
+    TRACE
+    DEBUG
+    INFO
+    WARN
+    ERROR
+    OFF
+
     """
 
     TRACE = 0
@@ -33,6 +40,11 @@ class LogLevel(IntEnum):
 
 
 class AbstractLogger(ABC):
+    """
+    The `AbstractLogger` interface which has to be implemented for
+    a custom logger.
+
+    """
 
     def __init__(self):
         self._log_level: LogLevel = LogLevel.INFO
@@ -59,37 +71,3 @@ class AbstractLogger(ABC):
     @abstractmethod
     def error(self, msg: str):
         raise NotImplementedError
-
-
-class Logger(AbstractLogger):
-
-    def __init__(self):
-        super().__init__()
-
-    # PROTECTED
-
-    def _get_time(self):
-        date_time = datetime.now()
-        return date_time.strftime('%Y-%m-%d %H:%M:%S')
-
-    # PUBLIC
-
-    def trace(self, msg: str):
-        if(self._log_level <= LogLevel.TRACE):
-            print('{} TRACE {}'.format(self._get_time(), msg))
-
-    def debug(self, msg: str):
-        if(self._log_level <= LogLevel.DEBUG):
-            print('{} DEBUG {}'.format(self._get_time(), msg))
-
-    def info(self, msg: str):
-        if(self._log_level <= LogLevel.INFO):
-            print('{} INFO {}'.format(self._get_time(), msg))
-
-    def warn(self, msg: str):
-        if(self._log_level <= LogLevel.WARN):
-            print('{} WARN {}'.format(self._get_time(), msg))
-
-    def error(self, msg: str):
-        if(self._log_level <= LogLevel.ERROR):
-            print('{} ERROR {}'.format(self._get_time(), msg))

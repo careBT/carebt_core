@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+from abc import abstractmethod
+
 from typing import Callable
 from typing import final
 from typing import TYPE_CHECKING
@@ -20,15 +23,20 @@ from carebt.nodeStatus import NodeStatus
 
 if TYPE_CHECKING:
     from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
-    from carebt.logger import Logger  # pragma: no cover
+    from carebt.logger import AbstractLogger  # pragma: no cover
 
 
-class TreeNode():  # abstract
+class TreeNode(ABC):
+    """
+    `TreeNode` is the basic class which provides the common implementation
+    for all nodes of careBT.
+
+    """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         self.bt_runner = bt_runner
         self.set_status(NodeStatus.IDLE)
-        self.__error_message = ''
+        self.__contingency_message = ''
         self.__params = params
         self.__in_params = []
         self.__out_params = []
@@ -63,52 +71,123 @@ class TreeNode():  # abstract
 
     # PROTECTED
 
-    # @abstractmethod
+    @abstractmethod
     def _on_tick(self) -> None:
         raise NotImplementedError
 
-    # @abstractmethod
+    @abstractmethod
     def _on_abort(self) -> None:
         raise NotImplementedError
+
+    @final
+    def _get_bt_runner(self) -> 'BehaviorTreeRunner':
+        return self.bt_runner
+
+    @final
+    def _get_in_params(self) -> list:
+        return self.__in_params
+
+    @final
+    def _get_out_params(self) -> list:
+        return self.__out_params
 
     # PUBLIC
 
     @final
-    def abort(self) -> None:
-        self._on_abort()
+    def get_logger(self) -> 'AbstractLogger':
+        """
+        Returns the current logger, which is an implementation of
+        `AbstractLogger`.
 
-    @final
-    def attach_abort_handler(self, function: Callable) -> None:
-        self._abort_handler = function.__name__
+        Returns
+        -------
+        `AbstractLogger`
+            The current logger
 
-    @final
-    def get_bt_runner(self) -> 'BehaviorTreeRunner':
-        return self.bt_runner
+        """
 
-    @final
-    def get_logger(self) -> 'Logger':
         return self.bt_runner.get_logger()
 
     @final
     def get_status(self) -> NodeStatus:
+        """
+        Returns the current status of the node.
+
+        Returns
+        -------
+        `NodeStatus`
+            Current status of the node
+
+        """
+
         return self.__node_status
 
     @final
     def set_status(self, node_status: NodeStatus) -> None:
+        """
+        Sets the current status of the node.
+
+        Parameters
+        ----------
+        node_status: `NodeStatus`
+            Current status of the node
+
+        """
+
         self.__node_status = node_status
 
     @final
-    def get_message(self) -> str:
-        return self.__error_message
+    def get_contingency_message(self) -> str:
+        """
+        Returns the contincency message of the node. Typically this
+        message is set in case the node completes with `FAILURE` to
+        provide more details what went wrong.
+
+        Returns
+        -------
+        str
+            The contingency message
+
+        """
+
+        return self.__contingency_message
 
     @final
-    def set_message(self, error_message: str) -> None:
-        self.__error_message = error_message
+    def set_contingency_message(self, contingency_message: str) -> None:
+        """
+        Sets the contincency message of the node. Typically this
+        message is set in case the node completes with `FAILURE` to
+        provide more details what went wrong.
+
+        Parameters
+        ----------
+        contingency_message: str
+            The contingency message
+
+        """
+
+        self.__contingency_message = contingency_message
 
     @final
-    def get_in_params(self) -> list:
-        return self.__in_params
+    def attach_abort_handler(self, abort_function: Callable) -> None:
+        """
+        Sets a function which is called in case the node is aborted. The
+        `abort_function` is the place to implement cleanup stuff for the node.
+
+        Parameters
+        ----------
+        abort_function: Callable
+            The abort function
+
+        """
+
+        self._abort_handler = abort_function.__name__
 
     @final
-    def get_out_params(self) -> list:
-        return self.__out_params
+    def abort(self) -> None:
+        """
+        Abort the current node execution.
+
+        """
+
+        self._on_abort()

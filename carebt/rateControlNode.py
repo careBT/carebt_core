@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+
 from datetime import datetime
 
 from typing import TYPE_CHECKING
@@ -25,7 +27,17 @@ if TYPE_CHECKING:
     from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
-class RateControlNode(ControlNode):  # abstract
+class RateControlNode(ControlNode, ABC):
+    """
+    The `RateControlNode` is a special node to throttle the tick rate of its
+    only child. It is similar to the `throttle` mechanism of the `ActionNode`.
+    But the `ActionNode` needs to be already implemented with the throtteling.
+    The `RateControlNode` on the other hand can throttle all careBT nodes, such
+    as `SequenceNode`, `ParallelNode` or as already mentioned an `ActionNode`.
+    For the latter one this is especially useful if the implementation should
+    or could not be modified.
+
+    """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', rate_ms: int, params: str = None):
         super().__init__(bt_runner, params)
@@ -33,6 +45,8 @@ class RateControlNode(ControlNode):  # abstract
         self.__rate_ms = rate_ms
         self.__last_ts = datetime.min
         self.set_status(NodeStatus.IDLE)
+
+    # PROTECTED
 
     def _on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
@@ -43,7 +57,7 @@ class RateControlNode(ControlNode):  # abstract
         if(self._child_ec_list[0].instance is None):
             # create node instance
             self._child_ec_list[0].instance = \
-                self._child_ec_list[0].node_as_class(self.get_bt_runner())
+                self._child_ec_list[0].node_as_class(self._get_bt_runner())
             self._bind_in_params(self._child_ec_list[self._child_ptr])
 
         # tick child if __rate_ms has elapsed
@@ -65,7 +79,8 @@ class RateControlNode(ControlNode):  # abstract
             if(cur_child_state == NodeStatus.FAILURE or
                     cur_child_state == NodeStatus.ABORTED):
                 self.set_status(cur_child_state)
-                self.set_message(self._child_ec_list[0].instance.get_message())
+                self.set_contingency_message(self._child_ec_list[0]
+                                             .instance.get_contingency_message())
 
             # if the current child tick returned with SUCCESS or FIXED
             elif(cur_child_state == NodeStatus.SUCCESS
@@ -90,12 +105,27 @@ class RateControlNode(ControlNode):  # abstract
            self._child_ec_list[0].instance.get_status() == NodeStatus.SUSPENDED):
             self._child_ec_list[0].instance._on_abort()
         self.set_status(NodeStatus.ABORTED)
-        self.set_message(self._child_ec_list[0].instance.get_message())
+        self.set_contingency_message(self._child_ec_list[0].instance.get_contingency_message())
         if(self._abort_handler is not None):
             exec('self.{}()'.format(self._abort_handler))
 
-    # set the child
-    def set_child(self, child_as_class: TreeNode, params: str = None) -> None:
+    # PUBLIC
+
+    def set_child(self, node: TreeNode, params: str = None) -> None:
+        """
+        Sets the child node to this `RateControlNode`. There can only be one child at
+        the same time.
+
+        Parameters
+        ----------
+        node: TreeNode
+            The node to be set
+
+        params: str (Default=None)
+            The parameters of the added child node
+
+        """
+
         self._child_ptr = 0
         self._child_ec_list.clear()
-        self._child_ec_list.append(ExecutionContext(child_as_class, params))
+        self._child_ec_list.append(ExecutionContext(node, params))

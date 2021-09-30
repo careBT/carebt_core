@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+
 from typing import TYPE_CHECKING
 
 from carebt.controlNode import ControlNode
@@ -23,10 +25,27 @@ if TYPE_CHECKING:
     from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
 
 
-class SequenceNode(ControlNode):  # abstract
+class SequenceNode(ControlNode, ABC):
+    """
+    In a `SequenceNode` the added child nodes are executed one after another until
+    they all complete with `SUCCESS` or `FIXED`. The child nodes are executed in the
+    order they were added to the sequence. If all children complete with `SUCCESS`
+    or `FIXED` the `SequenceNode` completes with `SUCCESS`.
+
+    If one of the children completes with `FAILURE` or `ABORTED` and the situation is
+    not fixed by a contingency handler the `SequenceNode` completes also with `FAILURE`
+    or `ABORTED`.
+
+    The `SequenceNode` forwards the ticks to the currently executing child - which can
+    only be one at a time. Currently executing child means that it is in state
+    `RUNNING` or `SUSPENDED`.
+
+    """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         super().__init__(bt_runner, params)
+
+    # PROTECTED
 
     def _on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
@@ -37,7 +56,7 @@ class SequenceNode(ControlNode):  # abstract
         if(self._child_ec_list[self._child_ptr].instance is None):
             # create node instance
             self._child_ec_list[self._child_ptr].instance = \
-                self._child_ec_list[self._child_ptr].node_as_class(self.get_bt_runner())
+                self._child_ec_list[self._child_ptr].node_as_class(self._get_bt_runner())
             self._bind_in_params(self._child_ec_list[self._child_ptr])
 
         # tick child
@@ -53,7 +72,8 @@ class SequenceNode(ControlNode):  # abstract
             if(cur_child_state == NodeStatus.FAILURE
                or cur_child_state == NodeStatus.ABORTED):
                 self.set_status(cur_child_state)
-                self.set_message(self._child_ec_list[self._child_ptr].instance.get_message())
+                self.set_contingency_message(self._child_ec_list[self._child_ptr]
+                                             .instance.get_contingency_message())
 
             # if the current child tick returned with SUCCESS or FIXED
             elif(cur_child_state == NodeStatus.SUCCESS
@@ -84,15 +104,38 @@ class SequenceNode(ControlNode):  # abstract
            self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.SUSPENDED):
             self._child_ec_list[self._child_ptr].instance._on_abort()
         self.set_status(NodeStatus.ABORTED)
-        self.set_message(self._child_ec_list[self._child_ptr].instance.get_message())
+        self.set_contingency_message(self._child_ec_list[self._child_ptr]
+                                     .instance.get_contingency_message())
         if(self._abort_handler is not None):
             exec('self.{}()'.format(self._abort_handler))
 
-    # add a child to the list
-    def add_child(self, child_as_class: TreeNode, params: str = None) -> None:
-        self._child_ec_list.append(ExecutionContext(child_as_class, params))
+    # PUBLIC
 
-    # remove all susequent children from the list
+    def add_child(self, node: TreeNode, params: str = None) -> None:
+        """
+        Adds a child node to this `SequenceNode`. The child node is always
+        added to the back of the sequence.
+
+        Parameters
+        ----------
+        node: TreeNode
+            The node to be added
+
+        params: str (Default=None)
+            The parameters of the added child node
+
+        """
+
+        self._child_ec_list.append(ExecutionContext(node, params))
+
     def remove_susequent_children(self) -> None:
+        """
+        Removes all subsequent children behind the currently executing child node. This
+        is typically done in a contingency handler to modify the current execution
+        sequence and adjust it to the current situation. New children which should be
+        executed afterwards can be added with the `add_child` method.
+
+        """
+
         for _ in range(self._child_ptr, len(self._child_ec_list) - 1):
             del self._child_ec_list[-1]
