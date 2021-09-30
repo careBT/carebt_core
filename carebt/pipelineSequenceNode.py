@@ -56,7 +56,7 @@ class PipelineSequenceNode(SequenceNode, ABC):
 
     # PROTECTED
 
-    def _on_tick(self) -> None:
+    def _internal_on_tick(self) -> None:
         self.get_logger().info('ticking PipelineSequenceNode {}'
                                .format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
@@ -73,6 +73,7 @@ class PipelineSequenceNode(SequenceNode, ABC):
                 self._child_ec_list[self._child_ptr].instance = \
                     self._child_ec_list[self._child_ptr].node_as_class(self._get_bt_runner())
                 self._bind_in_params(self._child_ec_list[self._child_ptr])
+                self._child_ec_list[self._child_ptr].instance._on_init()
 
             # tick child
             self._tick_child(self._child_ec_list[self._child_ptr])

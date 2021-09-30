@@ -48,7 +48,7 @@ class RateControlNode(ControlNode, ABC):
 
     # PROTECTED
 
-    def _on_tick(self) -> None:
+    def _internal_on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
 
@@ -59,6 +59,7 @@ class RateControlNode(ControlNode, ABC):
             self._child_ec_list[0].instance = \
                 self._child_ec_list[0].node_as_class(self._get_bt_runner())
             self._bind_in_params(self._child_ec_list[self._child_ptr])
+            self._child_ec_list[0].instance._on_init()
 
         # tick child if __rate_ms has elapsed
         current_ts = datetime.now()
@@ -98,16 +99,15 @@ class RateControlNode(ControlNode, ABC):
             self.get_logger().info('finished {}'.format(self.__class__.__name__))
             self._child_ec_list[0].instance = None
 
-    def _on_abort(self) -> None:
+    def _internal_on_abort(self) -> None:
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort child if RUNNING or SUSPENDED
         if(self._child_ec_list[0].instance.get_status() == NodeStatus.RUNNING or
            self._child_ec_list[0].instance.get_status() == NodeStatus.SUSPENDED):
-            self._child_ec_list[0].instance._on_abort()
+            self._child_ec_list[0].instance._internal_on_abort()
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[0].instance.get_contingency_message())
-        if(self._abort_handler is not None):
-            exec('self.{}()'.format(self._abort_handler))
+        self._on_abort()
 
     # PUBLIC
 

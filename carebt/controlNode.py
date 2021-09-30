@@ -98,7 +98,7 @@ class ControlNode(TreeNode, ABC):
         if(child_ec.instance.get_status() == NodeStatus.IDLE or
            child_ec.instance.get_status() == NodeStatus.RUNNING):
             # tick child
-            child_ec.instance._on_tick()
+            child_ec.instance._internal_on_tick()
 
     @final
     def _apply_contingencies(self, child_ec: ExecutionContext):

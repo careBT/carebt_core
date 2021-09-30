@@ -15,7 +15,6 @@
 from abc import ABC
 from abc import abstractmethod
 
-from typing import Callable
 from typing import final
 from typing import TYPE_CHECKING
 
@@ -40,7 +39,6 @@ class TreeNode(ABC):
         self.__params = params
         self.__in_params = []
         self.__out_params = []
-        self._abort_handler = None
 
         # create local variables
         if(self.__params is not None):
@@ -71,12 +69,18 @@ class TreeNode(ABC):
 
     # PROTECTED
 
+    def _on_init(self) -> None:
+        pass
+
+    def _on_abort(self) -> None:
+        pass
+
     @abstractmethod
-    def _on_tick(self) -> None:
+    def _internal_on_tick(self) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def _on_abort(self) -> None:
+    def _internal_on_abort(self) -> None:
         raise NotImplementedError
 
     @final
@@ -169,25 +173,10 @@ class TreeNode(ABC):
         self.__contingency_message = contingency_message
 
     @final
-    def attach_abort_handler(self, abort_function: Callable) -> None:
-        """
-        Sets a function which is called in case the node is aborted. The
-        `abort_function` is the place to implement cleanup stuff for the node.
-
-        Parameters
-        ----------
-        abort_function: Callable
-            The abort function
-
-        """
-
-        self._abort_handler = abort_function.__name__
-
-    @final
     def abort(self) -> None:
         """
         Abort the current node execution.
 
         """
 
-        self._on_abort()
+        self._internal_on_abort()

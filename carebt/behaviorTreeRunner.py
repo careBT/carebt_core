@@ -125,7 +125,7 @@ class BehaviorTreeRunner:
             self._tick_count += 1
             self.get_logger().info('---------------------------------- tick-count: {}'
                                    .format(self._tick_count))
-            self._instance._on_tick()
+            self._instance._internal_on_tick()
             sleep(self._tick_rate_ms / 1000)
 
         # after tree execution

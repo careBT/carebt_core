@@ -18,6 +18,7 @@ from tests.helloActions import MultiTickHelloWorldAction
 
 from unittest.mock import call
 
+from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
@@ -29,8 +30,11 @@ class MultiTickSequence(SequenceNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, '?name')
-        self.add_child(MultiTickHelloWorldAction)
         mock('__init__ {}'.format(self.__class__.__name__))
+
+    def _on_init(self) -> None:
+        mock('_on_init')
+        self.add_child(MultiTickHelloWorldAction)
 
         self.attach_contingency_handler(MultiTickHelloWorldAction,
                                         [NodeStatus.SUCCESS],
@@ -58,8 +62,11 @@ class LongRunningHelloWorldSequence(SequenceNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, '?name')
-        self.add_child(LongRunningHelloWorldAction, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
+
+    def _on_init(self) -> None:
+        mock('_on_init')
+        self.add_child(LongRunningHelloWorldAction, '?name')
 
         self.attach_contingency_handler(LongRunningHelloWorldAction,
                                         [NodeStatus.SUCCESS],
@@ -88,11 +95,14 @@ class TestActionNode:
     def test_multi_tick_sequence(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(MultiTickSequence)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickSequence'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('contingency_handler_running'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
@@ -110,12 +120,15 @@ class TestActionNode:
     def test_long_running_sequence(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.set_tick_rate_ms(100)
         bt_runner.run(LongRunningHelloWorldSequence, '"Alice"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldSequence'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('contingency_handler_suspended'),  # noqa: E501
                                        call('contingency_handler_suspended'),  # noqa: E501

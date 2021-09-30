@@ -17,6 +17,7 @@ from tests.helloActions import SayHelloAction
 
 from unittest.mock import call
 
+from carebt.abstractLogger import LogLevel
 from carebt.actionNode import ActionNode
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
@@ -32,7 +33,7 @@ class TickCountingAction(ActionNode):
         self._count = 0
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def on_tick(self) -> None:
+    def _on_tick(self) -> None:
         self._count += 1
         mock('TickCountingAction - count: {}'.format(self._count))
         self.set_status(NodeStatus.RUNNING)
@@ -48,10 +49,13 @@ class EachThirdCountAction(ActionNode):
     def __init__(self, bt):
         super().__init__(bt, '?count')
         self._count = 0
-        self._each_third_count = 0
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def on_tick(self) -> None:
+    def _on_init(self) -> None:
+        mock('_on_init')
+        self._each_third_count = 0
+
+    def _on_tick(self) -> None:
         self.set_status(NodeStatus.RUNNING)
         if(self._count % 3 == 0):
             self._each_third_count += 1
@@ -70,10 +74,12 @@ class SimpleParallel(ParallelNode):
 
     def __init__(self, bt):
         super().__init__(bt, 2, '?name')
+        mock('__init__ {}'.format(self.__class__.__name__))
+
+    def _on_init(self) -> None:
+        mock('_on_init')
         self.add_child(SayHelloAction, '"Alice"')
         self.add_child(SayHelloAction, '?name')
-        self.attach_abort_handler(self.abort_handler)
-        mock('__init__ {}'.format(self.__class__.__name__))
 
         self.attach_contingency_handler(SayHelloAction,
                                         [NodeStatus.FAILURE],
@@ -86,8 +92,8 @@ class SimpleParallel(ParallelNode):
         self.abort()
         self.set_contingency_message('WRONG_NAME')
 
-    def abort_handler(self) -> None:
-        mock('abort_handler {}'.format(self.__class__.__name__))
+    def _on_abort(self) -> None:
+        mock('_on_abort {}'.format(self.__class__.__name__))
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -99,9 +105,12 @@ class TickCountingParallel(ParallelNode):
 
     def __init__(self, bt):
         super().__init__(bt, 1)
+        mock('__init__ {}'.format(self.__class__.__name__))
+
+    def _on_init(self) -> None:
+        mock('_on_init')
         self.add_child(TickCountingAction, '=> ?cnt')
         self.add_child(EachThirdCountAction, '?cnt')
-        mock('__init__ {}'.format(self.__class__.__name__))
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -114,15 +123,17 @@ class TestParallelNode:
     def test_parallel_ss(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(SimpleParallel, '"Dave"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleParallel'),
+                                       call('_on_init'),
                                        call('__init__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('on_tick - Alice'),
+                                       call('_on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
-                                       call('on_tick - Dave'),
+                                       call('_on_tick - Dave'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]
@@ -132,17 +143,19 @@ class TestParallelNode:
     def test_parallel_sf(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(SimpleParallel, '"Chuck"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleParallel'),
+                                       call('_on_init'),
                                        call('__init__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('on_tick - Alice'),
+                                       call('_on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
-                                       call('on_tick - Chuck'),
+                                       call('_on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
-                                       call('abort_handler SimpleParallel'),
+                                       call('_on_abort SimpleParallel'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleParallel'),
                                        call('bt finished')]
@@ -152,12 +165,15 @@ class TestParallelNode:
     def test_tick_counting_parallel(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(TickCountingParallel)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ TickCountingParallel'),
+                                       call('_on_init'),
                                        call('__init__ TickCountingAction'),
                                        call('__init__ EachThirdCountAction'),
+                                       call('_on_init'),
                                        call('TickCountingAction - count: 1'),
                                        call('TickCountingAction - count: 2'),
                                        call('TickCountingAction - count: 3'),

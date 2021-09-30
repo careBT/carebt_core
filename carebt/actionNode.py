@@ -42,7 +42,7 @@ class ActionNode(TreeNode, ABC):
 
     # PROTECTED
 
-    def _on_tick(self) -> None:
+    def _internal_on_tick(self) -> None:
         current_ts = datetime.now()
         if(self.__throttle_ms is None or
                 int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__throttle_ms):
@@ -51,22 +51,31 @@ class ActionNode(TreeNode, ABC):
                 self.bt_runner.get_logger().info('ticking {} - {}'
                                                  .format(self.__class__.__name__,
                                                          self.get_status()))
-                self.on_tick()
+                self._on_tick()
                 self.__last_ts = current_ts
 
-    def _on_abort(self) -> None:
+    def _internal_on_abort(self) -> None:
         self.bt_runner.get_logger().info('aborting {}'.format(self.__class__.__name__))
-        if(self._abort_handler is not None):
-            exec('self.{}()'.format(self._abort_handler))
+        self._on_abort()
         self.set_status(NodeStatus.ABORTED)
+
+    # @abstractmethod
+    def _on_tick(self) -> None:
+        """
+        The `_on_tick` callback is called every time the `ActionNode` is ticked by
+        its parent node, considering the optional throttle rate.
+
+        """
+
+        raise NotImplementedError
 
     # PUBLIC
 
     def set_throttle_ms(self, throttle_ms: int) -> None:
         """
-        Reduces the ticks the `ActionNode`s on_tick method is called to the
+        Reduces the ticks the `ActionNode`s _on_tick method is called to the
         provided throttle_ms value. For example, to reduce the calls to the
-        `on_tick` callback to 500 milliseconds, the throttle_ms should be set
+        `_on_tick` callback to 500 milliseconds, the throttle_ms should be set
         to 500.
 
         Parameters
@@ -77,13 +86,3 @@ class ActionNode(TreeNode, ABC):
         """
 
         self.__throttle_ms = throttle_ms
-
-    # @abstractmethod
-    def on_tick(self) -> None:
-        """
-        The `on_tick` callback is called every time the `ActionNode` is ticked by
-        its parent node, considering the optional throttle rate.
-
-        """
-
-        raise NotImplementedError

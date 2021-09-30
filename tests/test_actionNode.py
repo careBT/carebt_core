@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from datetime import datetime
+from carebt.abstractLogger import LogLevel
 
 from tests.addNumbersAction import AddTwoNumbersAction
 from tests.global_mock import mock
@@ -33,6 +34,7 @@ class TestActionNode:
     def test_action(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(HelloWorldAction)
         assert mock.called
         assert mock.call_count == 3
@@ -42,11 +44,12 @@ class TestActionNode:
     def test_action_with_in_param_success(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(SayHelloAction, '"Alice"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SayHelloAction'),
-                                       call('on_tick - Alice'),
+                                       call('_on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
@@ -55,11 +58,12 @@ class TestActionNode:
     def test_action_with_in_param_failure(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(SayHelloAction, '"Bob"')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SayHelloAction'),
-                                       call('on_tick - Bob'),
+                                       call('_on_tick - Bob'),
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
@@ -68,11 +72,12 @@ class TestActionNode:
     def test_action_with_missing_param(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(SayHelloAction)
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SayHelloAction'),
-                                       call('on_tick - Default Name'),
+                                       call('_on_tick - Default Name'),
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
@@ -81,11 +86,12 @@ class TestActionNode:
     def test_action_add_two_numbers(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(AddTwoNumbersAction, '3 5 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('on_tick - 3 + 5'),
+                                       call('_on_tick - 3 + 5'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 8
@@ -95,11 +101,12 @@ class TestActionNode:
     def test_action_add_two_numbers_one_missing_input(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(AddTwoNumbersAction, '3 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('on_tick - 3 + 999'),
+                                       call('_on_tick - 3 + 999'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 1002
@@ -109,11 +116,12 @@ class TestActionNode:
     def test_action_add_two_numbers_missing_input(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(AddTwoNumbersAction, ' => ?result')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('on_tick - 999 + 999'),
+                                       call('_on_tick - 999 + 999'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 1998
@@ -123,11 +131,12 @@ class TestActionNode:
     def test_action_add_two_numbers_zeros(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(AddTwoNumbersAction, '0 0 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('on_tick - 0 + 0'),
+                                       call('_on_tick - 0 + 0'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 0
@@ -137,11 +146,12 @@ class TestActionNode:
     def test_action_add_two_numbers_no_output(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         bt_runner.run(AddTwoNumbersAction, '123 123 => ?result')
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('on_tick - 123 + 123'),
+                                       call('_on_tick - 123 + 123'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
@@ -150,6 +160,7 @@ class TestActionNode:
     def test_long_running_hello_world(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         assert bt_runner.get_tick_count() == 0
         bt_runner.set_tick_rate_ms(50)
         start = datetime.now()
@@ -162,6 +173,7 @@ class TestActionNode:
         assert bt_runner.get_tick_count() >= 35
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.SUCCESS'),  # noqa: E501
@@ -173,6 +185,7 @@ class TestActionNode:
     def test_long_running_hello_world_dave(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         assert bt_runner.get_tick_count() == 0
         bt_runner.set_tick_rate_ms(50)
         start = datetime.now()
@@ -185,10 +198,11 @@ class TestActionNode:
         assert bt_runner.get_tick_count() >= 35
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: abort'),  # noqa: E501
-                                       call('abort_handler LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('_on_abort LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
@@ -197,6 +211,7 @@ class TestActionNode:
     def test_multi_tick_hello_world(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         assert bt_runner.get_tick_count() == 0
         bt_runner.set_tick_rate_ms(50)
         start = datetime.now()
@@ -209,6 +224,7 @@ class TestActionNode:
         assert bt_runner.get_tick_count() == 4
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3)'),  # noqa: E501
@@ -221,6 +237,7 @@ class TestActionNode:
     def test_multi_tick_throtteled_hello_world(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         start = datetime.now()
         bt_runner.run(MultiTickThrottledHelloWorldAction)
         mock('bt finished')
@@ -230,6 +247,7 @@ class TestActionNode:
         assert int(delta.total_seconds() * 1000) < 1600
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickThrottledHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('MultiTickThrottledHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('MultiTickThrottledHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
                                        call('MultiTickThrottledHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3)'),  # noqa: E501

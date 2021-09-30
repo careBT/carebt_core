@@ -28,8 +28,8 @@ class AddTwoNumbersAction(ActionNode):
         self._y = 999
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def on_tick(self) -> None:
-        mock('on_tick - {} + {}'.format(self._x, self._y))
+    def _on_tick(self) -> None:
+        mock('_on_tick - {} + {}'.format(self._x, self._y))
         if(self._x != 123 and self._y != 123):
             self._z = self._x + self._y
         self.set_status(NodeStatus.SUCCESS)

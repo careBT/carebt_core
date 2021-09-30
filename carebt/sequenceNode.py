@@ -47,7 +47,7 @@ class SequenceNode(ControlNode, ABC):
 
     # PROTECTED
 
-    def _on_tick(self) -> None:
+    def _internal_on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
 
@@ -58,6 +58,7 @@ class SequenceNode(ControlNode, ABC):
             self._child_ec_list[self._child_ptr].instance = \
                 self._child_ec_list[self._child_ptr].node_as_class(self._get_bt_runner())
             self._bind_in_params(self._child_ec_list[self._child_ptr])
+            self._child_ec_list[self._child_ptr].instance._on_init()
 
         # tick child
         self._tick_child(self._child_ec_list[self._child_ptr])
@@ -97,17 +98,16 @@ class SequenceNode(ControlNode, ABC):
             self.get_logger().info('finished {}'.format(self.__class__.__name__))
             self._child_ec_list[self._child_ptr].instance = None
 
-    def _on_abort(self) -> None:
+    def _internal_on_abort(self) -> None:
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort current child if RUNNING or SUSPENDED
         if(self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.RUNNING or
            self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.SUSPENDED):
-            self._child_ec_list[self._child_ptr].instance._on_abort()
+            self._child_ec_list[self._child_ptr].instance._internal_on_abort()
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                      .instance.get_contingency_message())
-        if(self._abort_handler is not None):
-            exec('self.{}()'.format(self._abort_handler))
+        self._on_abort()
 
     # PUBLIC
 

@@ -49,7 +49,7 @@ class ParallelNode(ControlNode, ABC):
 
     # PROTECTED
 
-    def _on_tick(self) -> None:
+    def _internal_on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
 
         ################################################
@@ -58,6 +58,9 @@ class ParallelNode(ControlNode, ABC):
             for self._child_ptr, child_ec in enumerate(self._child_ec_list):
                 # create node instance
                 child_ec.instance = child_ec.node_as_class(self._get_bt_runner())
+                self._bind_in_params(child_ec)
+                self._bind_out_params(child_ec)
+                child_ec.instance._on_init()
             self.set_status(NodeStatus.RUNNING)
 
         ################################################
@@ -94,19 +97,18 @@ class ParallelNode(ControlNode, ABC):
                                                 self._success_threshold))
                 self.set_status(NodeStatus.FAILURE)
 
-    def _on_abort(self) -> None:
+    def _internal_on_abort(self) -> None:
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort children if RUNNING or SUSPENDED
         for child_ec in self._child_ec_list:
             if(child_ec.instance is not None and
                (child_ec.instance.get_status() == NodeStatus.RUNNING or
                     child_ec.instance.get_status() == NodeStatus.SUSPENDED)):
-                child_ec.instance._on_abort()
+                child_ec.instance._internal_on_abort()
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                      .instance.get_contingency_message())
-        if(self._abort_handler is not None):
-            exec('self.{}()'.format(self._abort_handler))
+        self._on_abort()
 
     # PUBLIC
 

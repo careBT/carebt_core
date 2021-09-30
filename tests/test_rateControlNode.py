@@ -19,6 +19,7 @@ from tests.helloActions import MultiTickHelloWorldAction
 
 from unittest.mock import call
 
+from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.rateControlNode import RateControlNode
@@ -30,8 +31,11 @@ class RateControlledMultiTickHelloWorld(RateControlNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, 500)
-        self.set_child(MultiTickHelloWorldAction)
         mock('__init__ {}'.format(self.__class__.__name__))
+
+    def _on_init(self) -> None:
+        mock('_on_init')
+        self.set_child(MultiTickHelloWorldAction)
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -44,6 +48,7 @@ class TestSequenceNode:
     def test_rate_controlled_multi_tick_hello_world(self):
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
         start = datetime.now()
         bt_runner.run(RateControlledMultiTickHelloWorld)
         mock('bt finished')
@@ -53,7 +58,9 @@ class TestSequenceNode:
         assert int(delta.total_seconds() * 1000) < 1600
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ RateControlledMultiTickHelloWorld'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
+                                       call('_on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3)'),  # noqa: E501
