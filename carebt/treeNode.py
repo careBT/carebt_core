@@ -23,7 +23,7 @@ from carebt.nodeStatus import NodeStatus
 
 if TYPE_CHECKING:
     from carebt.behaviorTreeRunner import BehaviorTreeRunner  # pragma: no cover
-    from carebt.logger import AbstractLogger  # pragma: no cover
+    from carebt.abstractLogger import AbstractLogger  # pragma: no cover
 
 
 class TreeNode(ABC):
