@@ -49,7 +49,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
@@ -63,7 +63,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SayHelloAction'),
-                                       call('_on_tick - Bob'),
+                                       call('on_tick - Bob'),
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
@@ -77,7 +77,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SayHelloAction'),
-                                       call('_on_tick - Default Name'),
+                                       call('on_tick - Default Name'),
                                        call('__del__ SayHelloAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
@@ -91,7 +91,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('_on_tick - 3 + 5'),
+                                       call('on_tick - 3 + 5'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 8
@@ -106,7 +106,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('_on_tick - 3 + 999'),
+                                       call('on_tick - 3 + 999'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 1002
@@ -121,7 +121,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('_on_tick - 999 + 999'),
+                                       call('on_tick - 999 + 999'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 1998
@@ -136,7 +136,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('_on_tick - 0 + 0'),
+                                       call('on_tick - 0 + 0'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance._result == 0
@@ -151,7 +151,7 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
-                                       call('_on_tick - 123 + 123'),
+                                       call('on_tick - 123 + 123'),
                                        call('__del__ AddTwoNumbersAction'),
                                        call('bt finished')]
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
@@ -173,7 +173,7 @@ class TestActionNode:
         assert bt_runner.get_tick_count() >= 35
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.SUCCESS'),  # noqa: E501
@@ -198,11 +198,11 @@ class TestActionNode:
         assert bt_runner.get_tick_count() >= 35
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: abort'),  # noqa: E501
-                                       call('_on_abort LongRunningHelloWorldAction'),  # noqa: E501
+                                       call('on_abort LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
@@ -224,7 +224,7 @@ class TestActionNode:
         assert bt_runner.get_tick_count() == 4
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3)'),  # noqa: E501
@@ -247,7 +247,7 @@ class TestActionNode:
         assert int(delta.total_seconds() * 1000) < 1600
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickThrottledHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickThrottledHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('MultiTickThrottledHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
                                        call('MultiTickThrottledHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3)'),  # noqa: E501

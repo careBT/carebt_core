@@ -57,19 +57,19 @@ class ParallelNode(ControlNode, ABC):
         if(self.get_status() == NodeStatus.IDLE):
             for self._child_ptr, child_ec in enumerate(self._child_ec_list):
                 # create node instance
-                child_ec.instance = child_ec.node_as_class(self._get_bt_runner())
-                self._bind_in_params(child_ec)
-                self._bind_out_params(child_ec)
-                child_ec.instance._on_init()
+                child_ec.instance = child_ec.node_as_class(self._internal_get_bt_runner())
+                self._internal_bind_in_params(child_ec)
+                self._internal_bind_out_params(child_ec)
+                child_ec.instance.on_init()
             self.set_status(NodeStatus.RUNNING)
 
         ################################################
         # tick all children
         for self._child_ptr, child_ec in enumerate(self._child_ec_list):
-            self._bind_in_params(child_ec)
-            self._tick_child(child_ec)
-            self._apply_contingencies(child_ec)
-            self._bind_out_params(child_ec)
+            self._internal_bind_in_params(child_ec)
+            self._internal_tick_child(child_ec)
+            self._internal_apply_contingencies(child_ec)
+            self._internal_bind_out_params(child_ec)
             cur_child_state = child_ec.instance.get_status()
             if(cur_child_state == NodeStatus.SUCCESS
                or cur_child_state == NodeStatus.FIXED):
@@ -108,7 +108,7 @@ class ParallelNode(ControlNode, ABC):
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                      .instance.get_contingency_message())
-        self._on_abort()
+        self.on_abort()
 
     # PUBLIC
 

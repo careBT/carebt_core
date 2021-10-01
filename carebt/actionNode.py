@@ -51,18 +51,18 @@ class ActionNode(TreeNode, ABC):
                 self.bt_runner.get_logger().info('ticking {} - {}'
                                                  .format(self.__class__.__name__,
                                                          self.get_status()))
-                self._on_tick()
+                self.on_tick()
                 self.__last_ts = current_ts
 
     def _internal_on_abort(self) -> None:
         self.bt_runner.get_logger().info('aborting {}'.format(self.__class__.__name__))
-        self._on_abort()
+        self.on_abort()
         self.set_status(NodeStatus.ABORTED)
 
     # @abstractmethod
-    def _on_tick(self) -> None:
+    def on_tick(self) -> None:
         """
-        The `_on_tick` callback is called every time the `ActionNode` is ticked by
+        The `on_tick` callback is called every time the `ActionNode` is ticked by
         its parent node, considering the optional throttle rate.
 
         """
@@ -73,9 +73,9 @@ class ActionNode(TreeNode, ABC):
 
     def set_throttle_ms(self, throttle_ms: int) -> None:
         """
-        Reduces the ticks the `ActionNode`s _on_tick method is called to the
+        Reduces the ticks the `ActionNode`s on_tick method is called to the
         provided throttle_ms value. For example, to reduce the calls to the
-        `_on_tick` callback to 500 milliseconds, the throttle_ms should be set
+        `on_tick` callback to 500 milliseconds, the throttle_ms should be set
         to 500.
 
         Parameters

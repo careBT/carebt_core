@@ -71,13 +71,14 @@ class PipelineSequenceNode(SequenceNode, ABC):
             if(self._child_ec_list[self._child_ptr].instance is None):
                 # create node instance
                 self._child_ec_list[self._child_ptr].instance = \
-                    self._child_ec_list[self._child_ptr].node_as_class(self._get_bt_runner())
-                self._bind_in_params(self._child_ec_list[self._child_ptr])
-                self._child_ec_list[self._child_ptr].instance._on_init()
+                    self._child_ec_list[self._child_ptr] \
+                        .node_as_class(self._internal_get_bt_runner())
+                self._internal_bind_in_params(self._child_ec_list[self._child_ptr])
+                self._child_ec_list[self._child_ptr].instance.on_init()
 
             # tick child
-            self._tick_child(self._child_ec_list[self._child_ptr])
-            self._apply_contingencies(self._child_ec_list[self._child_ptr])
+            self._internal_tick_child(self._child_ec_list[self._child_ptr])
+            self._internal_apply_contingencies(self._child_ec_list[self._child_ptr])
 
             ################################################
             # finally, check how to proceed
@@ -99,7 +100,7 @@ class PipelineSequenceNode(SequenceNode, ABC):
                     # if current child state is FIXED -> do not bind out_params
                     # as the 'fix' implementation is done in the contingency-handler
                     if(cur_child_state != NodeStatus.FIXED):
-                        self._bind_out_params(self._child_ec_list[self._child_ptr])
+                        self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
                     # check if there is at least one more node to run
                     if(self._child_ptr + 1 < len(self._child_ec_list)):
                         self._child_ptr += 1

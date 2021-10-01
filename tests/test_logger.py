@@ -197,7 +197,7 @@ class TestLogger:
                                        call('INFO creating HelloWorldAction'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('INFO ticking HelloWorldAction - NodeStatus.IDLE'),  # noqa: E501
-                                       call('_on_tick - Hello World'),  # noqa: E501
+                                       call('on_tick - Hello World'),  # noqa: E501
                                        call('DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - '),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
                                        call('INFO finished RootNode'),  # noqa: E501

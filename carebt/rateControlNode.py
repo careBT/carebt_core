@@ -57,19 +57,19 @@ class RateControlNode(ControlNode, ABC):
         if(self._child_ec_list[0].instance is None):
             # create node instance
             self._child_ec_list[0].instance = \
-                self._child_ec_list[0].node_as_class(self._get_bt_runner())
-            self._bind_in_params(self._child_ec_list[self._child_ptr])
-            self._child_ec_list[0].instance._on_init()
+                self._child_ec_list[0].node_as_class(self._internal_get_bt_runner())
+            self._internal_bind_in_params(self._child_ec_list[self._child_ptr])
+            self._child_ec_list[0].instance.on_init()
 
         # tick child if __rate_ms has elapsed
         current_ts = datetime.now()
         if(int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__rate_ms):
-            self._tick_child(self._child_ec_list[0])
-            self._apply_contingencies(self._child_ec_list[0])
+            self._internal_tick_child(self._child_ec_list[0])
+            self._internal_apply_contingencies(self._child_ec_list[0])
             self.__last_ts = current_ts
         else:
-            self._bind_out_params(self._child_ec_list[0])
-            self._apply_contingencies(self._child_ec_list[0])
+            self._internal_bind_out_params(self._child_ec_list[0])
+            self._internal_apply_contingencies(self._child_ec_list[0])
 
         ################################################
         # finally, check how to proceed in the sequence
@@ -89,7 +89,7 @@ class RateControlNode(ControlNode, ABC):
                 # if current child state is FIXED -> do not bind out_params
                 # as the 'fix' implementation is done in the contingency-handler
                 if(cur_child_state != NodeStatus.FIXED):
-                    self._bind_out_params(self._child_ec_list[self._child_ptr])
+                    self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
                 self.set_status(NodeStatus.SUCCESS)
 
         if(self.get_status() == NodeStatus.SUCCESS
@@ -107,7 +107,7 @@ class RateControlNode(ControlNode, ABC):
             self._child_ec_list[0].instance._internal_on_abort()
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[0].instance.get_contingency_message())
-        self._on_abort()
+        self.on_abort()
 
     # PUBLIC
 

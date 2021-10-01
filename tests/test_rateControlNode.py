@@ -33,8 +33,8 @@ class RateControlledMultiTickHelloWorld(RateControlNode):
         super().__init__(bt_runner, 500)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.set_child(MultiTickHelloWorldAction)
 
     def __del__(self):
@@ -58,9 +58,9 @@ class TestSequenceNode:
         assert int(delta.total_seconds() * 1000) < 1600
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ RateControlledMultiTickHelloWorld'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3)'),  # noqa: E501

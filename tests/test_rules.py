@@ -32,19 +32,19 @@ class MultiTickSequence(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(MultiTickHelloWorldAction)
 
-        self.attach_contingency_handler(MultiTickHelloWorldAction,
-                                        [NodeStatus.SUCCESS],
-                                        '*',
-                                        self.contingency_handler_success)
+        self.register_contingency_handler(MultiTickHelloWorldAction,
+                                          [NodeStatus.SUCCESS],
+                                          '*',
+                                          self.contingency_handler_success)
 
-        self.attach_contingency_handler(MultiTickHelloWorldAction,
-                                        [NodeStatus.RUNNING],
-                                        '*',
-                                        self.contingency_handler_running)
+        self.register_contingency_handler(MultiTickHelloWorldAction,
+                                          [NodeStatus.RUNNING],
+                                          '*',
+                                          self.contingency_handler_running)
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -64,19 +64,19 @@ class LongRunningHelloWorldSequence(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(LongRunningHelloWorldAction, '?name')
 
-        self.attach_contingency_handler(LongRunningHelloWorldAction,
-                                        [NodeStatus.SUCCESS],
-                                        '*',
-                                        self.contingency_handler_success)
+        self.register_contingency_handler(LongRunningHelloWorldAction,
+                                          [NodeStatus.SUCCESS],
+                                          '*',
+                                          self.contingency_handler_success)
 
-        self.attach_contingency_handler(LongRunningHelloWorldAction,
-                                        [NodeStatus.SUSPENDED],
-                                        '*',
-                                        self.contingency_handler_suspended)
+        self.register_contingency_handler(LongRunningHelloWorldAction,
+                                          [NodeStatus.SUSPENDED],
+                                          '*',
+                                          self.contingency_handler_suspended)
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -100,9 +100,9 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ MultiTickSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1)'),  # noqa: E501
                                        call('contingency_handler_running'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2)'),  # noqa: E501
@@ -126,9 +126,9 @@ class TestActionNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningHelloWorldSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('contingency_handler_suspended'),  # noqa: E501
                                        call('contingency_handler_suspended'),  # noqa: E501

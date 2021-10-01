@@ -35,8 +35,8 @@ class SimpleSequence(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
@@ -53,30 +53,30 @@ class LongRunningSequence(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(LongRunningHelloWorldAction, '?name')
 
-        self.attach_contingency_handler(LongRunningHelloWorldAction,
-                                        [NodeStatus.SUCCESS],
-                                        '*',
-                                        self.contingency_handler_success)
+        self.register_contingency_handler(LongRunningHelloWorldAction,
+                                          [NodeStatus.SUCCESS],
+                                          '*',
+                                          self.contingency_handler_success)
 
-        self.attach_contingency_handler(LongRunningHelloWorldAction,
-                                        [NodeStatus.FAILURE],
-                                        'BOB_IS_NOT_ALLOWED',
-                                        self.contingency_handler_failure_bob)
+        self.register_contingency_handler(LongRunningHelloWorldAction,
+                                          [NodeStatus.FAILURE],
+                                          'BOB_IS_NOT_ALLOWED',
+                                          self.contingency_handler_failure_bob)
 
-        self.attach_contingency_handler(LongRunningHelloWorldAction,
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_IS_NOT_ALLOWED',
-                                        self.contingency_handler_failure_chuck)
+        self.register_contingency_handler(LongRunningHelloWorldAction,
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_IS_NOT_ALLOWED',
+                                          self.contingency_handler_failure_chuck)
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
 
-    def _on_abort(self) -> None:
-        mock('_on_abort LongRunningSequence')
+    def on_abort(self) -> None:
+        mock('on_abort LongRunningSequence')
 
     def contingency_handler_success(self):
         mock('contingency_handler_success')
@@ -101,15 +101,15 @@ class TestSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleSequence'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Dave'),
+                                       call('on_tick - Dave'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleSequence'),
                                        call('bt finished')]
@@ -124,12 +124,12 @@ class TestSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SimpleSequence'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Bob'),
+                                       call('on_tick - Bob'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SimpleSequence'),
                                        call('bt finished')]
@@ -157,9 +157,9 @@ class TestSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.SUCCESS'),  # noqa: E501
@@ -178,9 +178,9 @@ class TestSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
@@ -199,14 +199,14 @@ class TestSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ LongRunningSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ LongRunningHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World ... takes very long ...'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('LongRunningHelloWorldAction: NodeStatus.FAILURE'),  # noqa: E501
                                        call('contingency_handler_failure_bob'),  # noqa: E501
-                                       call('_on_abort LongRunningSequence'),  # noqa: E501
+                                       call('on_abort LongRunningSequence'),  # noqa: E501
                                        call('__del__ LongRunningHelloWorldAction'),  # noqa: E501
                                        call('__del__ LongRunningSequence'),  # noqa: E501
                                        call('bt finished')]  # noqa: E501

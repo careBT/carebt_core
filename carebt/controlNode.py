@@ -60,21 +60,23 @@ class ControlNode(TreeNode, ABC):
 
         return re.compile(wildcard)
 
-    def _bind_in_params(self, child_ec: ExecutionContext) -> None:
-        if(len(child_ec.call_in_params) != len(child_ec.instance._get_in_params())):
+    # PROTECTED
+
+    def _internal_bind_in_params(self, child_ec: ExecutionContext) -> None:
+        if(len(child_ec.call_in_params) != len(child_ec.instance._internal_get_in_params())):
             self.get_logger().warn('{} takes {} argument(s), but {} was/were provided'
                                    .format(child_ec.node_as_class.__name__,
-                                           len(child_ec.instance._get_in_params()),
+                                           len(child_ec.instance._internal_get_in_params()),
                                            len(child_ec.call_in_params)))
         for i, var in enumerate(child_ec.call_in_params):
             if(isinstance(var, str) and var[0] == '?'):
                 var = var.replace('?', '_', 1)
                 var = getattr(self, var)
             setattr(child_ec.instance,
-                    child_ec.instance._get_in_params()[i].replace('?', '_', 1), var)
+                    child_ec.instance._internal_get_in_params()[i].replace('?', '_', 1), var)
 
-    def _bind_out_params(self, child_ec: ExecutionContext) -> None:
-        for i, var in enumerate(child_ec.instance._get_out_params()):
+    def _internal_bind_out_params(self, child_ec: ExecutionContext) -> None:
+        for i, var in enumerate(child_ec.instance._internal_get_out_params()):
             var = var.replace('?', '_', 1)
             if(getattr(child_ec.instance, var) is None):
                 self.get_logger().warn('{} output {} is not set'
@@ -89,10 +91,8 @@ class ControlNode(TreeNode, ABC):
                     setattr(self, child_ec.call_out_params[i].replace('?', '_', 1),
                             getattr(child_ec.instance, var))
 
-    # PROTECTED
-
     @final
-    def _tick_child(self, child_ec: ExecutionContext):
+    def _internal_tick_child(self, child_ec: ExecutionContext):
 
         # if child status is IDLE or RUNNING -> tick it
         if(child_ec.instance.get_status() == NodeStatus.IDLE or
@@ -101,7 +101,7 @@ class ControlNode(TreeNode, ABC):
             child_ec.instance._internal_on_tick()
 
     @final
-    def _apply_contingencies(self, child_ec: ExecutionContext):
+    def _internal_apply_contingencies(self, child_ec: ExecutionContext):
         self.get_logger().debug('searching contingency-handler for: {} - {} - {}'
                                 .format(child_ec.instance.__class__.__name__,
                                         child_ec.instance.get_status(),
@@ -143,11 +143,11 @@ class ControlNode(TreeNode, ABC):
     # PUBLIC
 
     @final
-    def attach_contingency_handler(self,
-                                   node: TreeNode,
-                                   node_status_list: NodeStatus,
-                                   contingency_message: str,
-                                   contingency_function: Callable) -> None:
+    def register_contingency_handler(self,
+                                     node: TreeNode,
+                                     node_status_list: NodeStatus,
+                                     contingency_message: str,
+                                     contingency_function: Callable) -> None:
         """
         Attaches a function which is called in case the provided contingency information
         are met. The attached contingency handlers are tried to match to the current situation

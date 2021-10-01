@@ -28,8 +28,8 @@ class HelloWorldAction(ActionNode):
         super().__init__(bt)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_tick(self) -> None:
-        mock('_on_tick - Hello World')
+    def on_tick(self) -> None:
+        mock('on_tick - Hello World')
         print('Hello World !!!')
         self.set_status(NodeStatus.SUCCESS)
 
@@ -46,16 +46,16 @@ class LongRunningHelloWorldAction(ActionNode):
         mock('__init__ {}'.format(self.__class__.__name__))
         self._name = 'Default Name'
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
 
-    def _on_tick(self) -> None:
+    def on_tick(self) -> None:
         mock('LongRunningHelloWorldAction: Hello World ... takes very long ...')
         self.set_status(NodeStatus.SUSPENDED)
         Timer(2, self.hello_done_callback).start()
 
-    def _on_abort(self) -> None:
-        mock('_on_abort LongRunningHelloWorldAction')
+    def on_abort(self) -> None:
+        mock('on_abort LongRunningHelloWorldAction')
 
     def hello_done_callback(self) -> None:
         mock('LongRunningHelloWorldAction: Hello World DONE !!!')
@@ -86,11 +86,11 @@ class MultiTickHelloWorldAction(ActionNode):
         super().__init__(bt)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.attempts = 1
 
-    def _on_tick(self) -> None:
+    def on_tick(self) -> None:
         if(self.attempts <= 3):
             mock('MultiTickHelloWorldAction: Hello World ... '
                  'takes several ticks ... (attempts = {})'
@@ -113,12 +113,12 @@ class MultiTickThrottledHelloWorldAction(ActionNode):
         super().__init__(bt)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.attempts = 1
         self.set_throttle_ms(500)
 
-    def _on_tick(self) -> None:
+    def on_tick(self) -> None:
         if(self.attempts <= 3):
             mock('MultiTickThrottledHelloWorldAction: Hello World ... '
                  'takes several ticks ... (attempts = {})'
@@ -142,8 +142,8 @@ class SayHelloAction(ActionNode):
         self._name = 'Default Name'
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_tick(self) -> None:
-        mock('_on_tick - {}'.format(self._name))
+    def on_tick(self) -> None:
+        mock('on_tick - {}'.format(self._name))
         if(self._name == 'Chuck'):
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('CHUCK_IS_NOT_ALLOWED')
@@ -163,8 +163,8 @@ class SayHelloAction(ActionNode):
             print('Hello {}!'.format(self._name))
             self.set_status(NodeStatus.SUCCESS)
 
-    def _on_abort(self) -> None:
-        mock('_on_abort - {}'.format(self._name))
+    def on_abort(self) -> None:
+        mock('on_abort - {}'.format(self._name))
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))

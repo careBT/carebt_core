@@ -31,28 +31,28 @@ class SequenceWithExceptionHandler(SequenceNode):
         super().__init__(bt_runner, '?name1 ?name2')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name1')
         self.add_child(SayHelloAction, '"Alice"')
         self.add_child(SayHelloAction, '"Grace"')
         self.add_child(SayHelloAction, '?name2')
 
-        self.attach_contingency_handler(SayHelloAction,
-                                        [NodeStatus.FAILURE],
-                                        'BOB_IS_NOT_ALLOWED',
-                                        self.handle_name_is_bob)
+        self.register_contingency_handler(SayHelloAction,
+                                          [NodeStatus.FAILURE],
+                                          'BOB_IS_NOT_ALLOWED',
+                                          self.handle_name_is_bob)
 
-        self.attach_contingency_handler(SayHelloAction,
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_IS_NOT_ALLOWED',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler(SayHelloAction,
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_IS_NOT_ALLOWED',
+                                          self.handle_name_is_chuck)
 
-        self.attach_contingency_handler(SayHelloAction,
-                                        [NodeStatus.FAILURE],
-                                        'EVE_IS_NOT_ALLOWED',
-                                        self.handle_name_is_eve)
+        self.register_contingency_handler(SayHelloAction,
+                                          [NodeStatus.FAILURE],
+                                          'EVE_IS_NOT_ALLOWED',
+                                          self.handle_name_is_eve)
 
     def handle_name_is_bob(self) -> None:
         mock('handle_name_is_bob')
@@ -88,21 +88,21 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Dave'),
+                                       call('on_tick - Dave'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -119,22 +119,22 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Bob'),
+                                       call('on_tick - Bob'),
                                        call('handle_name_is_bob'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -151,12 +151,12 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
@@ -175,16 +175,16 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Eve'),
+                                       call('on_tick - Eve'),
                                        call('handle_name_is_eve'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Frank'),
+                                       call('on_tick - Frank'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -201,12 +201,12 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Ivan'),
+                                       call('on_tick - Ivan'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -223,12 +223,12 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Judy'),
+                                       call('on_tick - Judy'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -245,21 +245,21 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Bob'),
+                                       call('on_tick - Bob'),
                                        call('handle_name_is_bob'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
@@ -277,21 +277,21 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
@@ -310,25 +310,25 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Eve'),
+                                       call('on_tick - Eve'),
                                        call('handle_name_is_eve'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Frank'),
+                                       call('on_tick - Frank'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -345,21 +345,21 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Ivan'),
+                                       call('on_tick - Ivan'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]
@@ -376,21 +376,21 @@ class TestSequenceNodeWithExceptions:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWithExceptionHandler'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Heidi'),
+                                       call('on_tick - Heidi'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Alice'),
+                                       call('on_tick - Alice'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Grace'),
+                                       call('on_tick - Grace'),
                                        call('__del__ SayHelloAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Judy'),
+                                       call('on_tick - Judy'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWithExceptionHandler'),
                                        call('bt finished')]

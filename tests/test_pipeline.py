@@ -34,7 +34,7 @@ class HelloWorldAction(ActionNode):
         super().__init__(bt_runner)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_tick(self) -> None:
+    def on_tick(self) -> None:
         mock('HelloWorldAction: Hello World !!!')
         self.set_status(NodeStatus.SUCCESS)
 
@@ -51,11 +51,11 @@ class MultiTickHelloWorldAction(ActionNode):
         self._success = 0
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.attempts = 1
 
-    def _on_tick(self) -> None:
+    def on_tick(self) -> None:
         self.set_status(NodeStatus.RUNNING)
         mock('MultiTickHelloWorldAction: Hello World ... '
              'takes several ticks ... (attempts = {}/{})'
@@ -84,8 +84,8 @@ class ExamplePipelineSequence(PipelineSequenceNode):
         super().__init__(bt_runner)
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.set_period_ms(500)
         self.set_max_cycles(3)
         self.add_child(HelloWorldAction)
@@ -111,16 +111,16 @@ class TestPipelineSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/3)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/3)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3/3)'),  # noqa: E501
@@ -146,11 +146,11 @@ class TestPipelineSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501,
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World FAILURE !!!'),  # noqa: E501
@@ -159,7 +159,7 @@ class TestPipelineSequenceNode:
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/3)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/3)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3/3)'),  # noqa: E501
@@ -187,11 +187,11 @@ class TestPipelineSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World FAILURE !!!'),  # noqa: E501
@@ -201,7 +201,7 @@ class TestPipelineSequenceNode:
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World DONE !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/3)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/3)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 3/3)'),  # noqa: E501
@@ -237,11 +237,11 @@ class TestPipelineSequenceNode:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ ExamplePipelineSequence'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('__init__ MultiTickHelloWorldAction'),  # noqa: E501
-                                       call('_on_init'),  # noqa: E501
+                                       call('on_init'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 1/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World ... takes several ticks ... (attempts = 2/2)'),  # noqa: E501
                                        call('MultiTickHelloWorldAction: Hello World FAILURE !!!'),  # noqa: E501

@@ -69,12 +69,6 @@ class TreeNode(ABC):
 
     # PROTECTED
 
-    def _on_init(self) -> None:
-        pass
-
-    def _on_abort(self) -> None:
-        pass
-
     @abstractmethod
     def _internal_on_tick(self) -> None:
         raise NotImplementedError
@@ -84,18 +78,34 @@ class TreeNode(ABC):
         raise NotImplementedError
 
     @final
-    def _get_bt_runner(self) -> 'BehaviorTreeRunner':
+    def _internal_get_bt_runner(self) -> 'BehaviorTreeRunner':
         return self.bt_runner
 
     @final
-    def _get_in_params(self) -> list:
+    def _internal_get_in_params(self) -> list:
         return self.__in_params
 
     @final
-    def _get_out_params(self) -> list:
+    def _internal_get_out_params(self) -> list:
         return self.__out_params
 
     # PUBLIC
+
+    def on_init(self) -> None:
+        """
+        The `on_init` callback is called right after the node is instantiated.
+
+        """
+
+        pass
+
+    def on_abort(self) -> None:
+        """
+        The `on_abort` callback is called in case the node is aborted.
+
+        """
+
+        pass
 
     @final
     def get_logger(self) -> 'AbstractLogger':

@@ -31,16 +31,16 @@ class SequenceWildcards_1(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler(SayHelloAction,
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_IS_NOT_ALLOWED',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler(SayHelloAction,
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_IS_NOT_ALLOWED',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -59,16 +59,16 @@ class SequenceWildcards_2(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler(SayHelloAction,
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_*',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler(SayHelloAction,
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_*',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -87,16 +87,16 @@ class SequenceWildcards_3(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler(SayHelloAction,
-                                        [NodeStatus.FAILURE],
-                                        '*',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler(SayHelloAction,
+                                          [NodeStatus.FAILURE],
+                                          '*',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -115,16 +115,16 @@ class SequenceWildcards_4(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler('SayHelloAction',
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_IS_NOT_ALLOWED',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler('SayHelloAction',
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_IS_NOT_ALLOWED',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -143,16 +143,16 @@ class SequenceWildcards_5(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler('Say*',
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_*',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler('Say*',
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_*',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -171,16 +171,16 @@ class SequenceWildcards_6(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler('*',
-                                        [NodeStatus.FAILURE],
-                                        '*',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler('*',
+                                          [NodeStatus.FAILURE],
+                                          '*',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -199,16 +199,16 @@ class SequenceWildcards_7(SequenceNode):
         super().__init__(bt_runner, '?name')
         mock('__init__ {}'.format(self.__class__.__name__))
 
-    def _on_init(self) -> None:
-        mock('_on_init')
+    def on_init(self) -> None:
+        mock('on_init')
         self.add_child(HelloWorldAction)
         self.add_child(SayHelloAction, '?name')
         self.add_child(SayHelloAction, '"Alice"')
 
-        self.attach_contingency_handler('Say?ello?ction',
-                                        [NodeStatus.FAILURE],
-                                        'CHUCK_*_A??OWED',
-                                        self.handle_name_is_chuck)
+        self.register_contingency_handler('Say?ello?ction',
+                                          [NodeStatus.FAILURE],
+                                          'CHUCK_*_A??OWED',
+                                          self.handle_name_is_chuck)
 
     def handle_name_is_chuck(self) -> None:
         mock('handle_name_is_chuck')
@@ -232,12 +232,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_1'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_1'),
@@ -254,12 +254,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_2'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_2'),
@@ -276,12 +276,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_3'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_3'),
@@ -298,12 +298,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_4'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_4'),
@@ -320,12 +320,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_5'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_5'),
@@ -342,12 +342,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_6'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_6'),
@@ -364,12 +364,12 @@ class TestSequenceNodeWildcard:
         mock('bt finished')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ SequenceWildcards_7'),
-                                       call('_on_init'),
+                                       call('on_init'),
                                        call('__init__ HelloWorldAction'),
-                                       call('_on_tick - Hello World'),
+                                       call('on_tick - Hello World'),
                                        call('__del__ HelloWorldAction'),
                                        call('__init__ SayHelloAction'),
-                                       call('_on_tick - Chuck'),
+                                       call('on_tick - Chuck'),
                                        call('handle_name_is_chuck'),
                                        call('__del__ SayHelloAction'),
                                        call('__del__ SequenceWildcards_7'),
