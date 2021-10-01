@@ -40,7 +40,7 @@ class ExecutionContext():
                 self.call_out_params = tuple(self.call_out_params)
 
         # the node
-        self.node_as_class = node
+        self.node = node
 
         # placeholder for the instance of the node
         self.instance = None

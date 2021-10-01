@@ -57,7 +57,7 @@ class ParallelNode(ControlNode, ABC):
         if(self.get_status() == NodeStatus.IDLE):
             for self._child_ptr, child_ec in enumerate(self._child_ec_list):
                 # create node instance
-                child_ec.instance = child_ec.node_as_class(self._internal_get_bt_runner())
+                child_ec.instance = child_ec.node(self._internal_get_bt_runner())
                 self._internal_bind_in_params(child_ec)
                 self._internal_bind_out_params(child_ec)
                 child_ec.instance.on_init()

@@ -57,7 +57,7 @@ class RateControlNode(ControlNode, ABC):
         if(self._child_ec_list[0].instance is None):
             # create node instance
             self._child_ec_list[0].instance = \
-                self._child_ec_list[0].node_as_class(self._internal_get_bt_runner())
+                self._child_ec_list[0].node(self._internal_get_bt_runner())
             self._internal_bind_in_params(self._child_ec_list[self._child_ptr])
             self._child_ec_list[0].instance.on_init()
 

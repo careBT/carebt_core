@@ -57,7 +57,7 @@ class SequenceNode(ControlNode, ABC):
         if(self._child_ec_list[self._child_ptr].instance is None):
             # create node instance
             self._child_ec_list[self._child_ptr].instance = \
-                self._child_ec_list[self._child_ptr].node_as_class(self._internal_get_bt_runner())
+                self._child_ec_list[self._child_ptr].node(self._internal_get_bt_runner())
             self._internal_bind_in_params(self._child_ec_list[self._child_ptr])
             self._child_ec_list[self._child_ptr].instance.on_init()
 
