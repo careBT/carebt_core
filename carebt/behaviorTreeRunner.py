@@ -36,7 +36,7 @@ class BehaviorTreeRunner:
     """
 
     def __init__(self):
-        self._tick_rate_ms = 10
+        self._tick_rate_ms = 50
         self._tick_count = 0
         self._logger = SimplePrintLogger()
         self.get_logger().set_log_level(LogLevel.WARN)
