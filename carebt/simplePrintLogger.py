@@ -18,6 +18,18 @@ from carebt.abstractLogger import AbstractLogger
 from carebt.abstractLogger import LogLevel
 
 
+class _PrintColors:
+    PURPLE = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    ORANGE = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    DEFAULT = '\033[0m'
+
+
 class SimplePrintLogger(AbstractLogger):
     """
     A simple logger implementaion which prints the statements on standard
@@ -50,8 +62,12 @@ class SimplePrintLogger(AbstractLogger):
 
     def warn(self, msg: str):
         if(self._log_level <= LogLevel.WARN):
-            print('{} WARN {}'.format(self._get_time(), msg))
+            print(_PrintColors.BOLD + _PrintColors.ORANGE
+                  + '{} WARN {}'.format(self._get_time(), msg)
+                  + _PrintColors.DEFAULT)
 
     def error(self, msg: str):
         if(self._log_level <= LogLevel.ERROR):
-            print('{} ERROR {}'.format(self._get_time(), msg))
+            print(_PrintColors.BOLD + _PrintColors.RED
+                  + '{} ERROR {}'.format(self._get_time(), msg)
+                  + _PrintColors.DEFAULT)

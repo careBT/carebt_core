@@ -71,8 +71,8 @@ class TestLogger:
         regex = re.compile('....-..-.. ..:..:.. TRACE trace test\n'  # noqa: E501
                            '....-..-.. ..:..:.. DEBUG debug test\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO info test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+                           '.............-..-.. ..:..:.. WARN warn test....\n'  # noqa: E501
+                           '.............-..-.. ..:..:.. ERROR error test....\n')  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -85,8 +85,8 @@ class TestLogger:
         self.logger.error('error test')
         regex = re.compile('....-..-.. ..:..:.. DEBUG debug test\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO info test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+                           '.............-..-.. ..:..:.. WARN warn test....\n'  # noqa: E501
+                           '.............-..-.. ..:..:.. ERROR error test....\n')  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -98,8 +98,8 @@ class TestLogger:
         self.logger.warn('warn test')
         self.logger.error('error test')
         regex = re.compile('....-..-.. ..:..:.. INFO info test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+                           '.............-..-.. ..:..:.. WARN warn test....\n'  # noqa: E501
+                           '.............-..-.. ..:..:.. ERROR error test....\n')  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -110,8 +110,8 @@ class TestLogger:
         self.logger.info('info test')
         self.logger.warn('warn test')
         self.logger.error('error test')
-        regex = re.compile('....-..-.. ..:..:.. WARN warn test\n'  # noqa: E501
-                           '....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+        regex = re.compile('.............-..-.. ..:..:.. WARN warn test....\n'  # noqa: E501
+                           '.............-..-.. ..:..:.. ERROR error test....\n')  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -122,7 +122,7 @@ class TestLogger:
         self.logger.info('info test')
         self.logger.warn('warn test')
         self.logger.error('error test')
-        regex = re.compile('....-..-.. ..:..:.. ERROR error test\n')  # noqa: E501
+        regex = re.compile('.............-..-.. ..:..:.. ERROR error test....\n')  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
