@@ -49,7 +49,8 @@ class SequenceNode(ControlNode, ABC):
 
     def _internal_on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
-        self.set_status(NodeStatus.RUNNING)
+        if(self.get_status() != NodeStatus.RUNNING):
+            self.set_status(NodeStatus.RUNNING)
 
         ################################################
         # if there is no current child to be ticked, create one
@@ -83,7 +84,9 @@ class SequenceNode(ControlNode, ABC):
                 # as the 'fix' implementation is done in the contingency-handler
                 if(cur_child_state != NodeStatus.FIXED):
                     self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
-                self._child_ec_list[self._child_ptr].instance = None
+                if(self._child_ec_list[self._child_ptr].instance is not None):
+                    self._child_ec_list[self._child_ptr].instance.on_delete()
+                    self._child_ec_list[self._child_ptr].instance = None
                 # check if there is at least one more node to run
                 if(self._child_ptr + 1 < len(self._child_ec_list)):
                     self._child_ptr += 1
@@ -96,7 +99,9 @@ class SequenceNode(ControlNode, ABC):
            or self.get_status() == NodeStatus.ABORTED
            or self.get_status() == NodeStatus.FIXED):
             self.get_logger().info('finished {}'.format(self.__class__.__name__))
-            self._child_ec_list[self._child_ptr].instance = None
+            if(self._child_ec_list[self._child_ptr].instance is not None):
+                self._child_ec_list[self._child_ptr].instance.on_delete()
+                self._child_ec_list[self._child_ptr].instance = None
 
     def _internal_on_abort(self) -> None:
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))

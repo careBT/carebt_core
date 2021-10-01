@@ -133,7 +133,9 @@ class PipelineSequenceNode(SequenceNode, ABC):
                or self.get_status() == NodeStatus.FIXED):
                 self.get_logger().info('finished {}'.format(self.__class__.__name__))
                 for child_ec in self._child_ec_list:
-                    child_ec.instance = None
+                    if(child_ec.instance is not None):
+                        child_ec.instance.on_delete()
+                        child_ec.instance = None
 
     # PUBLIC
 

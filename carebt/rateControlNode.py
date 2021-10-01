@@ -97,6 +97,7 @@ class RateControlNode(ControlNode, ABC):
            or self.get_status() == NodeStatus.ABORTED
            or self.get_status() == NodeStatus.FIXED):
             self.get_logger().info('finished {}'.format(self.__class__.__name__))
+            self._child_ec_list[0].instance.on_delete()
             self._child_ec_list[0].instance = None
 
     def _internal_on_abort(self) -> None:

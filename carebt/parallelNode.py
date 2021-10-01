@@ -73,10 +73,12 @@ class ParallelNode(ControlNode, ABC):
             cur_child_state = child_ec.instance.get_status()
             if(cur_child_state == NodeStatus.SUCCESS
                or cur_child_state == NodeStatus.FIXED):
+                child_ec.instance.on_delete()
                 child_ec.instance = None
                 self._success_count += 1
             elif(cur_child_state == NodeStatus.FAILURE or
                  cur_child_state == NodeStatus.ABORTED):
+                child_ec.instance.on_delete()
                 child_ec.instance = None
                 self._fail_count += 1
 
