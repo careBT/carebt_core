@@ -187,4 +187,6 @@ class ControlNode(TreeNode, ABC):
 
         """
 
+        self.get_logger().trace('{} -> fix_current_child called'
+                                .format(self.__class__.__name__))
         self._child_ec_list[self._child_ptr].instance.set_status(NodeStatus.FIXED)

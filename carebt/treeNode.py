@@ -194,6 +194,8 @@ class TreeNode(ABC):
         """
 
         if(self.__timeout_timer is not None):
+            self.get_logger().trace('{} -> cancel timeout timer'
+                                    .format(self.__class__.__name__))
             self.__timeout_timer.cancel()
 
     @final
