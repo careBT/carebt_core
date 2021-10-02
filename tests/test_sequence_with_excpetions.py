@@ -33,11 +33,11 @@ class SequenceWithExceptionHandler(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name1')
-        self.add_child(SayHelloAction, '"Alice"')
-        self.add_child(SayHelloAction, '"Grace"')
-        self.add_child(SayHelloAction, '?name2')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name1')
+        self.append_child(SayHelloAction, '"Alice"')
+        self.append_child(SayHelloAction, '"Grace"')
+        self.append_child(SayHelloAction, '?name2')
 
         self.register_contingency_handler(SayHelloAction,
                                           [NodeStatus.FAILURE],
@@ -68,7 +68,7 @@ class SequenceWithExceptionHandler(SequenceNode):
         mock('handle_name_is_eve')
         print('Oh Eve, you are Frank')
         self.remove_susequent_children()
-        self.add_child(SayHelloAction, '"Frank"')
+        self.append_child(SayHelloAction, '"Frank"')
         self.fix_current_child()
 
     def __del__(self):

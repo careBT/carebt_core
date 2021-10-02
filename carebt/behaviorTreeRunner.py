@@ -116,7 +116,7 @@ class BehaviorTreeRunner:
         self._instance = RootNode(self)
         self._instance.set_status(NodeStatus.IDLE)
         self._instance.set_contingency_message('')
-        self._instance.add_child(node, params)
+        self._instance.append_child(node, params)
         self._tick_count = 0
 
         # run tree

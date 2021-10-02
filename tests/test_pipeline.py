@@ -88,9 +88,9 @@ class ExamplePipelineSequence(PipelineSequenceNode):
         mock('on_init')
         self.set_period_ms(500)
         self.set_max_cycles(3)
-        self.add_child(HelloWorldAction)
-        self.add_child(MultiTickHelloWorldAction, '2')
-        self.add_child(MultiTickHelloWorldAction, '3')
+        self.append_child(HelloWorldAction)
+        self.append_child(MultiTickHelloWorldAction, '2')
+        self.append_child(MultiTickHelloWorldAction, '3')
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))

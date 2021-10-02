@@ -34,7 +34,7 @@ class MultiTickSequence(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(MultiTickHelloWorldAction)
+        self.append_child(MultiTickHelloWorldAction)
 
         self.register_contingency_handler(MultiTickHelloWorldAction,
                                           [NodeStatus.SUCCESS],
@@ -66,7 +66,7 @@ class LongRunningHelloWorldSequence(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(LongRunningHelloWorldAction, '?name')
+        self.append_child(LongRunningHelloWorldAction, '?name')
 
         self.register_contingency_handler(LongRunningHelloWorldAction,
                                           [NodeStatus.SUCCESS],

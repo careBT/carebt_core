@@ -37,9 +37,9 @@ class SimpleSequence(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
     def __del__(self):
         mock('__del__ {}'.format(self.__class__.__name__))
@@ -55,7 +55,7 @@ class LongRunningSequence(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(LongRunningHelloWorldAction, '?name')
+        self.append_child(LongRunningHelloWorldAction, '?name')
 
         self.register_contingency_handler(LongRunningHelloWorldAction,
                                           [NodeStatus.SUCCESS],

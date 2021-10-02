@@ -116,10 +116,9 @@ class SequenceNode(ControlNode, ABC):
 
     # PUBLIC
 
-    def add_child(self, node: TreeNode, params: str = None) -> None:
+    def append_child(self, node: TreeNode, params: str = None) -> None:
         """
-        Adds a child node to this `SequenceNode`. The child node is always
-        added to the back of the sequence.
+        Appends a child node at the end of the sequence of this `SequenceNode`.
 
         Parameters
         ----------
@@ -133,12 +132,30 @@ class SequenceNode(ControlNode, ABC):
 
         self._child_ec_list.append(ExecutionContext(node, params))
 
+    def insert_child_after_current(self, node: TreeNode, params: str = None) -> None:
+        """
+        Inserts a child node right after the currently executing child node. NOTE: When
+        inserting more than one node, they should be inserted in reverse order. This is
+        because each node will be inserted right after the currently executing!
+
+        Parameters
+        ----------
+        node: TreeNode
+            The node to be added
+
+        params: str (Default=None)
+            The parameters of the added child node
+
+        """
+
+        self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
+
     def remove_susequent_children(self) -> None:
         """
         Removes all subsequent children behind the currently executing child node. This
         is typically done in a contingency handler to modify the current execution
         sequence and adjust it to the current situation. New children which should be
-        executed afterwards can be added with the `add_child` method.
+        executed afterwards can be added with the `append_child` method.
 
         """
 

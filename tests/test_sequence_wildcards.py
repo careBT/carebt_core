@@ -33,9 +33,9 @@ class SequenceWildcards_1(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler(SayHelloAction,
                                           [NodeStatus.FAILURE],
@@ -61,9 +61,9 @@ class SequenceWildcards_2(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler(SayHelloAction,
                                           [NodeStatus.FAILURE],
@@ -89,9 +89,9 @@ class SequenceWildcards_3(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler(SayHelloAction,
                                           [NodeStatus.FAILURE],
@@ -117,9 +117,9 @@ class SequenceWildcards_4(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler('SayHelloAction',
                                           [NodeStatus.FAILURE],
@@ -145,9 +145,9 @@ class SequenceWildcards_5(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler('Say*',
                                           [NodeStatus.FAILURE],
@@ -173,9 +173,9 @@ class SequenceWildcards_6(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler('*',
                                           [NodeStatus.FAILURE],
@@ -201,9 +201,9 @@ class SequenceWildcards_7(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init')
-        self.add_child(HelloWorldAction)
-        self.add_child(SayHelloAction, '?name')
-        self.add_child(SayHelloAction, '"Alice"')
+        self.append_child(HelloWorldAction)
+        self.append_child(SayHelloAction, '?name')
+        self.append_child(SayHelloAction, '"Alice"')
 
         self.register_contingency_handler('Say?ello?ction',
                                           [NodeStatus.FAILURE],
