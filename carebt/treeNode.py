@@ -173,7 +173,7 @@ class TreeNode(ABC):
     @final
     def set_timeout(self, timeout_ms: int) -> None:
         """
-        Sets a timeout and starts the timer. In case of an timeout,
+        Sets a timeout and starts the timer. In case a timeout occures,
         the `on_timeout` callback is called.
 
         Parameters
@@ -211,6 +211,8 @@ class TreeNode(ABC):
         """
 
         self.__node_status = node_status
+        # If the status of the node is set to one of the following,
+        # make sure that the timeout timer is canceled.
         if(node_status == NodeStatus.SUCCESS
            or node_status == NodeStatus.FAILURE
            or node_status == NodeStatus.FIXED
@@ -252,7 +254,7 @@ class TreeNode(ABC):
     @final
     def abort(self) -> None:
         """
-        Abort the current node execution.
+        Abort the current node.
 
         """
 

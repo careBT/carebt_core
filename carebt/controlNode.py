@@ -149,9 +149,9 @@ class ControlNode(TreeNode, ABC):
                                      contingency_message: str,
                                      contingency_function: Callable) -> None:
         """
-        Attaches a function which is called in case the provided contingency information
-        are met. The attached contingency handlers are tried to match to the current situation
-        in the order they are attached.
+        Registers a function which is called in case the provided contingency information
+        are met. The registered contingency handlers are tried to match to the current
+        status and contingency message in the order they are registered.
 
         For the parameters `node` and `contingency_message` the following wildcards can be used:
         ? one character
@@ -160,7 +160,7 @@ class ControlNode(TreeNode, ABC):
         Parameters
         ----------
         node: TreeNode, str
-            The node the contingency handler triggersis triggered on. In case of using wildcards
+            The node the contingency handler triggered on. In case of using wildcards
             the name has to be provided as string.
         node_status_list:  [NodeStatus]
             A list of NodeStatus the contingency handler is triggered on
@@ -181,7 +181,7 @@ class ControlNode(TreeNode, ABC):
     @final
     def fix_current_child(self) -> None:
         """
-        Mark the current child node as FIXED. This function should be called inside
+        Mark the current child node as `FIXED`. This function should be called inside
         of a contingency handler in case the handler fixes the situation and the
         control flow of the current `ControlNode` can be continued.
 

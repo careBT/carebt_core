@@ -37,8 +37,8 @@ class SequenceNode(ControlNode, ABC):
     or `ABORTED`.
 
     The `SequenceNode` forwards the ticks to the currently executing child - which can
-    only be one at a time. Currently executing child means that it is in state
-    `RUNNING` or `SUSPENDED`.
+    only be one at a time - if the status is `RUNNING`. If the status is `SUSPENDED`
+    the ticks are not forwarded.
 
     """
 
@@ -155,7 +155,7 @@ class SequenceNode(ControlNode, ABC):
         Removes all subsequent children behind the currently executing child node. This
         is typically done in a contingency handler to modify the current execution
         sequence and adjust it to the current situation. New children which should be
-        executed afterwards can be added with the `append_child` method.
+        executed afterwards can be added with `append_child` or `insert_child_after_current`.
 
         """
 
