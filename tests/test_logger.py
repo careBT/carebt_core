@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from tests.global_mock import mock
-from tests.helloActions import HelloWorldAction
+from tests.actionNodes import HelloWorldAction
 
 from carebt.abstractLogger import AbstractLogger
 from carebt.abstractLogger import LogLevel
@@ -141,7 +141,7 @@ class TestLogger:
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.OFF)
         bt_runner.run(HelloWorldAction)
-        regex = re.compile('Hello World !!!\n')
+        regex = re.compile('HelloWorldAction: Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
@@ -155,7 +155,7 @@ class TestLogger:
                            '....-..-.. ..:..:.. INFO ticking RootNode\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ticking HelloWorldAction - NodeStatus.IDLE\n'  # noqa: E501
-                           'Hello World !!!\n'  # noqa: E501
+                           'HelloWorldAction: Hello World !!!\n'  # noqa: E501
                            '....-..-.. ..:..:.. DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - \n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO finished RootNode\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n'  # noqa: E501
@@ -175,7 +175,7 @@ class TestLogger:
         cl.set_log_level(LogLevel.OFF)
         bt_runner.set_logger(cl)
         bt_runner.run(HelloWorldAction)
-        regex = re.compile('Hello World !!!\n')
+        regex = re.compile('HelloWorldAction: Hello World !!!\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
@@ -188,7 +188,7 @@ class TestLogger:
         cl.set_log_level(LogLevel.DEBUG)
         bt_runner.set_logger(cl)
         bt_runner.run(HelloWorldAction)
-        regex = re.compile('Hello World !!!\n')
+        regex = re.compile('HelloWorldAction: Hello World !!!\n')
         mock('bt finished')
         print(mock_print.getvalue())
         print(mock.call_args_list)
@@ -196,9 +196,11 @@ class TestLogger:
                                        call('INFO ticking RootNode'),  # noqa: E501
                                        call('INFO creating HelloWorldAction'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
+                                       call('on_init HelloWorldAction'),  # noqa: E501
                                        call('INFO ticking HelloWorldAction - NodeStatus.IDLE'),  # noqa: E501
-                                       call('on_tick - Hello World'),  # noqa: E501
+                                       call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - '),  # noqa: E501
+                                       call('on_delete HelloWorldAction'),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
                                        call('INFO finished RootNode'),  # noqa: E501
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
