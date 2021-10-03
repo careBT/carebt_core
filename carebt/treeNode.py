@@ -197,6 +197,9 @@ class TreeNode(ABC):
             self.get_logger().trace('{} -> cancel timeout timer'
                                     .format(self.__class__.__name__))
             self.__timeout_timer.cancel()
+            # set the timer to None to make sure that all references (bound method)
+            # are released and the object gets destroyed by gc
+            self.__timeout_timer = None
 
     @final
     def set_status(self, node_status: NodeStatus) -> None:
