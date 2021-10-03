@@ -14,6 +14,7 @@
 
 import gc
 import sys
+import pytest
 
 from carebt.abstractLogger import LogLevel
 
@@ -30,6 +31,9 @@ class TestBehaviorTreeRunner:
 
     ########################################################################
 
+    # The 'serial' marker is registered in pytest.ini and excluded in vscode
+    # .vscode/setting.json
+    @pytest.mark.serial
     def test_BehaviorTreeRunner_cleanup(self):
         """
         Tests if after the the bt execution all careBT nodes are cleaned up,

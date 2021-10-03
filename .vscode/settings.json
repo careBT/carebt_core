@@ -1,6 +1,6 @@
 {
     "python.testing.pytestArgs": [
-        "tests", "-s", "-vv"
+        "tests", "-s", "-vv", "-m not serial"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true
