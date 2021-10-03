@@ -190,3 +190,14 @@ class ControlNode(TreeNode, ABC):
         self.get_logger().trace('{} -> fix_current_child called'
                                 .format(self.__class__.__name__))
         self._child_ec_list[self._child_ptr].instance.set_status(NodeStatus.FIXED)
+
+    @final
+    def abort_current_child(self) -> None:
+        """
+        Abort the currently executing child.
+
+        """
+
+        self.get_logger().trace('{} -> abort_current_child called'
+                                .format(self.__class__.__name__))
+        self._child_ec_list[self._child_ptr].instance.abort()
