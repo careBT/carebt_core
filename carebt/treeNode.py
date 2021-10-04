@@ -128,8 +128,11 @@ class TreeNode(ABC):
 
         """
 
-        self.get_logger().error('{}.on_timeout is not implemented but called.'
-                                .format(self.__class__.__name__))
+        self.get_logger().warn('{}.on_timeout is not overridden, thus the default '
+                               'is called (abort).'
+                               .format(self.__class__.__name__))
+        self.abort()
+        self.set_contingency_message('TIMEOUT')
 
     def on_delete(self) -> None:
         """

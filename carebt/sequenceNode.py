@@ -112,6 +112,9 @@ class SequenceNode(ControlNode, ABC):
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                      .instance.get_contingency_message())
+        if(self._child_ec_list[self._child_ptr].instance is not None):
+            self._child_ec_list[self._child_ptr].instance.on_delete()
+            self._child_ec_list[self._child_ptr].instance = None
         self.on_abort()
 
     # PUBLIC
