@@ -189,26 +189,22 @@ class TestLogger:
         bt_runner.set_logger(cl)
         bt_runner.run(HelloWorldAction)
         regex = re.compile('HelloWorldAction: Hello World !!!\n')
-        mock('bt finished')
         print(mock_print.getvalue())
         print(mock.call_args_list)
         assert mock.call_args_list == [call('INFO ---------------------------------- tick-count: 1'),  # noqa: E501
                                        call('INFO ticking RootNode'),  # noqa: E501
                                        call('INFO creating HelloWorldAction'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
-                                       call('on_init HelloWorldAction'),  # noqa: E501
                                        call('INFO ticking HelloWorldAction - NodeStatus.IDLE'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('DEBUG searching contingency-handler for: HelloWorldAction - NodeStatus.SUCCESS - '),  # noqa: E501
-                                       call('on_delete HelloWorldAction'),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
                                        call('INFO finished RootNode'),  # noqa: E501
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
                                        call('INFO bt execution finished'),  # noqa: E501
                                        call('INFO status:  NodeStatus.SUCCESS'),  # noqa: E501
                                        call('INFO message: '),  # noqa: E501
-                                       call('INFO ---------------------------------------------------'),  # noqa: E501
-                                       call('bt finished')]  # noqa: E501
+                                       call('INFO ---------------------------------------------------')]  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
