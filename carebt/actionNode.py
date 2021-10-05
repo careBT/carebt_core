@@ -34,6 +34,20 @@ class ActionNode(TreeNode, ABC):
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        """
+        Constructor of `ActionNode`.
+
+        Parameters
+        ==========
+
+        bt_runner: 'BehaviorTreeRunner'
+            The behavior tree runner which started the tree.
+        params: str
+            The input/Output parameters of the node
+            e.g. '?x ?y => ?z'
+
+        """
+
         super().__init__(bt_runner, params)
         self.get_logger().info('creating {}'.format(self.__class__.__name__))
         self.__throttle_ms = None

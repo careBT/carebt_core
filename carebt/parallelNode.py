@@ -38,6 +38,23 @@ class ParallelNode(ControlNode, ABC):
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner',
                  success_threshold: int, params: str = None):
+        """
+        Constructor of `ParallelNode`.
+
+        Parameters
+        ==========
+
+        bt_runner: 'BehaviorTreeRunner'
+            The behavior tree runner which started the tree.
+        success_threshold: int
+            Threshold how many of the children should complete with `SUCCESS`
+            or `FIXED` that the `ParallelNode` completes with `SUCCESS`.
+        params: str
+            The input/Output parameters of the node
+            e.g. '?x ?y => ?z'
+
+        """
+
         super().__init__(bt_runner, params)
 
         # list for the child nodes

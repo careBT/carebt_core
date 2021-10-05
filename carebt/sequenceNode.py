@@ -43,6 +43,20 @@ class SequenceNode(ControlNode, ABC):
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        """
+        Constructor of `SequenceNode`.
+
+        Parameters
+        ==========
+
+        bt_runner: 'BehaviorTreeRunner'
+            The behavior tree runner which started the tree.
+        params: str
+            The input/Output parameters of the node
+            e.g. '?x ?y => ?z'
+
+        """
+
         super().__init__(bt_runner, params)
 
     # PROTECTED

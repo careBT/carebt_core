@@ -40,6 +40,22 @@ class RateControlNode(ControlNode, ABC):
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', rate_ms: int, params: str = None):
+        """
+        Constructor of `RateControlNode`.
+
+        Parameters
+        ==========
+
+        bt_runner: 'BehaviorTreeRunner'
+            The behavior tree runner which started the tree.
+        rate_ms: int
+            Throtteling rate in milliseconds
+        params: str
+            The input/Output parameters of the node
+            e.g. '?x ?y => ?z'
+
+        """
+
         super().__init__(bt_runner, params)
 
         self.__rate_ms = rate_ms
