@@ -222,7 +222,6 @@ class AddTwoNumbersMultiTickAction(ActionNode):
     def on_init(self) -> None:
         mock('on_init AddTwoNumbersMultiTickAction')
         self.tick_count = 1
-        self.set_timeout(1000)
 
     def on_tick(self) -> None:
         if(self.tick_count <= self._ticks):
@@ -240,16 +239,74 @@ class AddTwoNumbersMultiTickAction(ActionNode):
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.SUCCESS)
 
-    def on_timeout(self) -> None:
-        mock('on_timeout AddTwoNumbersMultiTickAction')
-        self.abort()
-        self.set_contingency_message('TIMEOUT')
-
     def on_delete(self) -> None:
         mock('on_delete AddTwoNumbersMultiTickAction')
 
     def __del__(self):
         mock('__del__ AddTwoNumbersMultiTickAction')
+
+########################################################################
+
+
+class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
+    """
+    The `AddTwoNumbersMultiTickActionWithTimeout` is a variation of the
+    `AddTwoNumbersAction` which demonstrates how it looks like when a
+    `ActionNode` requires more ticks to complete. To make things simple
+    the amount of ticks required to complete the action is provided as
+    input parameter.
+
+    Parameters
+    ----------
+    ?ticks : int
+        Number of ticks requiered to complete
+    ?x : int
+        The first value
+    ?y : int
+        The second value
+
+    Returns
+    -------
+    ?z : int
+        The sum of ?x and ?y
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?ticks ?x ?y => ?z')
+        mock('__init__ AddTwoNumbersMultiTickActionWithTimeout')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersMultiTickActionWithTimeout')
+        self.tick_count = 1
+        self.set_timeout(1000)
+
+    def on_tick(self) -> None:
+        if(self.tick_count <= self._ticks):
+            mock('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = {}/{})'
+                 .format(self.tick_count, self._ticks))
+            print('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = {}/{})'
+                  .format(self.tick_count, self._ticks))
+            self.tick_count += 1
+            self.set_status(NodeStatus.RUNNING)
+        else:
+            self._z = self._x + self._y
+            mock('AddTwoNumbersMultiTickActionWithTimeout: DONE {} + {} = {}'
+                 .format(self._x, self._y, self._z))
+            print('AddTwoNumbersMultiTickActionWithTimeout: DONE {} + {} = {}'
+                  .format(self._x, self._y, self._z))
+            self.set_status(NodeStatus.SUCCESS)
+
+    def on_timeout(self) -> None:
+        mock('on_timeout AddTwoNumbersMultiTickActionWithTimeout')
+        self.abort()
+        self.set_contingency_message('TIMEOUT')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersMultiTickActionWithTimeout')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersMultiTickActionWithTimeout')
 
 ########################################################################
 

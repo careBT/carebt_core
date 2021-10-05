@@ -22,7 +22,7 @@ from tests.actionNodes import AddTwoNumbersLongRunnungAction
 from tests.actionNodes import AddTwoNumbersLongRunnungActionWithAbort
 from tests.actionNodes import AddTwoNumbersLongRunnungActionMissingCallback
 from tests.actionNodes import AddTwoNumbersLongRunnungActionMissingCallback2
-from tests.actionNodes import AddTwoNumbersMultiTickAction
+from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
 from tests.actionNodes import AddTwoNumbersActionMissingOutput
 from tests.actionNodes import AddTwoNumbersThrottledMultiTickAction
 from tests.actionNodes import HelloWorldAction
@@ -225,7 +225,7 @@ class TestActionNode:
 
     ########################################################################
 
-    def test_AddTwoNumbersMultiTickAction_5_3_5(self):
+    def test_AddTwoNumbersMultiTickActionWithTimeout_5_3_5(self):
         """
         Test that calculation takes 5 ticks and one tick takes 10ms
 
@@ -235,28 +235,28 @@ class TestActionNode:
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersMultiTickAction, '5 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '5 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 55
         assert int(delta.total_seconds() * 1000) < 70
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersMultiTickAction'),
-                                       call('on_init AddTwoNumbersMultiTickAction'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 1/5)'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 2/5)'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 3/5)'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 4/5)'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 5/5)'),
-                                       call('AddTwoNumbersMultiTickAction: DONE 3 + 5 = 8'),
-                                       call('on_delete AddTwoNumbersMultiTickAction'),
-                                       call('__del__ AddTwoNumbersMultiTickAction')]
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersMultiTickActionWithTimeout'),
+                                       call('on_init AddTwoNumbersMultiTickActionWithTimeout'),
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 1/5)'),  # noqa: E501
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 2/5)'),  # noqa: E501
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 3/5)'),  # noqa: E501
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 4/5)'),  # noqa: E501
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 5/5)'),  # noqa: E501
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: DONE 3 + 5 = 8'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersMultiTickActionWithTimeout'),
+                                       call('__del__ AddTwoNumbersMultiTickActionWithTimeout')]
         assert bt_runner._instance._result == 8
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
         assert bt_runner.get_tick_count() == 6
 
-    def test_AddTwoNumbersMultiTickAction_5_3_5_timeout(self):
+    def test_AddTwoNumbersMultiTickActionWithTimeout_5_3_5_timeout(self):
         """
         Test that calculation takes 5 ticks and one tick takes 500ms
         -> the timeout occures.
@@ -266,15 +266,15 @@ class TestActionNode:
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(500)
-        bt_runner.run(AddTwoNumbersMultiTickAction, '5 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '5 3 5 => ?result')
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersMultiTickAction'),
-                                       call('on_init AddTwoNumbersMultiTickAction'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 1/5)'),
-                                       call('AddTwoNumbersMultiTickAction: (tick_count = 2/5)'),
-                                       call('on_timeout AddTwoNumbersMultiTickAction'),
-                                       call('on_delete AddTwoNumbersMultiTickAction'),
-                                       call('__del__ AddTwoNumbersMultiTickAction')]
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersMultiTickActionWithTimeout'),
+                                       call('on_init AddTwoNumbersMultiTickActionWithTimeout'),
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 1/5)'),  # noqa: E501
+                                       call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 2/5)'),  # noqa: E501
+                                       call('on_timeout AddTwoNumbersMultiTickActionWithTimeout'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersMultiTickActionWithTimeout'),
+                                       call('__del__ AddTwoNumbersMultiTickActionWithTimeout')]
         assert not hasattr(bt_runner._instance, '_result')
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
         assert bt_runner._instance.get_contingency_message() == 'TIMEOUT'
