@@ -67,11 +67,7 @@ class RateControlNode(ControlNode, ABC):
             self._internal_tick_child(self._child_ec_list[0])
             self._internal_apply_contingencies(self._child_ec_list[0])
             self.__last_ts = current_ts
-        else:
-            self._internal_bind_out_params(self._child_ec_list[0])
-            self._internal_apply_contingencies(self._child_ec_list[0])
 
-        ################################################
         # finally, check how to proceed in the sequence
         if(self.get_status() == NodeStatus.RUNNING):
             cur_child_state = self._child_ec_list[0].instance.get_status()
