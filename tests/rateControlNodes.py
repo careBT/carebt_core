@@ -22,6 +22,11 @@ from carebt.rateControlNode import RateControlNode
 
 
 class RateControlledAddTwoNumbersMultiTickAction(RateControlNode):
+    """
+    The `RateControlledAddTwoNumbersMultiTickAction` throttles down the
+    AddTwoNumbersMultiTickAction.
+
+    """
 
     def __init__(self, bt):
         super().__init__(bt, 250)
@@ -41,6 +46,11 @@ class RateControlledAddTwoNumbersMultiTickAction(RateControlNode):
 
 
 class RateControlledAddTwoNumbersMultiTickActionWithTimeout(RateControlNode):
+    """
+    The `RateControlledAddTwoNumbersMultiTickActionWithTimeout` throttles down the
+    AddTwoNumbersMultiTickActionWithTimeout.
+
+    """
 
     def __init__(self, bt):
         super().__init__(bt, 400)
@@ -60,6 +70,11 @@ class RateControlledAddTwoNumbersMultiTickActionWithTimeout(RateControlNode):
 
 
 class RateControlledAddTwoNumbersMultiTickActionOwnTimeout(RateControlNode):
+    """
+    The `RateControlledAddTwoNumbersMultiTickActionOwnTimeout` throttles down the
+    AddTwoNumbersMultiTickAction, but has its own timeout set.
+
+    """
 
     def __init__(self, bt):
         super().__init__(bt, 250)
