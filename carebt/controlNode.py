@@ -78,15 +78,15 @@ class ControlNode(TreeNode, ABC):
     def _internal_bind_out_params(self, child_ec: ExecutionContext) -> None:
         for i, var in enumerate(child_ec.instance._internal_get_out_params()):
             var = var.replace('?', '_', 1)
-            if(getattr(child_ec.instance, var) is None):
-                self.get_logger().warn('{} output {} is not set'
-                                       .format(child_ec.node.__name__,
-                                               var.replace('_', '?', 1)))
+            if(len(child_ec.call_out_params) <= i):
+                self.get_logger().warn('{} output {} not provided'
+                                       .format(child_ec.node.__name__, i))
             else:
-                if(len(child_ec.call_out_params) <= i):
-                    self.get_logger().warn('{} output {} not provided'
+                if(getattr(child_ec.instance, var) is None):
+                    self.get_logger().warn('{} output {} is not set'
                                            .format(child_ec.node.__name__,
-                                                   i))
+                                                   var.replace('_', '?', 1)))
+                    setattr(self, child_ec.call_out_params[i].replace('?', '_', 1), None)
                 else:
                     setattr(self, child_ec.call_out_params[i].replace('?', '_', 1),
                             getattr(child_ec.instance, var))
