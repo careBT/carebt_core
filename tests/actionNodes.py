@@ -777,3 +777,121 @@ class FixMissingNumbersAction(ActionNode):
 
     def __del__(self):
         mock('__del__ FixMissingNumbersAction')
+
+########################################################################
+
+
+class TickCountingAction(ActionNode):
+    """
+    The `TickCountingAction` increments the ?count and returns it on each tick. If
+    the ?count is equal to the ?goal the nodes completes with `SUCCESS`.
+
+    Parameters
+    ----------
+    ?id : int
+        The id to identify the node.
+    ?goal : int (Default = 10)
+        The goal tick count.
+    ?success : bool (Default = True)
+        Wether the node should succeed or fail.
+
+    Returns
+    -------
+    ?count : int
+        The current tick count.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?id ?goal ?success => ?count')
+        mock('__init__ TickCountingAction')
+
+    def on_init(self) -> None:
+        mock('on_init TickCountingAction id = {}'.format(self._id))
+        print('on_init TickCountingAction id = {}'.format(self._id))
+        self._count = 1
+        if(self._goal is None):
+            self._goal = 10
+        if(self._success is None):
+            self._success = True
+
+    def on_tick(self) -> None:
+        if(self._count >= self._goal):
+            if(self._success is True):
+                mock('TickCountingAction id = {} DONE with SUCCESS'.format(self._id))
+                print('TickCountingAction id = {} DONE with SUCCESS'.format(self._id))
+                self.set_status(NodeStatus.SUCCESS)
+            else:
+                mock('TickCountingActionid = {} DONE with FAILURE'.format(self._id))
+                print('TickCountingActionid = {} DONE with FAILURE'.format(self._id))
+                self.set_status(NodeStatus.FAILURE)
+                self.set_contingency_message('COUNTING_ERROR')
+        else:
+            mock('TickCountingAction id = {} tick: {}/{}'
+                 .format(self._id, self._count, self._goal))
+            print('TickCountingAction id = {} tick: {}/{}'
+                  .format(self._id, self._count, self._goal))
+            self._count += 1
+            self.set_status(NodeStatus.RUNNING)
+
+    def on_abort(self) -> None:
+        mock('on_abort TickCountingAction id = {}'.format(self._id))
+        print('on_abort TickCountingAction id = {}'.format(self._id))
+
+    def on_delete(self) -> None:
+        mock('on_delete TickCountingAction id = {}'.format(self._id))
+        print('on_delete TickCountingAction id = {}'.format(self._id))
+
+    def __del__(self):
+        mock('__del__ TickCountingAction id = {}'.format(self._id))
+
+########################################################################
+
+
+class FailOnCountAction(ActionNode):
+    """
+    The `FailOnCountAction` fails as soon as the ?goal is reached by ?count.
+
+    Parameters
+    ----------
+    ?goal : int (Default = 10)
+        The goal tick count.
+    ?count : int
+        The tick count
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?goal ?count')
+        mock('__init__ FailOnCountAction')
+
+    def on_init(self) -> None:
+        mock('on_init FailOnCountAction')
+        print('on_init FailOnCountAction')
+        if(self._goal is None):
+            self._goal = 10
+
+    def on_tick(self) -> None:
+        if(self._count >= self._goal):
+            mock('FailOnCountAction DONE with FAILURE')
+            print('FailOnCountAction DONE with FAILURE')
+            self.set_status(NodeStatus.FAILURE)
+            self.set_contingency_message('COUNTING_ERROR')
+        else:
+            mock('FailOnCountAction tick: {}/{}'
+                 .format(self._count, self._goal))
+            print('FailOnCountAction tick: {}/{}'
+                  .format(self._count, self._goal))
+            self._count += 1
+            self.set_status(NodeStatus.RUNNING)
+
+    def on_abort(self) -> None:
+        mock('on_abort FailOnCountAction')
+        print('on_abort FailOnCountAction')
+
+    def on_delete(self) -> None:
+        mock('on_delete FailOnCountAction')
+        print('on_delete FailOnCountAction')
+
+    def __del__(self):
+        mock('__del__ FailOnCountAction')
