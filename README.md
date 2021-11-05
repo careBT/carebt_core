@@ -3,7 +3,7 @@
 
 # careBT - contingency aware Behavior Trees
 
-[About](#about) | [Installation](#installation) | [Getting Started](#getting-started) | [Contacts](#contacts)
+[About](#about) | [Installation](#installation) | [Getting Started](#getting-started) | [Background](#background) [Contacts](#contacts) | [Bibliography](#bibliography)
 
 -----
 
@@ -14,7 +14,7 @@ complex worlds. Although, careBT can be used in many different application, the
 main use cases are inspired by mobile robots such as service robots, for example.
 
 
-careBT is:
+**careBT** is:
 - easy to use
 - lightweight
 - well tested (test-coverage > 95%)
@@ -86,6 +86,20 @@ HelloWorldAction: Hello World !!!
 2021-11-05 20:48:06 INFO ---------------------------------------------------
 ```
 
+## Background
+
+The work on **careBT** is strongly influenced by my previous work I have done at the [University of Applied
+Sciences in Ulm](https://www.servicerobotik-ulm.de/). Especially the design and development of *SmartTCL* [1] [2] [3] itself and the huge amount of different
+behaviors and scenarios we were working on.
+
 ## Contacts
 
 Andreas Steck - <steck.andi@gmail.com>
+
+## Bibliography
+
+[1] [Andreas Steck, Christian Schlegel. SmartTCL: An Execution Language for Conditional Reactive Task Execution in a Three Layer Architecture for Service Robots. In Proc. of SIMPAR 2010 Workshops (International Workshop on Dynamic languages for RObotic and Sensors systems (DYROS)), 2nd Intl. Conf. on Simulation, Modeling, and Programming for Autonomous Robots, Pages 274-277, Darmstadt, ISBN 978-3-00-032863-3, 2010.](https://www.researchgate.net/publication/259389996_SmartTCL_An_Execution_Language_for_Conditional_Reactive_Task_Execution_in_a_Three_Layer_Architecture_for_Service_Robots)
+
+[2] [Andreas Steck. Conditional Reactive Task Execution in a Three Layer Architecture for Service Robots. Master Thesis, November 2010.](http://www.servicerobotik-ulm.de/drupal/sites/default/files/masterthesis-steck.pdf)
+
+[3] [Andreas Steck, Christian Schlegel. Managing execution variants in task coordination by exploiting design-time models at run-time. In Proc. IEEE Int. Conf. on Robotics and Intelligent Systems (IROS), San Francisco, USA, September, 2011.](https://ras.papercept.net/conferences/conferences/IROS11/program/IROS11_ContentListWeb_3.html)
