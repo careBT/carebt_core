@@ -92,6 +92,13 @@ The work on **careBT** is strongly influenced by my previous work I have done at
 Sciences in Ulm](https://www.servicerobotik-ulm.de/). Especially the design and development of *SmartTCL* [1] [2] [3] itself and the huge amount of different
 behaviors and scenarios we were working on.
 
+An excerpt of these scenarios can be seen here:
+* [Mobile Manipulation - Robot "Kate" cleans up the table. This video shows how the robot is disturbed in different situations and thus, hindered to fulfill its job. But due to the contingency handling mechanisms in SmartTCL it finds and executes alternative solutions.](https://www.youtube.com/watch?v=xtLK-655v7k)
+
+* [Mobile Manipulation - Robot "Kate" Prepares and Delivers Coffee.](https://www.youtube.com/watch?v=B4E1uC3Cbps)
+
+* [The Robot Butler Scenario shows another huge scenario.](https://www.youtube.com/watch?v=nUM3BUCUnpY)
+
 ## Contacts
 
 Andreas Steck - <steck.andi@gmail.com>
