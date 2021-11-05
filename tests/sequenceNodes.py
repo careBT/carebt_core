@@ -193,7 +193,7 @@ class AddTwoNumbersSequence4(SequenceNode):
 class AddTwoNumbersSequence5(SequenceNode):
     """
     The `AddTwoNumbersSequence5` is another variant of the `AddTwoNumbersSequence3`.
-    In this case the contingency is handled by (i) removing all subsequent children
+    In this case the contingency is handled by (i) removing all children
     and (ii) adding the three new children: `ProvideMissingNumbersAction`,
     `AddTwoNumbersActionWithFailure` and `ShowNumberAction`.
 
@@ -224,7 +224,7 @@ class AddTwoNumbersSequence5(SequenceNode):
         mock('AddTwoNumbersSequence5: fix_missing_numbers_handler: provide two numbers')
         print('AddTwoNumbersSequence5: fix_missing_numbers_handler: provide two numbers')
         self.fix_current_child()
-        self.remove_susequent_children()
+        self.remove_all_children()
         self.append_child(ProvideMissingNumbersAction, '=> ?a ?b')
         self.append_child(AddTwoNumbersActionWithFailure, '?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
@@ -273,7 +273,7 @@ class AddTwoNumbersSequence6(SequenceNode):
         self.fix_current_child()
         self._a = 111
         self._b = 222
-        self.remove_susequent_children()
+        self.remove_all_children()
         self.append_child(AddTwoNumbersActionWithFailure, '?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 

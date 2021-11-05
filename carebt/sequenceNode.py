@@ -82,31 +82,32 @@ class SequenceNode(ControlNode, ABC):
         ################################################
         # finally, check how to proceed in the sequence
         if(self.get_status() == NodeStatus.RUNNING):
-            cur_child_state = self._child_ec_list[self._child_ptr].instance.get_status()
+            if self._child_ec_list[self._child_ptr].instance is not None:
+                cur_child_state = self._child_ec_list[self._child_ptr].instance.get_status()
 
-            # if the current child tick returned with FAILURE or ABORTED
-            if(cur_child_state == NodeStatus.FAILURE
-               or cur_child_state == NodeStatus.ABORTED):
-                self.set_status(cur_child_state)
-                self.set_contingency_message(self._child_ec_list[self._child_ptr]
-                                             .instance.get_contingency_message())
+                # if the current child tick returned with FAILURE or ABORTED
+                if(cur_child_state == NodeStatus.FAILURE
+                   or cur_child_state == NodeStatus.ABORTED):
+                    self.set_status(cur_child_state)
+                    self.set_contingency_message(self._child_ec_list[self._child_ptr]
+                                                 .instance.get_contingency_message())
 
-            # if the current child tick returned with SUCCESS or FIXED
-            elif(cur_child_state == NodeStatus.SUCCESS
-                 or cur_child_state == NodeStatus.FIXED):
-                # if current child state is FIXED -> do not bind out_params
-                # as the 'fix' implementation is done in the contingency-handler
-                if(cur_child_state != NodeStatus.FIXED):
-                    self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
-                if(self._child_ec_list[self._child_ptr].instance is not None):
-                    self._child_ec_list[self._child_ptr].instance.on_delete()
-                    self._child_ec_list[self._child_ptr].instance = None
-                # check if there is at least one more node to run
-                if(self._child_ptr + 1 < len(self._child_ec_list)):
-                    self._child_ptr += 1
-                else:
-                    # no more nodes to run -> sequence = SUCCESS
-                    self.set_status(NodeStatus.SUCCESS)
+                # if the current child tick returned with SUCCESS or FIXED
+                elif(cur_child_state == NodeStatus.SUCCESS
+                     or cur_child_state == NodeStatus.FIXED):
+                    # if current child state is FIXED -> do not bind out_params
+                    # as the 'fix' implementation is done in the contingency-handler
+                    if(cur_child_state != NodeStatus.FIXED):
+                        self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
+                    if(self._child_ec_list[self._child_ptr].instance is not None):
+                        self._child_ec_list[self._child_ptr].instance.on_delete()
+                        self._child_ec_list[self._child_ptr].instance = None
+                    # check if there is at least one more node to run
+                    if(self._child_ptr + 1 < len(self._child_ec_list)):
+                        self._child_ptr += 1
+                    else:
+                        # no more nodes to run -> sequence = SUCCESS
+                        self.set_status(NodeStatus.SUCCESS)
 
         if(self.get_status() == NodeStatus.SUCCESS
            or self.get_status() == NodeStatus.FAILURE
@@ -165,16 +166,21 @@ class SequenceNode(ControlNode, ABC):
 
         """
 
-        self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
+        # if _child_ec_list is empty
+        if not self._child_ec_list:
+            self.append(node, params)
+        else:
+            self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
 
-    def remove_susequent_children(self) -> None:
+    def remove_all_children(self) -> None:
         """
-        Removes all subsequent children behind the currently executing child node. This
-        is typically done in a contingency handler to modify the current execution
-        sequence and adjust it to the current situation. New children which should be
-        executed afterwards can be added with `append_child` or `insert_child_after_current`.
+        Removes all children from the `SequenceNode`. This is typically done in a contingency
+        handler to modify the current execution sequence and adjust it to the current situation.
+        New children which should be executed afterwards can be added with `append_child` or
+        `insert_child_after_current`.
 
         """
 
-        for _ in range(self._child_ptr, len(self._child_ec_list) - 1):
-            del self._child_ec_list[-1]
+        self._child_ec_list[self._child_ptr].instance.on_delete()
+        self._child_ec_list.clear()
+        self._child_ptr = 0

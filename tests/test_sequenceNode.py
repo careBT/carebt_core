@@ -282,7 +282,7 @@ class TestSequenceNode:
         """
         Tests the AddTwoNumbersSequence5 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails. The contingency-handler
-        removes all subsequent children and adds the following three nodes:
+        removes all children and adds the following three nodes:
         `ProvideMissingNumbersAction`, `AddTwoNumbersActionWithFailure`
         and `ShowNumberAction`
 
@@ -355,7 +355,7 @@ class TestSequenceNode:
         """
         Tests the AddTwoNumbersSequence6 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails. The contingency-handler
-        removes all subsequent children, sets ?a to 111 and ?b to 222 and
+        removes all children, sets ?a to 111 and ?b to 222 and
         adds the following two nodes: `AddTwoNumbersActionWithFailure`
         and `ShowNumberAction`
 
