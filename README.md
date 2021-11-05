@@ -8,11 +8,7 @@
 -----
 
 ## About
-A Python library offering a Behavior Tree implementation which focuses on 
-contingency handling - the key to master highly dynamic applications in
-complex worlds. Although, careBT can be used in many different application, the
-main use cases are inspired by mobile robots such as service robots, for example.
-
+A Python library offering a Behavior Tree implementation which focuses on contingency handling - the key to master complex applications in highly dynamic worlds. Although, careBT can be used in many different application, the main use cases are inspired by mobile robots such as service robots, for example.
 
 **careBT** is:
 - easy to use
