@@ -13,11 +13,3 @@ careBT - contingency aware Behavior Trees
    introduction
    installation
    getting-started
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
