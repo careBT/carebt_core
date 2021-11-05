@@ -50,7 +50,7 @@ class TestSequenceNode:
         assert mock.called
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
-        print(print(mock.call_args_list))
+        print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersSequence1'),
                                        call('on_init AddTwoNumbersSequence1'),
                                        call('__init__ AddTwoNumbersAction'),

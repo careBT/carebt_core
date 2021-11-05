@@ -56,7 +56,7 @@ class TestActionNode:
         assert bt_runner.get_tick_count() == 1
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
-        print(print(mock.call_args_list))
+        print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ HelloWorldAction'),
                                        call('HelloWorldAction: Hello World !!!'),
                                        call('__del__ HelloWorldAction')]
@@ -78,7 +78,7 @@ class TestActionNode:
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
         assert not hasattr(bt_runner._instance, '_result')
-        print(print(mock.call_args_list))
+        print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersActionMissingOutput'),
                                        call('on_init AddTwoNumbersActionMissingOutput'),
                                        call('on_tick AddTwoNumbersActionMissingOutput'),
