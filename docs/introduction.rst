@@ -1,6 +1,9 @@
 Introduction
 ============
 
+About
+-----
+
 A Python library offering a Behavior Tree implementation which focuses on contingency handling
 - the key to master complex applications in highly dynamic worlds. Although, careBT can be used
 in many different application, the main use cases are inspired by mobile robots such as service
@@ -36,15 +39,8 @@ An excerpt of these scenarios can be seen here:
 Bibliography
 ------------
 
-[1] Andreas Steck, Christian Schlegel. SmartTCL: An Execution Language for Conditional 
-    Reactive Task Execution in a Three Layer Architecture for Service Robots. In Proc. of 
-    SIMPAR 2010 Workshops (International Workshop on Dynamic languages for RObotic and 
-    Sensors systems (DYROS)), 2nd Intl. Conf. on Simulation, Modeling, and Programming 
-    for Autonomous Robots, Pages 274-277, Darmstadt, ISBN 978-3-00-032863-3, 2010.
+[1] Andreas Steck, Christian Schlegel. SmartTCL: An Execution Language for Conditional Reactive Task Execution in a Three Layer Architecture for Service Robots. In Proc. of SIMPAR 2010 Workshops (International Workshop on Dynamic languages for RObotic and Sensors systems (DYROS)), 2nd Intl. Conf. on Simulation, Modeling, and Programming for Autonomous Robots, Pages 274-277, Darmstadt, ISBN 978-3-00-032863-3, 2010.
 
-[2] Andreas Steck. Conditional Reactive Task Execution in a Three Layer Architecture for 
-    Service Robots. Master Thesis, November 2010.
+[2] Andreas Steck. Conditional Reactive Task Execution in a Three Layer Architecture for Service Robots. Master Thesis, November 2010.
 
-[3] Andreas Steck, Christian Schlegel. Managing execution variants in task coordination 
-    by exploiting design-time models at run-time. In Proc. IEEE Int. Conf. on Robotics 
-    and Intelligent Systems (IROS), San Francisco, USA, September, 2011.
+[3] Andreas Steck, Christian Schlegel. Managing execution variants in task coordination by exploiting design-time models at run-time. In Proc. IEEE Int. Conf. on Robotics and Intelligent Systems (IROS), San Francisco, USA, September, 2011.
