@@ -28,8 +28,8 @@ TODO pip install carebt
 
 From source:
 ```
-# git clone https://github.com/careBT/carebt.git
-# cd carebt
+# git clone https://github.com/careBT/carebt_core.git
+# cd carebt_core
 # ./build_and_install.sh
 ```
 
