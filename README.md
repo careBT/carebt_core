@@ -3,7 +3,7 @@
 
 # careBT - contingency aware Behavior Trees
 
-[About](#about) | [Installation](#installation) | [Getting Started](#getting-started) | [Background](#background) [Contacts](#contacts) | [Bibliography](#bibliography)
+[About](#about) | [Installation](#installation) | [Getting Started](#getting-started) | [Documentation](#documentation) | [Background](#background) | [Contacts](#contacts) | [Bibliography](#bibliography)
 
 -----
 
@@ -81,6 +81,10 @@ HelloWorldAction: Hello World !!!
 2021-11-05 20:48:06 INFO message: 
 2021-11-05 20:48:06 INFO ---------------------------------------------------
 ```
+
+## Documentation
+
+Documentation can be found at [https://carebt.readthedocs.io/](https://carebt.readthedocs.io/)
 
 ## Background
 
