@@ -3,6 +3,11 @@
 
 # careBT - contingency aware Behavior Trees
 
+## About
+
+A Python library offering a Behavior Tree implementation which focuses on contingency handling
+- the key to master complex applications in highly dynamic worlds.
+
 ## Documentation
 
 Documentation can be found at [https://carebt.readthedocs.io/](https://carebt.readthedocs.io/)
