@@ -52,10 +52,10 @@ class HelloWorldAction(ActionNode):
 
 Start the Python interpreter with the file helloworld.py:
 ```
-python -i helloworld.py
+python3 -i helloworld.py
 ```
 
-Start the careBT Behavior Tree:
+Run the careBT Behavior Tree:
 ```
 >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
 >>> bt_runner = BehaviorTreeRunner()
