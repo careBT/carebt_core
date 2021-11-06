@@ -4,10 +4,18 @@ Introduction
 About
 -----
 
-A Python library offering a Behavior Tree implementation which focuses on contingency handling
-- the key to master complex applications in highly dynamic worlds. Although, careBT can be used
+**CareBT** is a Python library offering a Behavior Tree implementation which focuses on contingency handling
+- the key to master complex applications in highly dynamic worlds. Although, **careBT** can be used
 in many different application, the main use cases are inspired by mobile robots such as service
 robots, for example.
+
+The **careBT-core** (https://github.com/careBT/carebt_core) is kept completely independent from frameworks and
+engines it can be used in. Such an integration can easily be done. For mobile robotics applications such a framework
+could be `ROS <https://www.ros.org/>`__ or `ROS2 <https://www.ros.org/>`__, for example.
+
+.. note::
+
+  An integration into the ROS2 framework will *hopefully* be released soon ;)
 
 **careBT** is:
 

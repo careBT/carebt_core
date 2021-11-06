@@ -4,16 +4,20 @@ Installation
 From PyPi (recommended)
 -----------------------
 
+Install with pip:
+
 .. code-block:: bash
 
     pip install carebt
 
-.. important:: 
+.. important::
 
     Currently pip install does not work, as carebt is not published on PyPi. This will be done soon.
 
 From source
 -----------
+
+Install from source. :file:`build_and_install.sh` will create a Python-Package (.whl) and install it with pip.
 
 .. code-block:: bash
 
@@ -21,3 +25,9 @@ From source
     $ cd carebt_core
     $ ./build_and_install.sh
 
+Check your installation
+-----------------------
+
+.. code-block:: bash
+
+    pip show carebt
