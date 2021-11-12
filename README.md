@@ -6,7 +6,7 @@
 ## About
 
 A Python library offering a Behavior Tree implementation which focuses on contingency handling - the key to
-master complex applications in highly dynamic worlds.
+master complex applications which operate in dynamic worlds.
 
 ## Documentation
 
