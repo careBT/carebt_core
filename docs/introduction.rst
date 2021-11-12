@@ -4,14 +4,15 @@ Introduction
 About
 -----
 
-**CareBT** is a Python library offering a Behavior Tree implementation which focuses on contingency handling
-- the key to master complex applications in highly dynamic worlds. Although, **careBT** can be used
-in many different application, the main use cases are inspired by mobile robots such as service
-robots, for example.
+**CareBT** is a Python library offering a behavior tree implementation which focuses on contingency
+handling - the key to master complex applications which operate in highly dynamic worlds. Although,
+**careBT** can be used in many different applications, the main use cases are inspired by mobile
+robots such as service robots, for example.
 
-The **careBT-core** (https://github.com/careBT/carebt_core) is kept completely independent from frameworks and
-engines it can be used in. Such an integration can easily be done. For mobile robotics applications such a framework
-could be `ROS <https://www.ros.org/>`__ or `ROS2 <https://www.ros.org/>`__, for example.
+The **careBT-core** (https://github.com/careBT/carebt_core) is kept completely independent from any
+frameworks it can be used in. However, such an integration can easily be done. For mobile robotics
+applications such a framework could be `ROS <https://www.ros.org/>`__
+or `ROS2 <https://www.ros.org/>`__, for example.
 
 .. note::
 
@@ -22,16 +23,41 @@ could be `ROS <https://www.ros.org/>`__ or `ROS2 <https://www.ros.org/>`__, for 
 *  easy to use
 *  lightweight
 *  well tested (test-coverage > 95%)
+*  well documented (in progress)
 
 Background
 ----------
 
-The work on **careBT** is strongly influenced by my previous work I have done at the
-`University of Applied Sciences in Ulm <https://www.servicerobotik-ulm.de/>`__. Especially
-the design and development of *SmartTCL* [1] [2] [3] itself and the huge amount of different
-behaviors and scenarios we were working on.
+The work on **careBT** is strongly influenced by the previous work I have done at the
+`Service Robotics Lab in Ulm <https://www.servicerobotik-ulm.de/>`__. Especially the
+design and implementation of the task coordination language *SmartTCL* [1] [2] [3],
+a Lisp-based implementation of task-nets focusing on handling contingencies which
+typically occur in real world scenarios. One important powerful feature of *SmartTCL* is the
+ability to dynamically create, expand and modify the task-tree during runtime depening
+on the current situation and state of the world. However, *SmartTCL* was developed in the
+context of the *SmartSoft* framework and is bound 
+to some of the *SmartSoft* concepts, especially to the event-pattern. But the existence of
+such an event mechanism should not be taken for granted to beeing able to work together
+with other frameworks. Furthermore, *SmartTCL* is implemented in Lisp, which is not widely
+used and has a steep learning curve.
 
-An excerpt of these scenarios can be seen here:
+On the other hand behavior trees, which can be seen as a variant of task-nets, have emerged
+in the past few years. Behavior trees provide basic guidelines and concepts on how to
+design and implement a task-tree and its execution engine.
+One of these concepts is, for example, that a node is periodically ticked as long as it is in
+state RUNNING, and switches to one of the states SUCCESS or FAILURE as soon as it completes.
+Behavior trees have already shown their effectivness in developing robotics scenarios.
+Nevertheless, the powerfull mechanisms to dynamically create, expand and modify the task-tree
+at runtime are not present in classical behavior tree implementations [4] [5] [6]. 
+
+The above led to the idea to develop **careBT** by combining the powerful concepts
+of *SmartTCL* with the clean structure of behavior trees. And to use Python as programming
+language as it is an interpreted programming language with a relatively fast learning curve.
+Furthermore the development of **careBT** is split into the framework independent
+**careBT-core** and its framework specific derivates.
+
+An excerpt of some scenarios which demonstrate the powerful mechanisms of *SmartTCL*
+can be seen in the following videos on YouTube:
 
 *  `Mobile Manipulation - Robot "Kate" cleans up the table. This video shows how the robot
    is disturbed in different situations and thus, hindered to fulfill its job. But due to 
@@ -52,3 +78,9 @@ Bibliography
 [2] Andreas Steck. Conditional Reactive Task Execution in a Three Layer Architecture for Service Robots. Master Thesis, November 2010.
 
 [3] Andreas Steck, Christian Schlegel. Managing execution variants in task coordination by exploiting design-time models at run-time. In Proc. IEEE Int. Conf. on Robotics and Intelligent Systems (IROS), San Francisco, USA, September, 2011.
+
+[4] BehaviorTree.CPP, https://www.behaviortree.dev/
+
+[5] Py Trees, https://py-trees.readthedocs.io/
+
+[6] Colledanchise Michele, Ogren Petter. (2018). Behavior Trees in Robotics and AI: An Introduction. 10.1201/9780429489105, https://btirai.github.io/

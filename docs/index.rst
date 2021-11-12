@@ -8,8 +8,14 @@ careBT - contingency aware Behavior Trees
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Basics:
 
    introduction
    installation
-   getting-started
+   design
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorials:
+
+   tutorial/helloworld
