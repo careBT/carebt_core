@@ -54,8 +54,8 @@ class TickCountingParallel(ParallelNode):
     """
     The `TickCountingParallel` runs three `TickCountingAction` in parallel.
 
-    Parameters
-    ==========
+    Input Parameters
+    ----------------
     ?success_threshold: int
         The success_threshold
     ?g1: int
@@ -99,8 +99,8 @@ class TickCountingParallelWithAbort(ParallelNode):
     The `TickCountingParallelWithAbort` is a variant of `TickCountingParallel`
     which aborts on failure.
 
-    Parameters
-    ==========
+    Input Parameters
+    ----------------
     ?success_threshold: int
         The success_threshold
     ?g1: int
@@ -153,8 +153,8 @@ class TickCountingParallelDelAdd1(ParallelNode):
     The `TickCountingParallelDelAdd1` is a variant of `TickCountingParallel`
     which deletes child 2 (id=3) and adds one new child on failure.
 
-    Parameters
-    ==========
+    Input Parameters
+    ----------------
     ?success_threshold: int
         The success_threshold
     ?g1: int
@@ -208,8 +208,8 @@ class TickCountingParallelDelAdd2(ParallelNode):
     The `TickCountingParallelDelAdd1` is a variant of `TickCountingParallel`
     which deletes child 2 (id=3) and adds two new children on failure.
 
-    Parameters
-    ==========
+    Input Parameters
+    ----------------
     ?success_threshold: int
         The success_threshold
     ?g1: int
@@ -264,8 +264,8 @@ class TickCountingParallelDel(ParallelNode):
     The `TickCountingParallelWithAbort` is a variant of `TickCountingParallel`
     which deletes child 2 (id=3) on failure.
 
-    Parameters
-    ==========
+    Input Parameters
+    ----------------
     ?success_threshold: int
         The success_threshold
     ?g1: int
@@ -317,8 +317,8 @@ class TickCountingParallelDelAllAdd(ParallelNode):
     The `TickCountingParallelWithAbort` is a variant of `TickCountingParallel`
     which deletes all children and adds three new children on failure.
 
-    Parameters
-    ==========
+    Input Parameters
+    ----------------
     ?success_threshold: int
         The success_threshold
     ?g1: int

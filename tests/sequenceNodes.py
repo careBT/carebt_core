@@ -60,8 +60,8 @@ class AddTwoNumbersSequence2(SequenceNode):
     is not executed. As the contingency is not handeled, the `AddTwoNumbersSequence2`
     completes with `FAILURE` and also provides the message `NOT_TWO_NUMBERS_PROVIDED`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?a : int
         The first number
     ?b : int
@@ -103,8 +103,8 @@ class AddTwoNumbersSequence3(SequenceNode):
     and sets the ?result the `AddTwoNumbersActionWithFailure` should have provided
     to 999. Thus, the subsequent `ShowNumberAction` is executed.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?a : int
         The first number
     ?b : int
@@ -152,8 +152,8 @@ class AddTwoNumbersSequence4(SequenceNode):
     `AddTwoNumbersActionWithFailure`. The `FixMissingNumbersAction` provides the
     ?result = 42 and this can then be printed by `ShowNumberAction`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?a : int
         The first number
     ?b : int
@@ -197,8 +197,8 @@ class AddTwoNumbersSequence5(SequenceNode):
     and (ii) adding the three new children: `ProvideMissingNumbersAction`,
     `AddTwoNumbersActionWithFailure` and `ShowNumberAction`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?a : int
         The first number
     ?b : int
@@ -244,8 +244,8 @@ class AddTwoNumbersSequence6(SequenceNode):
     In this variant the values of `?a` and `?b` are hard coded in the contingency-handler,
     instead of using the `ProvideMissingNumbersAction`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?a : int
         The first number
     ?b : int
@@ -295,8 +295,8 @@ class AddTwoNumbersSequence7(SequenceNode):
     wildcard 'AddTwoNumbers*' is used in order to activate the contingency-handler for
     both `ActionNodes`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?calctime : int (ms)
         Milliseconds requiered to complete
     ?a : int
@@ -368,8 +368,8 @@ class AddTwoNumbersSequence8(SequenceNode):
 
     In this variant the timout in the `AddTwoNumbersSequence8` aborts the sequence.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?calctime : int (ms)
         Milliseconds requiered to complete
     ?a : int

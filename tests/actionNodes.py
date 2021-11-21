@@ -53,15 +53,15 @@ class AddTwoNumbersAction(ActionNode):
     input parameters and one output parameter. It takes the two inputs,
     adds them and returns the result.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?x : int, default = 0
         The first value
     ?y : int, default = 0
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -99,15 +99,15 @@ class AddTwoNumbersActionMissingOutput(ActionNode):
     """
     The `AddTwoNumbersActionMissingOutput` misses to set the ouput ?z.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?x : int, default = 0
         The first value
     ?y : int, default = 0
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         Is missing
 
@@ -141,15 +141,15 @@ class AddTwoNumbersActionWithFailure(ActionNode):
     parameters is missing the `AddTwoNumbersActionWithFailure` Node switches
     to state `FAILURE` with the message `NOT_TWO_NUMBERS_PROVIDED`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?x : int
         The first value
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -199,8 +199,8 @@ class AddTwoNumbersMultiTickAction(ActionNode):
     the amount of ticks required to complete the action is provided as
     input parameter.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?ticks : int
         Number of ticks requiered to complete
     ?x : int
@@ -208,8 +208,8 @@ class AddTwoNumbersMultiTickAction(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -256,8 +256,8 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
     the amount of ticks required to complete the action is provided as
     input parameter.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?ticks : int
         Number of ticks requiered to complete
     ?x : int
@@ -265,8 +265,8 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -318,8 +318,8 @@ class AddTwoNumbersThrottledMultiTickAction(ActionNode):
     `ActionNode` can be throttled to provided value. In this example
     this value is set to 500ms.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?ticks : int
         Number of ticks requiered to complete
     ?x : int
@@ -327,8 +327,8 @@ class AddTwoNumbersThrottledMultiTickAction(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -377,8 +377,8 @@ class AddTwoNumbersLongRunnungAction(ActionNode):
     the amount of milliseconds the asynchronous function requires to complete
     is provided as input parameter.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?calctime : int (ms)
         Milliseconds requiered to complete
     ?x : int
@@ -386,8 +386,8 @@ class AddTwoNumbersLongRunnungAction(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -432,8 +432,8 @@ class AddTwoNumbersLongRunnungActionWithAbort(ActionNode):
     the `ActionNode` in case that the execution (asynchronous function) takes
     to long.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?calctime : int (ms)
         Milliseconds requiered to complete
     ?x : int
@@ -441,8 +441,8 @@ class AddTwoNumbersLongRunnungActionWithAbort(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -526,8 +526,8 @@ class AddTwoNumbersLongRunnungActionMissingCallback(ActionNode):
     The `AddTwoNumbersLongRunnungActionMissingCallback` is a variant of the
     `AddTwoNumbersLongRunnungActionWithAbort` but does not override on_timeout.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?calctime : int (ms)
         Milliseconds requiered to complete
     ?x : int
@@ -535,8 +535,8 @@ class AddTwoNumbersLongRunnungActionMissingCallback(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -605,8 +605,8 @@ class AddTwoNumbersLongRunnungActionMissingCallback2(ActionNode):
     The `AddTwoNumbersLongRunnungActionMissingCallback2` is a variant of the
     `AddTwoNumbersLongRunnungActionMissingCallback` but does not override on_abort.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?calctime : int (ms)
         Milliseconds requiered to complete
     ?x : int
@@ -614,8 +614,8 @@ class AddTwoNumbersLongRunnungActionMissingCallback2(ActionNode):
     ?y : int
         The second value
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?z : int
         The sum of ?x and ?y
 
@@ -680,8 +680,8 @@ class ShowNumberAction(ActionNode):
     The `ShowNumberAction` simply prints the provided numer on the standard
     output. If `?number` the default -1 is used.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?number : int (default = -1)
         The number that should be printed.
 
@@ -715,8 +715,8 @@ class ProvideMissingNumbersAction(ActionNode):
     The `ProvideMissingNumbersAction` is an `ActionNode` with two output parameters.
     The ouput values are hardcoded to 11 respectively 22.
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?a : int
         The first number: 11
     ?b : int
@@ -752,8 +752,8 @@ class FixMissingNumbersAction(ActionNode):
     The `FixMissingNumbersAction` is an `ActionNode` with one output parameters.
     The ouput value is set to 42.
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?out : int
         The number: 42
 
@@ -786,8 +786,8 @@ class TickCountingAction(ActionNode):
     The `TickCountingAction` increments the ?count and returns it on each tick. If
     the ?count is equal to the ?goal the nodes completes with `SUCCESS`.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?id : int
         The id to identify the node.
     ?goal : int (Default = 10)
@@ -795,8 +795,8 @@ class TickCountingAction(ActionNode):
     ?success : bool (Default = True)
         Wether the node should succeed or fail.
 
-    Returns
-    -------
+    Output Parameters
+    -----------------
     ?count : int
         The current tick count.
 
@@ -852,8 +852,8 @@ class FailOnCountAction(ActionNode):
     """
     The `FailOnCountAction` fails as soon as the ?goal is reached by ?count.
 
-    Parameters
-    ----------
+    Input Parameters
+    ----------------
     ?goal : int (Default = 10)
         The goal tick count.
     ?count : int
