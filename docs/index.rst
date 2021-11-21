@@ -19,3 +19,5 @@ careBT - contingency aware Behavior Trees
    :caption: Tutorials:
 
    tutorial/helloworld
+   tutorial/action_with_params
+   tutorial/simple_sequence

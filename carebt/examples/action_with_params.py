@@ -16,19 +16,37 @@ from carebt.actionNode import ActionNode
 from carebt.nodeStatus import NodeStatus
 
 
-class HelloWorldAction(ActionNode):
+class AddTwoNumbersAction(ActionNode):
     """
-    The `HelloWorldAction` provides a classical Hello World example.
-    It demonstrates a simple implementation of a careBT `ActionNode`.
+    The `AddTwoNumbersAction` demonstrates a careBT `ActionNode` with two
+    input parameters and one output parameter. It takes the two inputs,
+    adds them and returns the result.
 
-    When running the `HelloWorldAction`,
-    'HelloWorldAction: Hello World !!!' is printed on standard output.
+    Input Parameters
+    ----------------
+    ?x : int, default = 0
+        The first value
+    ?y : int, default = 0
+        The second value
+
+    Output ParametersAddTwoNumbersAction
+    -----------------
+    ?z : int
+        The sum of ?x and ?y
 
     """
 
     def __init__(self, bt_runner):
-        super().__init__(bt_runner)
+        super().__init__(bt_runner, '?x ?y => ?z')
+
+    def on_init(self) -> None:
+        if(self._x is None):
+            self._x = 0
+        if(self._y is None):
+            self._y = 0
 
     def on_tick(self) -> None:
-        print('HelloWorldAction: Hello World !!!')
+        self._z = self._x + self._y
+        print('AddTwoNumbersAction: calculating: {} + {} = {}'
+              .format(self._x, self._y, self._z))
         self.set_status(NodeStatus.SUCCESS)
