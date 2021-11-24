@@ -319,7 +319,7 @@ class AddTwoNumbersSequence7(SequenceNode):
         self.append_child(AddTwoNumbersLongRunnungActionWithAbort, '?calctime ?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 
-        self.register_contingency_handler('AddTwoNumbers.*',
+        self.register_contingency_handler(r'AddTwoNumbers.*',
                                           [NodeStatus.FAILURE],
                                           'NOT_TWO_NUMBERS_PROVIDED',
                                           self.fix_missing_numbers_handler)
@@ -392,7 +392,7 @@ class AddTwoNumbersSequence8(SequenceNode):
         self.append_child(AddTwoNumbersLongRunnungActionWithAbort, '?calctime ?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 
-        self.register_contingency_handler('AddTwoNumbers.*',
+        self.register_contingency_handler(r'AddTwoNumbers.*',
                                           [NodeStatus.FAILURE],
                                           'NOT_TWO_NUMBERS_PROVIDED',
                                           self.fix_missing_numbers_handler)
