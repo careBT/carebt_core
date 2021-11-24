@@ -292,7 +292,7 @@ class AddTwoNumbersSequence7(SequenceNode):
     contingency_handlers. One to handle the `FAILURE` of `AddTwoNumbersActionWithFailure`
     and `AddTwoNumbersLongRunnungActionWithAbort`, and the other one to handle the
     `ABORTED` of `AddTwoNumbersLongRunnungActionWithAbort`. For the former the
-    wildcard 'AddTwoNumbers*' is used in order to activate the contingency-handler for
+    regex 'AddTwoNumbers.*' is used in order to activate the contingency-handler for
     both `ActionNodes`.
 
     Input Parameters
@@ -319,7 +319,7 @@ class AddTwoNumbersSequence7(SequenceNode):
         self.append_child(AddTwoNumbersLongRunnungActionWithAbort, '?calctime ?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 
-        self.register_contingency_handler('AddTwoNumbers*',
+        self.register_contingency_handler('AddTwoNumbers.*',
                                           [NodeStatus.FAILURE],
                                           'NOT_TWO_NUMBERS_PROVIDED',
                                           self.fix_missing_numbers_handler)
@@ -363,7 +363,7 @@ class AddTwoNumbersSequence8(SequenceNode):
     contingency_handlers. One to handle the `FAILURE` of `AddTwoNumbersActionWithFailure`
     and `AddTwoNumbersLongRunnungActionWithAbort`, and the other one to handle the
     `ABORTED` of `AddTwoNumbersLongRunnungActionWithAbort`. For the former the
-    wildcard 'AddTwoNumbers*' is used in order to activate the contingency-handler for
+    regex 'AddTwoNumbers.*' is used in order to activate the contingency-handler for
     both `ActionNodes`.
 
     In this variant the timout in the `AddTwoNumbersSequence8` aborts the sequence.
@@ -392,7 +392,7 @@ class AddTwoNumbersSequence8(SequenceNode):
         self.append_child(AddTwoNumbersLongRunnungActionWithAbort, '?calctime ?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 
-        self.register_contingency_handler('AddTwoNumbers*',
+        self.register_contingency_handler('AddTwoNumbers.*',
                                           [NodeStatus.FAILURE],
                                           'NOT_TWO_NUMBERS_PROVIDED',
                                           self.fix_missing_numbers_handler)

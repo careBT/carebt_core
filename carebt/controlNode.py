@@ -48,18 +48,6 @@ class ControlNode(TreeNode, ABC):
 
         self.set_status(NodeStatus.IDLE)
 
-    # PRIVATE
-
-    # allowed wildcards:
-    # ? one character
-    # * one or many characters
-    def __wildcard_to_regex(self, wildcard: str) -> re:
-        # replace wildcards
-        wildcard = wildcard.replace('?', '.')
-        wildcard = wildcard.replace('*', '.*')
-
-        return re.compile(wildcard)
-
     # PROTECTED
 
     def _internal_bind_in_params(self, child_ec: ExecutionContext) -> None:
@@ -110,14 +98,12 @@ class ControlNode(TreeNode, ABC):
         # iterate over contingency_handler_list
         for contingency_handler in self._contingency_handler_list:
 
-            # handle wildcards
+            # handle regex
             if(isinstance(contingency_handler[0], str)):
-                regexClassName = self.__wildcard_to_regex(
-                    contingency_handler[0])
+                regexClassName = re.compile(contingency_handler[0])
             else:
-                regexClassName = self.__wildcard_to_regex(
-                    contingency_handler[0].__name__)
-            regexMessage = self.__wildcard_to_regex(contingency_handler[2])
+                regexClassName = re.compile(contingency_handler[0].__name__)
+            regexMessage = re.compile(contingency_handler[2])
 
             self.get_logger().debug('checking contingency_handler: {} -{} - {}'
                                     .format(regexClassName.pattern,
@@ -153,14 +139,13 @@ class ControlNode(TreeNode, ABC):
         are met. The registered contingency handlers are tried to match to the current
         status and contingency message in the order they are registered.
 
-        For the parameters `node` and `contingency_message` the following wildcards can be used:
-        ? one character
-        * one or many characters
+        For the parameters `node` and `contingency_message` a regular expression (regex)
+        can be used.
 
         Parameters
         ----------
         node: TreeNode, str
-            The node the contingency handler triggered on. In case of using wildcards
+            The node the contingency handler triggered on. In case of using regex
             the name has to be provided as string.
         node_status_list:  [NodeStatus]
             A list of NodeStatus the contingency handler is triggered on
