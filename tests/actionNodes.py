@@ -153,8 +153,8 @@ class AddTwoNumbersActionWithFailure(ActionNode):
     ?z : int
         The sum of ?x and ?y
 
-    Contingencies:
-    --------------
+    Contingencies
+    -------------
     FAILURE:
         NOT_TWO_NUMBERS_PROVIDED
             At least one of the two input parameters is missing.
@@ -446,8 +446,8 @@ class AddTwoNumbersLongRunnungActionWithAbort(ActionNode):
     ?z : int
         The sum of ?x and ?y
 
-    Contingencies:
-    --------------
+    Contingencies
+    -------------
     FAILURE:
         NOT_TWO_NUMBERS_PROVIDED
             At least one of the two input parameters is missing.

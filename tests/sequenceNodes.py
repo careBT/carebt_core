@@ -67,8 +67,8 @@ class AddTwoNumbersSequence2(SequenceNode):
     ?b : int
         The second number
 
-    Contingencies:
-    --------------
+    Contingencies
+    -------------
     FAILURE:
         NOT_TWO_NUMBERS_PROVIDED
             At least one of the two input parameters is missing.
