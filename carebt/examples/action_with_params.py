@@ -29,7 +29,7 @@ class AddTwoNumbersAction(ActionNode):
     ?y : int, default = 0
         The second value
 
-    Output ParametersAddTwoNumbersAction
+    Output Parameters
     -----------------
     ?z : int
         The sum of ?x and ?y

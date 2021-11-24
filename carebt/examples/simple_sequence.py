@@ -18,7 +18,7 @@ from carebt.actionNode import ActionNode
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
-from action_with_params import AddTwoNumbersAction
+from carebt.examples.action_with_params import AddTwoNumbersAction
 
 ########################################################################
 
