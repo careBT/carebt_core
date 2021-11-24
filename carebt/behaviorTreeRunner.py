@@ -99,6 +99,32 @@ class BehaviorTreeRunner:
 
         return self._logger
 
+    def get_status(self) -> NodeStatus:
+        """
+        Returns the status of the last execution.
+
+        Returns
+        -------
+        `NodeStatus`
+            Current status of the node
+
+        """
+
+        return self._instance.get_status()
+
+    def get_contingency_message(self) -> str:
+        """
+        Returns the contincency message of the last execution.
+
+        Returns
+        -------
+        str
+            The contingency message
+
+        """
+
+        return self._instance.get_contingency_message()
+
     def run(self, node: TreeNode, params: str = None) -> None:
         """
         Executes the provided node, respectively the provided behavior tree.
