@@ -38,7 +38,7 @@ the output parameter *?number*.
     :language: python
     :lines: 26-44
 
-The ``PrintNumberAction`` is a custom ``ActionNode`` which prints the provided *?numer* on standard output.
+The ``PrintNumberAction`` is a custom ``ActionNode`` which prints the provided *?number* on standard output.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
@@ -162,7 +162,7 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
 The code explained
 ^^^^^^^^^^^^^^^^^^
 
-The ``SimpleSequence3`` shows anoher example how custom ``ActionNodes`` and custom ``SequenceNodes`` can be reused
+The ``SimpleSequence3`` shows another example how custom ``ActionNodes`` and custom ``SequenceNodes`` can be reused
 and how the parameters can be bound.
 
 Run the example
@@ -208,3 +208,6 @@ Run the ``SimpleSequence`` node:
     PrintNumberAction: number = 12
     PrintNumberAction: number = 12
 
+.. note::
+    The ``SimpleSequence3`` example shows how easily a behavior can be composed out of already existing
+    sub-behaviors, while the individual sub-behaviors can still be executed and tested separately.
