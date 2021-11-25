@@ -68,7 +68,7 @@ class AddTwoNumbersAction(ActionNode):
     def on_tick(self) -> None:
         self._z = self._x + self._y
         if(self._z > 10):
-            print('AddTwoNumbersAction: calculating: {} + {} = {}'
+            print('AddTwoNumbersAction: calculating: {} + {} = {} -> RESULT_TOO_LARGE'
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('RESULT_TOO_LARGE')

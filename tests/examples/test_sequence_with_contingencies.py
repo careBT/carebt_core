@@ -142,7 +142,7 @@ class TestSequenceWithContingencies:
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.OFF)
         bt_runner.run(ContingencySequence, '6 9')
-        regex = re.compile(r'AddTwoNumbersAction: calculating: 6 \+ 9 = 15\n'
+        regex = re.compile(r'AddTwoNumbersAction: calculating: 6 \+ 9 = 15 -> RESULT_TOO_LARGE\n'
                            + r'fix_large_result\n'
                            + r'CreateRandomNumberAction: number = [0-9]+\n'
                            + r'PrintNumberAction: number = [0-9]+\n')
