@@ -62,16 +62,11 @@ and the execution was succesful. Thus, the ``HelloWorldAction`` node is not tick
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter with :file:`helloworld.py` loaded:
-
-.. code-block:: bash
-
-    python -i helloworld.py
-
-Run the ``HelloWorldAction`` node:
+Start the Python interpreter and run the ``HelloWorldAction`` node:
 
 .. code-block:: python
 
+    >>> from carebt.examples.sequence_with_contingencies import *
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
     >>> bt_runner.run(HelloWorldAction)

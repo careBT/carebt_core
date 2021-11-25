@@ -5,12 +5,17 @@ Overview
 --------
 
 This tutorial demonstrates a couple of simple **careBT** ``SequenceNodes``. For the demos
-the ``ActionNode`` implemented in the previous tutorial is reused and two additional
-``ActionNodes`` are implemented.
+the ``ActionNode`` (``AddTwoNumbersAction``) implemented in the previous tutorial is reused
+and two additional ``ActionNodes`` are implemented. The first one (``CreateRandomNumberAction``)
+generates a random numer and provides it as output parameter. The second one (``PrintNumberAction``)
+prints the number provided as input parameter on standard output.
 
 
 Create the ActionNodes and the SimpleSequence
 ---------------------------------------------
+
+This first simple sequence contains four child nodes. The first two generate two random numbers,
+the third one adds them together and the last one prints the result.
 
 Create a file named ``simple_sequence.py`` with following content.
 Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/simple_sequence.py>`
@@ -76,16 +81,11 @@ be executed once, after the node was created. For a ``SequenceNode`` the child n
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter with :file:`simple_sequence.py` loaded:
-
-.. code-block:: bash
-
-    python -i simple_sequence.py
-
-Run the ``SimpleSequence`` node:
+Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
+    >>> from carebt.examples.simple_sequence import *
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence, '=> ?x')
@@ -104,6 +104,9 @@ Run the ``SimpleSequence`` node:
 Create the SimpleSequence2
 --------------------------
 
+The ``SimpleSequence2`` is a modified version of the ``SimpleSequence``. It shows how simple a different
+sequence of children can be created and how the parameters can be bound across the different children.
+
 Add the following content to ``simple_sequence.py``.
 Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/simple_sequence.py>`
 
@@ -111,25 +114,14 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
     :language: python
     :lines: 98-127
 
-The code explained
-^^^^^^^^^^^^^^^^^^
-
-The ``SimpleSequence2`` is a modified version of the ``SimpleSequence``. It shows how simple a different
-sequence of children can be created and how the parameters can be bound across the different children.
-
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter with :file:`simple_sequence.py` loaded:
-
-.. code-block:: bash
-
-    python -i simple_sequence.py
-
-Run the ``SimpleSequence`` node:
+Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
+    >>> from carebt.examples.simple_sequence import *
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence2, '5 => ?x')
@@ -152,6 +144,9 @@ Run the ``SimpleSequence`` node:
 Create the SimpleSequence3
 --------------------------
 
+The ``SimpleSequence3`` shows another example how custom ``ActionNodes`` and custom ``SequenceNodes`` can be reused
+and how the parameters can be bound.
+
 Add the following content to ``simple_sequence.py``.
 Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/simple_sequence.py>`
 
@@ -159,25 +154,14 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
     :language: python
     :lines: 132-146
 
-The code explained
-^^^^^^^^^^^^^^^^^^
-
-The ``SimpleSequence3`` shows another example how custom ``ActionNodes`` and custom ``SequenceNodes`` can be reused
-and how the parameters can be bound.
-
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter with :file:`simple_sequence.py` loaded:
-
-.. code-block:: bash
-
-    python -i simple_sequence.py
-
-Run the ``SimpleSequence`` node:
+Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
+    >>> from carebt.examples.simple_sequence import *
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence3)

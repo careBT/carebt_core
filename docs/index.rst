@@ -21,3 +21,4 @@ careBT - contingency aware Behavior Trees
    tutorial/helloworld
    tutorial/action_with_params
    tutorial/simple_sequence
+   tutorial/understanding_contingeny-handler

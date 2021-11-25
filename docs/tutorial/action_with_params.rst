@@ -78,16 +78,11 @@ node is not ticked again.
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter with :file:`action_with_params.py` loaded:
-
-.. code-block:: bash
-
-    python -i action_with_params.py
-
-Run the ``AddTwoNumbersAction`` node:
+Start the Python interpreter and run the ``AddTwoNumbersAction`` node:
 
 .. code-block:: python
 
+    >>> from carebt.examples.action_with_params import *
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
     >>> bt_runner.run(AddTwoNumbersAction, '2 3 => ?sum')
