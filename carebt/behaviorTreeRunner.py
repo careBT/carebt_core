@@ -155,8 +155,15 @@ class BehaviorTreeRunner:
             sleep(self._tick_rate_ms / 1000)
 
         # after tree execution
-        self.get_logger().info('---------------------------------------------------')
-        self.get_logger().info('bt execution finished')
-        self.get_logger().info('status:  {}'.format(self._instance.get_status()))
-        self.get_logger().info('message: {}'.format(self._instance.get_contingency_message()))
-        self.get_logger().info('---------------------------------------------------')
+        if(self._instance.get_status() == NodeStatus.SUCCESS):
+            self.get_logger().info('---------------------------------------------------')
+            self.get_logger().info('bt execution finished')
+            self.get_logger().info('status:  {}'.format(self._instance.get_status()))
+            self.get_logger().info('message: {}'.format(self._instance.get_contingency_message()))
+            self.get_logger().info('---------------------------------------------------')
+        else:
+            self.get_logger().warn('---------------------------------------------------')
+            self.get_logger().warn('bt execution finished')
+            self.get_logger().warn('status:  {}'.format(self._instance.get_status()))
+            self.get_logger().warn('message: {}'.format(self._instance.get_contingency_message()))
+            self.get_logger().warn('---------------------------------------------------')
