@@ -44,8 +44,7 @@ class RateControlNode(ControlNode, ABC):
         Constructor of `RateControlNode`.
 
         Parameters
-        ==========
-
+        ----------
         bt_runner: 'BehaviorTreeRunner'
             The behavior tree runner which started the tree.
         rate_ms: int

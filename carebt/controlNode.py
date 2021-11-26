@@ -150,7 +150,7 @@ class ControlNode(TreeNode, ABC):
         node_status_list:  [NodeStatus]
             A list of NodeStatus the contingency handler is triggered on
         contingency_message: str
-
+            A regex the contingency-message has to match
         contingency_function: Callable
             The function which should be called
 

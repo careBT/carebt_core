@@ -38,8 +38,7 @@ class ActionNode(TreeNode, ABC):
         Constructor of `ActionNode`.
 
         Parameters
-        ==========
-
+        ----------
         bt_runner: 'BehaviorTreeRunner'
             The behavior tree runner which started the tree.
         params: str

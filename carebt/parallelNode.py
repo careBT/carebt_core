@@ -44,8 +44,7 @@ class ParallelNode(ControlNode, ABC):
         Constructor of `ParallelNode`.
 
         Parameters
-        ==========
-
+        ----------
         bt_runner: 'BehaviorTreeRunner'
             The behavior tree runner which started the tree.
         success_threshold: int
@@ -159,7 +158,7 @@ class ParallelNode(ControlNode, ABC):
         Sets the success_threshold.
 
         Parameters
-        ==========
+        ----------
         success_threshold: int
             Threshold how many of the children should complete with `SUCCESS`
             or `FIXED` that the `ParallelNode` completes with `SUCCESS`.
@@ -173,7 +172,7 @@ class ParallelNode(ControlNode, ABC):
         Returns the success_threshold.
 
         RETURNS
-        =======
+        -------
         success_threshold: int
             The success_threshold
 
