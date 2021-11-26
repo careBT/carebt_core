@@ -93,3 +93,7 @@ Start the Python interpreter and run the ``AddTwoNumbersAction`` node:
     >>> bt_runner.run(AddTwoNumbersAction, '=> ?sum')
     2021-11-12 22:13:48 WARN AddTwoNumbersAction takes 2 argument(s), but 0 was/were provided
     AddTwoNumbersAction: calculating: 0 + 0 = 0
+
+Above the ``AddTwoNumbersAction`` is executed three times. The first one is the standard case, where
+two input parameters are provided as expected. In the second and third execution one or both input
+parameters are missing. This is announced as a **CareBT**-warning and the default values are used.

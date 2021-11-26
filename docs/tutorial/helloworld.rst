@@ -1,3 +1,6 @@
+.. role:: python(code)
+   :language: python
+
 Writing a HelloWorld ActionNode
 =================================
 
@@ -66,7 +69,7 @@ Start the Python interpreter and run the ``HelloWorldAction`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.sequence_with_contingencies import *
+    >>> from carebt.examples.helloworld import *
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
     >>> bt_runner.run(HelloWorldAction)
