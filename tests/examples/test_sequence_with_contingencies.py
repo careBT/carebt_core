@@ -21,7 +21,7 @@ from carebt.abstractLogger import LogLevel
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.sequence_with_contingencies import AddTwoNumbersAction
-from carebt.examples.sequence_with_contingencies import Sequence
+from carebt.examples.sequence_with_contingencies import SimpleSequence
 from carebt.examples.sequence_with_contingencies import ContingencySequence
 from carebt.nodeStatus import NodeStatus
 
@@ -69,7 +69,7 @@ class TestSequenceWithContingencies:
     @patch('sys.stdout', new_callable=StringIO)
     def test_Sequence_ok(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(Sequence, '1 2')
+        bt_runner.run(SimpleSequence, '1 2')
         regex = re.compile(r'AddTwoNumbersAction: calculating: [0-9]+ \+ [0-9]+ = [0-9]+\n'
                            + r'PrintNumberAction: number = [0-9]+\n')
         assert bool(re.match(regex, mock_print.getvalue()))
@@ -79,7 +79,7 @@ class TestSequenceWithContingencies:
     @patch('sys.stdout', new_callable=StringIO)
     def test_Sequence_one_missing(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(Sequence, '1')
+        bt_runner.run(SimpleSequence, '1')
         regex = re.compile('')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.FAILURE
@@ -88,7 +88,7 @@ class TestSequenceWithContingencies:
     @patch('sys.stdout', new_callable=StringIO)
     def test_Sequence_both_missing(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(Sequence, '')
+        bt_runner.run(SimpleSequence, '')
         regex = re.compile('')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.FAILURE
@@ -97,7 +97,7 @@ class TestSequenceWithContingencies:
     @patch('sys.stdout', new_callable=StringIO)
     def test_Sequence_to_large(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(Sequence, '11 22')
+        bt_runner.run(SimpleSequence, '11 22')
         regex = re.compile('')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.FAILURE

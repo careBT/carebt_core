@@ -80,12 +80,13 @@ class AddTwoNumbersAction(ActionNode):
 ########################################################################
 
 
-class Sequence(SequenceNode):
+class SimpleSequence(SequenceNode):
     """
-    The `Sequence` shows what happens if a child node in the sequence fails.
-    The used `AddTwoNumbersAction` can fail in case that one or both input parameters are
-    missing or that the result of the sum is greater than ten. These contingencies are not
-    handled, and thus forwarded to the `SequenceNode` and finally to the `bt_runner`.
+    The `SimpleSequence` shows what happens if a child node in the sequence fails.
+    The used `AddTwoNumbersAction` can fail in case that one or both input parameters
+    are missing or that the result of the sum is greater than ten. These contingencies
+    are not handled, and thus forwarded to the `SequenceNode` and finally to the
+    `bt_runner`.
 
     Input Parameters
     ----------------
@@ -114,13 +115,14 @@ class Sequence(SequenceNode):
 class ContingencySequence(SequenceNode):
     """
     The `ContingencySequence` extends the `Sequence` by showing how contingency
-    handlers can be registered. In case of the contingency `RESULT_TOO_LARGE` all child nodes
-    are removed and the two nodes `CreateRandomNumberAction` and `PrintNumberAction` are added.
-    For the two contingencies `ONE_PARAM_MISSING` and `BOTH_PARAMS_MISSING` one contingency
-    handler using a wildcard `*_MISSING` is registered. In this case the output parameter *?c*
-    is set to 0 and the current child is set to fixed. Setting a chiuld to fixed deletes the
-    current contingency message and sets the status to `SUCCESS`. Thus, the sequence continues
-    as everythig was normal.
+    handlers can be registered. In case of the contingency `RESULT_TOO_LARGE` all
+    child nodes are removed and the two nodes `CreateRandomNumberAction` and
+    `PrintNumberAction` are added. For the two contingencies `ONE_PARAM_MISSING`
+    and `BOTH_PARAMS_MISSING` one contingency handler using a wildcard `*_MISSING`
+    is registered. In this case the output parameter *?c* is set to 0 and the
+    current child is set to fixed. Setting a chiuld to fixed deletes the current
+    contingency message and sets the status to `FIXED`. As `FIXED` is handled
+    in the same way as `SUCCESS`, the sequence continues as everythig was normal.
 
     Input Parameters
     ----------------
