@@ -14,8 +14,26 @@ prints the number provided as input parameter on standard output.
 Create the ActionNodes and the SimpleSequence
 ---------------------------------------------
 
-This first simple sequence contains four child nodes. The first two generate two random numbers,
-the third one adds them together and the last one prints the result.
+This first example called ``SimpleSequence`` contains four child nodes.
+
+.. graphviz::
+
+    digraph foo {
+        s1 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence"];
+
+        s1c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s1c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s1c3 [shape=box, margin="0.05,0.1", label="«ActionNode»\nAddTwoNumbersAction"];
+        s1c4 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+
+        s1 -> s1c1
+        s1 -> s1c2
+        s1 -> s1c3
+        s1 -> s1c4
+   }
+
+The first two generate two random numbers, the third one adds them together and the last
+one prints the result.
 
 Create a file named ``simple_sequence.py`` with following content.
 Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/simple_sequence.py>`
@@ -104,6 +122,26 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 Create the SimpleSequence2
 --------------------------
 
+.. graphviz::
+
+    digraph foo {
+        s2 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence2"];
+
+        s2c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s2c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nAddTwoNumbersAction"];
+        s2c3 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+        s2c4 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s2c5 [shape=box, margin="0.05,0.1", label="«ActionNode»\nAddTwoNumbersAction"];
+        s2c6 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+
+        s2 -> s2c1
+        s2 -> s2c2
+        s2 -> s2c3
+        s2 -> s2c4
+        s2 -> s2c5
+        s2 -> s2c6
+   }
+
 The ``SimpleSequence2`` is a modified version of the ``SimpleSequence``. It shows how simple a different
 sequence of children can be created and how the parameters can be bound across the different children.
 
@@ -143,6 +181,73 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 
 Create the SimpleSequence3
 --------------------------
+
+.. graphviz::
+
+    digraph foo {
+        
+        // make invisible ranks
+        rank1 [style=invisible];
+        rank2 [style=invisible];
+        rank3 [style=invisible];
+        rank4 [style=invisible];
+        
+        // make "invisible" (white) link between them
+        rank1 -> rank2 [color=white];
+        rank2 -> rank3 [color=white];
+        rank3 -> rank4 [color=white];
+
+        s1 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence"];
+
+        s1c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s1c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s1c3 [shape=box, margin="0.05,0.1", label="«ActionNode»\nAddTwoNumbersAction"];
+        s1c4 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+
+        s1 -> s1c1
+        s1 -> s1c2
+        s1 -> s1c3
+        s1 -> s1c4
+
+        s2 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence2"];
+
+        s2c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s2c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nAddTwoNumbersAction"];
+        s2c3 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+        s2c4 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
+        s2c5 [shape=box, margin="0.05,0.1", label="«ActionNode»\nAddTwoNumbersAction"];
+        s2c6 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+
+        s2 -> s2c1
+        s2 -> s2c2
+        s2 -> s2c3
+        s2 -> s2c4
+        s2 -> s2c5
+        s2 -> s2c6
+
+        s3 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence3"];
+
+        s3c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+        s3c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nPrintNumberAction"];
+
+        s3 -> s1
+        s3 -> s3c1
+        s3 -> s2
+        s3 -> s3c2
+        
+        {
+            rank = same;
+            // Here you enforce the desired order with "invisible" edges and arrowheads
+            rank2 -> s1 -> s3c1 [ style=invis ];
+            rankdir = LR;
+        }
+        {
+            rank = same;
+            // Here you enforce the desired order with "invisible" edges and arrowheads
+            rank4 -> s2 -> s3c2 [ style=invis ];
+            rankdir = LR;
+        }
+   }
 
 The ``SimpleSequence3`` shows another example how custom ``ActionNodes`` and custom ``SequenceNodes`` can be reused
 and how the parameters can be bound.
