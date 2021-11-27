@@ -18,6 +18,7 @@ careBT - contingency aware Behavior Trees
    :maxdepth: 2
    :caption: careBT Reference:
 
+   api/overview
    api/carebt
 
 .. toctree::
