@@ -1,5 +1,5 @@
-Overview
-========
+careBT nodes
+============
 
 The class diagram below shows the **careBT** nodes and how they inherit
 from each other.
