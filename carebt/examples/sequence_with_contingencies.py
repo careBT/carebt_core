@@ -118,7 +118,7 @@ class ContingencySequence(SequenceNode):
     handlers can be registered. In case of the contingency `RESULT_TOO_LARGE` all
     child nodes are removed and the two nodes `CreateRandomNumberAction` and
     `PrintNumberAction` are added. For the two contingencies `ONE_PARAM_MISSING`
-    and `BOTH_PARAMS_MISSING` one contingency handler using a wildcard `*_MISSING`
+    and `BOTH_PARAMS_MISSING` one contingency-handler using a wildcard `*_MISSING`
     is registered. In this case the output parameter *?c* is set to 0 and the
     current child is set to fixed. Setting a chiuld to fixed deletes the current
     contingency message and sets the status to `FIXED`. As `FIXED` is handled
