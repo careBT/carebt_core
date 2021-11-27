@@ -21,7 +21,7 @@ from carebt.simplePrintLogger import SimplePrintLogger
 from carebt.treeNode import TreeNode
 
 
-class RootNode(RootNode):
+class _RootNode(RootNode):
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner'):
         super().__init__(bt_runner)
@@ -139,7 +139,7 @@ class BehaviorTreeRunner:
 
         """
 
-        self._instance = RootNode(self)
+        self._instance = _RootNode(self)
         self._instance.set_status(NodeStatus.IDLE)
         self._instance.set_contingency_message('')
         self._instance.set_child(node, params)
