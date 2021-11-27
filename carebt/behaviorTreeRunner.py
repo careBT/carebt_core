@@ -16,12 +16,12 @@ from time import sleep
 
 from carebt.abstractLogger import AbstractLogger, LogLevel
 from carebt.nodeStatus import NodeStatus
-from carebt.sequenceNode import SequenceNode
+from carebt.rootNode import RootNode
 from carebt.simplePrintLogger import SimplePrintLogger
 from carebt.treeNode import TreeNode
 
 
-class RootNode(SequenceNode):
+class RootNode(RootNode):
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner'):
         super().__init__(bt_runner)
@@ -142,7 +142,7 @@ class BehaviorTreeRunner:
         self._instance = RootNode(self)
         self._instance.set_status(NodeStatus.IDLE)
         self._instance.set_contingency_message('')
-        self._instance.append_child(node, params)
+        self._instance.set_child(node, params)
         self._tick_count = 0
 
         # run tree
