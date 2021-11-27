@@ -12,6 +12,7 @@
 #
 import os
 import sys
+sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../'))
 
 
@@ -58,5 +59,5 @@ graphviz_output_format = 'png'
 
 # napoleon api_doc
 napoleon_google_docstring = False
-napoleon_use_param = True
+napoleon_use_param = False
 napoleon_use_ivar = True
