@@ -8,7 +8,7 @@ This tutorial demonstrates a couple of simple **careBT** ``SequenceNodes``. For 
 the ``ActionNode`` (``AddTwoNumbersAction``) implemented in the previous tutorial is reused
 and two additional ``ActionNodes`` are implemented. The first one (``CreateRandomNumberAction``)
 generates a random numer and provides it as output parameter. The second one (``PrintNumberAction``)
-prints the number provided as input parameter on standard output.
+prints the provided number as input parameter on standard output.
 
 
 Create the ActionNodes and the SimpleSequence
