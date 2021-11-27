@@ -146,7 +146,7 @@ contingency-message differs in the three cases.
 Create a sequence with contingency-handling
 -------------------------------------------
 
-In this example the ``SimpleSequence`` node is extended by two contingency handlers. The new sequence
+In this example the ``SimpleSequence`` node is extended by two contingency-handlers. The new sequence
 is called ``ContingencySequence``.
 
 Add the following content to ``sequence_with_contingencies.py``.
@@ -161,7 +161,7 @@ Or use the provided file: :download:`sequence_with_contingencies.py <../../careb
 The code explained
 ^^^^^^^^^^^^^^^^^^
 
-In the ``on_init`` function the two child nodes are added. Afterwards two contingency handlers are registered. The first
+In the ``on_init`` function the two child nodes are added. Afterwards two contingency-handlers are registered. The first
 one is attached to the ``AddTwoNumbersAction`` child and triggers in case the child node completes with ``FAILURE`` and
 with the contingency-message ``RESULT_TOO_LARGE``. In this case the ``fix_large_result`` function is called.
 
