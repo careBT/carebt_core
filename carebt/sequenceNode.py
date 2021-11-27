@@ -33,7 +33,7 @@ class SequenceNode(ControlNode, ABC):
     or `FIXED` the `SequenceNode` completes with `SUCCESS`.
 
     If one of the children completes with `FAILURE` or `ABORTED` and the situation is
-    not fixed by a contingency handler the `SequenceNode` completes also with `FAILURE`
+    not fixed by a contingency-handler the `SequenceNode` completes also with `FAILURE`
     or `ABORTED`.
 
     The `SequenceNode` forwards the ticks to the currently executing child - which can

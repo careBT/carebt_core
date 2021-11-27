@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 class TreeNode(ABC):
     """
     `TreeNode` is the basic class which provides the common implementation
-    for all nodes of careBT.
+    for all careBT nodes.
 
     """
 

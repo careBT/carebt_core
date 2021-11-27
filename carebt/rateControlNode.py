@@ -34,8 +34,8 @@ class RateControlNode(ControlNode, ABC):
     But the `ActionNode` needs to be already implemented with the throtteling.
     The `RateControlNode` on the other hand can throttle all careBT nodes, such
     as `SequenceNode`, `ParallelNode` or as already mentioned an `ActionNode`.
-    For the latter one this is especially useful if the implementation should
-    or could not be modified.
+    For the latter one this is especially useful if the implementation of the
+    custon `ActionNode` should or could not be modified.
 
     """
 

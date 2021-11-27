@@ -22,13 +22,6 @@ class LogLevel(IntEnum):
     """
     An Enum representing the logging levels
 
-    TRACE
-    DEBUG
-    INFO
-    WARN
-    ERROR
-    OFF
-
     """
 
     TRACE = 0
@@ -41,7 +34,7 @@ class LogLevel(IntEnum):
 
 class AbstractLogger(ABC):
     """
-    The `AbstractLogger` interface which has to be implemented for
+    The `AbstractLogger` interface has to be implemented for
     a custom logger.
 
     """

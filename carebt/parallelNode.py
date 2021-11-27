@@ -24,8 +24,8 @@ from carebt.treeNode import TreeNode
 class ParallelNode(ControlNode, ABC):
     """
     In a `ParallelNode` the added child nodes are executed in parallel at the same time.
-    If more or equal than `success_threshold` children complete with `SUCCESS` or `FIXED`
-    the `ParallelNode` completes with `SUCCESS`.
+    A `ParallelNode` completes with `SUCCESS` if equal or more than `success_threshold`
+    children complete with `SUCCESS` or `FIXED`.
 
     If as many children as necessary to beeing able to reach the `success_threshold` already
     completed with `FAILURE` or `ABORTED` the `ParallelNode` completes with `FAILURE` and sets
@@ -199,7 +199,7 @@ class ParallelNode(ControlNode, ABC):
     def remove_child(self, pos: int) -> None:
         """
         Removes the child node at the provided position. The positions are in
-        the order the children are added starting with 0.
+        the order the children are added starting with zero.
 
         Parameters
         ----------

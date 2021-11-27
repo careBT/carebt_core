@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 class ControlNode(TreeNode, ABC):
     """
     `ControlNode` is the basic class for all nodes in careBT which provide a
-    control flow functionality, like `SequenceNode`and `ParallelNode`.
+    control flow functionality, like `SequenceNode` and `ParallelNode`.
 
     """
 
@@ -136,7 +136,7 @@ class ControlNode(TreeNode, ABC):
                                      contingency_function: Callable) -> None:
         """
         Registers a function which is called in case the provided contingency information
-        are met. The registered contingency handlers are tried to match to the current
+        are met. The registered contingency-handlers are tried to match to the current
         status and contingency message in the order they are registered.
 
         For the parameters `node` and `contingency_message` a regular expression (regex)
@@ -145,14 +145,14 @@ class ControlNode(TreeNode, ABC):
         Parameters
         ----------
         node: TreeNode, str
-            The node the contingency handler triggered on. In case of using regex
+            The node the contingency-handler triggers on. In case of using regex
             the name has to be provided as string.
         node_status_list:  [NodeStatus]
-            A list of NodeStatus the contingency handler is triggered on
+            A list of NodeStatuses the contingency-handler triggers on.
         contingency_message: str
-            A regex the contingency-message has to match
+            A regex the contingency-message has to match.
         contingency_function: Callable
-            The function which should be called
+            The function which is called to handle the contingency.
 
         """
 
@@ -166,9 +166,11 @@ class ControlNode(TreeNode, ABC):
     @final
     def fix_current_child(self) -> None:
         """
-        Mark the current child node as `FIXED`. This function should be called inside
-        of a contingency handler in case the handler fixes the situation and the
-        control flow of the current `ControlNode` can be continued.
+        Mark the current child node as `FIXED`. This function should typiclly be
+        called inside of a contingency-handler in case the handler fixes the situation
+        and the control flow of the current `ControlNode` can be continued. `FIXED`
+        is handled in the same way as `SUCCESS`, but provides the additional information
+        that the node was 'fixed'.
 
         """
 

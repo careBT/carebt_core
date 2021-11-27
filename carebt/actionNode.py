@@ -86,8 +86,8 @@ class ActionNode(TreeNode, ABC):
 
     def set_throttle_ms(self, throttle_ms: int) -> None:
         """
-        Reduces the ticks the `ActionNode`s on_tick method is called to the
-        provided throttle_ms value. For example, to reduce the calls to the
+        Reduces the ticks the `ActionNodes` on_tick method is called to the
+        provided throttle_ms value. For example, to reduce the calls of the
         `on_tick` callback to 500 milliseconds, the throttle_ms should be set
         to 500.
 

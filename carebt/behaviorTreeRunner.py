@@ -87,8 +87,7 @@ class BehaviorTreeRunner:
 
     def get_logger(self) -> AbstractLogger:
         """
-        Returns the current logger, which is an implementation of
-        `AbstractLogger`.
+        Returns the current logger.
 
         Returns
         -------
