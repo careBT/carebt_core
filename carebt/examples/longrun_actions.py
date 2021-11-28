@@ -99,7 +99,7 @@ class AddTwoNumbersLongRunnungAction(ActionNode):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
 
     def on_init(self) -> None:
-        print('AddTwoNumbersLongRunnungAction: calculating {} ms'
+        print('AddTwoNumbersLongRunnungAction: calculating {} ms ...'
               .format(self._calctime))
         self.set_status(NodeStatus.SUSPENDED)
         Timer(self._calctime / 1000, self.done_callback).start()

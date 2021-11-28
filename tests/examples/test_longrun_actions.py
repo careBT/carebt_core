@@ -76,6 +76,6 @@ class TestLongrunActions:
         bt_runner.run(AddTwoNumbersLongRunnungAction, '2000 3 4 => ?result')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
-        regex = re.compile(r'AddTwoNumbersLongRunnungAction: calculating 2000 ms\n'
+        regex = re.compile(r'AddTwoNumbersLongRunnungAction: calculating 2000 ms ...\n'
                            r'AddTwoNumbersLongRunnungAction: DONE 3 \+ 4 = 7\n')
         assert bool(re.match(regex, mock_print.getvalue()))
