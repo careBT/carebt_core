@@ -30,3 +30,4 @@ careBT - contingency aware Behavior Trees
    tutorial/action_with_params
    tutorial/simple_sequence
    tutorial/understanding_contingeny-handler
+   tutorial/longrun_actions
