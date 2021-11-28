@@ -315,7 +315,7 @@ class AddTwoNumbersThrottledMultiTickAction(ActionNode):
     """
     The `AddTwoNumbersThrottledMultiTickAction` is a variation of the
     `AddTwoNumbersMultiTickAction` which demonstrates how ticking an
-    `ActionNode` can be throttled to provided value. In this example
+    `ActionNode` can be throttled to the provided value. In this example
     this value is set to 500ms.
 
     Input Parameters
