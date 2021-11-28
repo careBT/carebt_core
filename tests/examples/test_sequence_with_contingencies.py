@@ -17,8 +17,8 @@ from io import StringIO
 import re
 
 from unittest.mock import patch
-from carebt.abstractLogger import LogLevel
 
+from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
 from carebt.examples.sequence_with_contingencies import SimpleSequence
