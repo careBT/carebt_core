@@ -20,10 +20,10 @@ from carebt.examples.simple_sequence import CreateRandomNumberAction
 from carebt.examples.simple_sequence import PrintNumberAction
 
 
-class AddTwoNumbersAction(ActionNode):
+class AddTwoNumbersActionWithFailures(ActionNode):
     """
-    The `AddTwoNumbersAction` demonstrates a careBT `ActionNode` with two
-    input parameters and one output parameter. It takes the two inputs,
+    The `AddTwoNumbersActionWithFailures` demonstrates a careBT `ActionNode`
+    with two input parameters and one output parameter. It takes the two inputs,
     adds them and returns the result. Furthermore, this node can complete with
     `FAILURE`. This happend in case that one or both input parameters are missing
     or that the result of the sum is greater than ten.
@@ -68,12 +68,12 @@ class AddTwoNumbersAction(ActionNode):
     def on_tick(self) -> None:
         self._z = self._x + self._y
         if(self._z > 10):
-            print('AddTwoNumbersAction: calculating: {} + {} = {} -> RESULT_TOO_LARGE'
+            print('AddTwoNumbersActionWithFailures: calculating: {} + {} = {} -> RESULT_TOO_LARGE'
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('RESULT_TOO_LARGE')
         else:
-            print('AddTwoNumbersAction: calculating: {} + {} = {}'
+            print('AddTwoNumbersActionWithFailures: calculating: {} + {} = {}'
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.SUCCESS)
 
@@ -83,10 +83,10 @@ class AddTwoNumbersAction(ActionNode):
 class SimpleSequence(SequenceNode):
     """
     The `SimpleSequence` shows what happens if a child node in the sequence fails.
-    The used `AddTwoNumbersAction` can fail in case that one or both input parameters
-    are missing or that the result of the sum is greater than ten. These contingencies
-    are not handled, and thus forwarded to the `SequenceNode` and finally to the
-    `bt_runner`.
+    The used `AddTwoNumbersActionWithFailures` can fail in case that one or both
+    input parameters are missing or that the result of the sum is greater than ten.
+    These contingencies are not handled, and thus forwarded to the `SequenceNode`
+    and finally to the `bt_runner`.
 
     Input Parameters
     ----------------
@@ -106,7 +106,7 @@ class SimpleSequence(SequenceNode):
         super().__init__(bt_runner, '?a ?b')
 
     def on_init(self) -> None:
-        self.append_child(AddTwoNumbersAction, '?a ?b => ?c')
+        self.append_child(AddTwoNumbersActionWithFailures, '?a ?b => ?c')
         self.append_child(PrintNumberAction, '?c')
 
 ########################################################################
@@ -142,15 +142,15 @@ class ContingencySequence(SequenceNode):
         super().__init__(bt_runner, '?a ?b')
 
     def on_init(self) -> None:
-        self.append_child(AddTwoNumbersAction, '?a ?b => ?c')
+        self.append_child(AddTwoNumbersActionWithFailures, '?a ?b => ?c')
         self.append_child(PrintNumberAction, '?c')
 
-        self.register_contingency_handler(AddTwoNumbersAction,
+        self.register_contingency_handler(AddTwoNumbersActionWithFailures,
                                           [NodeStatus.FAILURE],
                                           'RESULT_TOO_LARGE',
                                           self.fix_large_result)
 
-        self.register_contingency_handler(AddTwoNumbersAction,
+        self.register_contingency_handler(AddTwoNumbersActionWithFailures,
                                           [NodeStatus.FAILURE],
                                           # r'ONE_PARAM_MISSING|BOTH_PARAMS_MISSING',
                                           # r'.*_MISSING',

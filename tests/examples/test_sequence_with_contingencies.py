@@ -20,7 +20,7 @@ from unittest.mock import patch
 from carebt.abstractLogger import LogLevel
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
-from carebt.examples.sequence_with_contingencies import AddTwoNumbersAction
+from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
 from carebt.examples.sequence_with_contingencies import SimpleSequence
 from carebt.examples.sequence_with_contingencies import ContingencySequence
 from carebt.nodeStatus import NodeStatus
@@ -29,36 +29,36 @@ from carebt.nodeStatus import NodeStatus
 class TestSequenceWithContingencies:
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_AddTwoNumbersAction_ok(self, mock_print):
+    def test_AddTwoNumbersActionWithFailures_ok(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(AddTwoNumbersAction, '1 2 => ?x')
-        regex = re.compile(r'AddTwoNumbersAction: calculating: 1 \+ 2 = 3\n')
+        bt_runner.run(AddTwoNumbersActionWithFailures, '1 2 => ?x')
+        regex = re.compile(r'AddTwoNumbersActionWithFailures: calculating: 1 \+ 2 = 3\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_AddTwoNumbersAction_one_missing(self, mock_print):
+    def test_AddTwoNumbersActionWithFailures_one_missing(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(AddTwoNumbersAction, '1 => ?x')
+        bt_runner.run(AddTwoNumbersActionWithFailures, '1 => ?x')
         regex = re.compile(r'')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.FAILURE
         assert bt_runner.get_contingency_message() == 'ONE_PARAM_MISSING'
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_AddTwoNumbersAction_both_missing(self, mock_print):
+    def test_AddTwoNumbersActionWithFailures_both_missing(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(AddTwoNumbersAction, '=> ?x')
+        bt_runner.run(AddTwoNumbersActionWithFailures, '=> ?x')
         regex = re.compile(r'')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.FAILURE
         assert bt_runner.get_contingency_message() == 'BOTH_PARAMS_MISSING'
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_AddTwoNumbersAction_to_large(self, mock_print):
+    def test_AddTwoNumbersActionWithFailures_to_large(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(AddTwoNumbersAction, '6 8 => ?x')
+        bt_runner.run(AddTwoNumbersActionWithFailures, '6 8 => ?x')
         regex = re.compile(r'')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.FAILURE
@@ -70,8 +70,9 @@ class TestSequenceWithContingencies:
     def test_Sequence_ok(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SimpleSequence, '1 2')
-        regex = re.compile(r'AddTwoNumbersAction: calculating: [0-9]+ \+ [0-9]+ = [0-9]+\n'
-                           + r'PrintNumberAction: number = [0-9]+\n')
+        regex = re.compile(r'AddTwoNumbersActionWithFailures: calculating: '
+                           r'[0-9]+ \+ [0-9]+ = [0-9]+\n'
+                           r'PrintNumberAction: number = [0-9]+\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
@@ -109,8 +110,9 @@ class TestSequenceWithContingencies:
     def test_ContingencySequence1_ok(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(ContingencySequence, '1 2')
-        regex = re.compile(r'AddTwoNumbersAction: calculating: [0-9]+ \+ [0-9]+ = [0-9]+\n'
-                           + r'PrintNumberAction: number = [0-9]+\n')
+        regex = re.compile(r'AddTwoNumbersActionWithFailures: calculating: '
+                           r'[0-9]+ \+ [0-9]+ = [0-9]+\n'
+                           r'PrintNumberAction: number = [0-9]+\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
@@ -121,7 +123,7 @@ class TestSequenceWithContingencies:
         bt_runner.get_logger().set_log_level(LogLevel.OFF)
         bt_runner.run(ContingencySequence, '1')
         regex = re.compile(r'fix_missing_input: set \?c = 0\n'
-                           + r'PrintNumberAction: number = 0\n')
+                           r'PrintNumberAction: number = 0\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
@@ -132,7 +134,7 @@ class TestSequenceWithContingencies:
         bt_runner.get_logger().set_log_level(LogLevel.OFF)
         bt_runner.run(ContingencySequence, '')
         regex = re.compile(r'fix_missing_input: set \?c = 0\n'
-                           + r'PrintNumberAction: number = 0\n')
+                           r'PrintNumberAction: number = 0\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
@@ -142,10 +144,11 @@ class TestSequenceWithContingencies:
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.OFF)
         bt_runner.run(ContingencySequence, '6 9')
-        regex = re.compile(r'AddTwoNumbersAction: calculating: 6 \+ 9 = 15 -> RESULT_TOO_LARGE\n'
-                           + r'fix_large_result\n'
-                           + r'CreateRandomNumberAction: number = [0-9]+\n'
-                           + r'PrintNumberAction: number = [0-9]+\n')
+        regex = re.compile(r'AddTwoNumbersActionWithFailures: calculating: '
+                           r'6 \+ 9 = 15 -> RESULT_TOO_LARGE\n'
+                           r'fix_large_result\n'
+                           r'CreateRandomNumberAction: number = [0-9]+\n'
+                           r'PrintNumberAction: number = [0-9]+\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
