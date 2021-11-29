@@ -46,7 +46,11 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
     def on_init(self) -> None:
         self._tick_count = 1
+        # without throttling
         self.set_timeout(500)
+        # with throttling
+        # self.set_throttle_ms(1000)
+        # self.set_timeout(5000)
 
     def on_tick(self) -> None:
         if(self._tick_count < self._ticks):
