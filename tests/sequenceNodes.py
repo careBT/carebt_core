@@ -16,6 +16,8 @@ from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
 from tests.actionNodes import AddTwoNumbersLongRunnungActionWithAbort
 from tests.actionNodes import FixMissingNumbersAction
+from tests.actionNodes import HelloWorldAction
+from tests.actionNodes import HelloWorldActionWithMessage
 from tests.actionNodes import ProvideMissingNumbersAction
 from tests.actionNodes import ShowNumberAction
 from tests.global_mock import mock
@@ -428,3 +430,53 @@ class AddTwoNumbersSequence8(SequenceNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersSequence8')
+
+########################################################################
+
+
+class SequenceWithSuccessMessage_1(SequenceNode):
+    """
+    The `SequenceWithSuccessMessage_1` has two child nodes. The first one
+    provides a contingency-message, the second one not. Thus, the sequence
+    should not provide a contingency-message.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ SequenceWithSuccessMessage_1')
+
+    def on_init(self) -> None:
+        mock('on_init SequenceWithSuccessMessage_1')
+        self.append_child(HelloWorldActionWithMessage)
+        self.append_child(HelloWorldAction)
+
+    def on_delete(self) -> None:
+        mock('on_delete SequenceWithSuccessMessage_1')
+
+    def __del__(self):
+        mock('__del__ SequenceWithSuccessMessage_1')
+
+
+class SequenceWithSuccessMessage_2(SequenceNode):
+    """
+    The `SequenceWithSuccessMessage_2` two child nodes. The first one
+    provides no contingency-message, the second one provides one. Thus,
+    the sequence should provide the contingency-message of the second node.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ SequenceWithSuccessMessage_2')
+
+    def on_init(self) -> None:
+        mock('on_init SequenceWithSuccessMessage_2')
+        self.append_child(HelloWorldAction)
+        self.append_child(HelloWorldActionWithMessage)
+
+    def on_delete(self) -> None:
+        mock('on_delete SequenceWithSuccessMessage_2')
+
+    def __del__(self):
+        mock('__del__ SequenceWithSuccessMessage_2')

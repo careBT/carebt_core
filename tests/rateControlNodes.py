@@ -15,6 +15,7 @@
 from tests.global_mock import mock
 from tests.actionNodes import AddTwoNumbersMultiTickAction
 from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
+from tests.actionNodes import HelloWorldActionWithMessage
 
 from carebt.rateControlNode import RateControlNode
 
@@ -95,3 +96,28 @@ class RateControlledAddTwoNumbersMultiTickActionOwnTimeout(RateControlNode):
 
     def __del__(self):
         mock('__del__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout')
+
+########################################################################
+
+
+class RateControlledHelloWorldActionWithMessage(RateControlNode):
+    """
+    The `RateControlledHelloWorldActionWithMessage` throttles down the
+    HelloWorldActionWithMessage. The idea is to test if the contingency-
+    message is correctly provided in case the state is `SUCCESS`.
+
+    """
+
+    def __init__(self, bt):
+        super().__init__(bt, 250)
+        mock('__init__ RateControlledHelloWorldActionWithMessage')
+
+    def on_init(self) -> None:
+        mock('__init__ RateControlledHelloWorldActionWithMessage')
+        self.set_child(HelloWorldActionWithMessage)
+
+    def on_delete(self) -> None:
+        mock('on_delete RateControlledHelloWorldActionWithMessage')
+
+    def __del__(self):
+        mock('__del__ RateControlledHelloWorldActionWithMessage')

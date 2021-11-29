@@ -94,6 +94,8 @@ class SequenceNode(ControlNode, ABC):
                 # if the current child tick returned with SUCCESS or FIXED
                 elif(cur_child_state == NodeStatus.SUCCESS
                      or cur_child_state == NodeStatus.FIXED):
+                    self._contingency_message = self._child_ec_list[self._child_ptr]\
+                        .instance.get_contingency_message()
                     # if current child state is FIXED -> do not bind out_params
                     # as the 'fix' implementation is done in the contingency-handler
                     if(cur_child_state != NodeStatus.FIXED):
@@ -107,6 +109,7 @@ class SequenceNode(ControlNode, ABC):
                     else:
                         # no more nodes to run -> sequence = SUCCESS
                         self.set_status(NodeStatus.SUCCESS)
+                        self.set_contingency_message(self._contingency_message)
 
         if(self.get_status() == NodeStatus.SUCCESS
            or self.get_status() == NodeStatus.FAILURE

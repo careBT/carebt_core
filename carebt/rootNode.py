@@ -66,6 +66,8 @@ class RootNode(ControlNode, ABC):
                 if(cur_child_state != NodeStatus.FIXED):
                     self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
                 self.set_status(NodeStatus.SUCCESS)
+                self.set_contingency_message(self._child_ec_list[0]
+                                             .instance.get_contingency_message())
 
         if(self.get_status() == NodeStatus.SUCCESS
            or self.get_status() == NodeStatus.FAILURE

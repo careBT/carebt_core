@@ -47,6 +47,29 @@ class HelloWorldAction(ActionNode):
 ########################################################################
 
 
+class HelloWorldActionWithMessage(ActionNode):
+    """
+    The `HelloWorldActionWithMessage` is a modfication of the `HelloWorldAction`
+    example. The difference is that the node also provides a contingency-message.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ HelloWorldActionWithMessage')
+
+    def on_tick(self) -> None:
+        mock('HelloWorldActionWithMessage: Hello World !!!')
+        print('HelloWorldActionWithMessage: Hello World !!!')
+        self.set_status(NodeStatus.SUCCESS)
+        self.set_contingency_message('HELLOWORLD_PRINTED')
+
+    def __del__(self):
+        mock('__del__ HelloWorldActionWithMessage')
+
+########################################################################
+
+
 class AddTwoNumbersAction(ActionNode):
     """
     The `AddTwoNumbersAction` demonstrates a careBT `ActionNode` with two

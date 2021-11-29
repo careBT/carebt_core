@@ -20,6 +20,7 @@ from tests.global_mock import mock
 from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickAction
 from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionWithTimeout
 from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionOwnTimeout
+from tests.rateControlNodes import RateControlledHelloWorldActionWithMessage
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
@@ -29,7 +30,7 @@ from carebt.nodeStatus import NodeStatus
 
 class TestRateControlNode:
     """
-    Tests the `RateControlNode`.
+    Tests the `RateControlledAddTwoNumbersMultiTickAction`.
 
     """
 
@@ -136,3 +137,17 @@ class TestRateControlNode:
                                        call('__del__ AddTwoNumbersMultiTickAction')]  # noqa: E501
         assert bt._instance.get_status() == NodeStatus.ABORTED
         assert bt._instance.get_contingency_message() == 'TIMEOUT'
+
+    ########################################################################
+
+    def test_RateControlledHelloWorldActionWithMessage(self):
+        """
+        Tests the RateControlledHelloWorldActionWithMessage.
+
+        """
+
+        mock.reset_mock()
+        bt = BehaviorTreeRunner()
+        bt.run(RateControlledHelloWorldActionWithMessage)
+        assert bt._instance.get_status() == NodeStatus.SUCCESS
+        assert bt._instance.get_contingency_message() == 'HELLOWORLD_PRINTED'

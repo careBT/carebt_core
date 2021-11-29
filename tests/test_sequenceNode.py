@@ -23,6 +23,8 @@ from tests.sequenceNodes import AddTwoNumbersSequence5
 from tests.sequenceNodes import AddTwoNumbersSequence6
 from tests.sequenceNodes import AddTwoNumbersSequence7
 from tests.sequenceNodes import AddTwoNumbersSequence8
+from tests.sequenceNodes import SequenceWithSuccessMessage_1
+from tests.sequenceNodes import SequenceWithSuccessMessage_2
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
@@ -32,7 +34,7 @@ from carebt.nodeStatus import NodeStatus
 
 class TestSequenceNode:
     """
-    Tests the `ActionNode`.
+    Tests the `SequenceNode`.
 
     """
 
@@ -556,3 +558,53 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersLongRunnungActionWithAbort'),
                                        call('on_delete AddTwoNumbersSequence8'),
                                        call('__del__ AddTwoNumbersSequence8')]
+
+    ########################################################################
+
+    def test_SequenceWithSuccessMessage_1(self):
+        """
+        Tests the SequenceWithSuccessMessage_1
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithSuccessMessage_1)
+        assert mock.called
+        assert bt_runner.get_status() == NodeStatus.SUCCESS
+        assert bt_runner.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ SequenceWithSuccessMessage_1'),
+                                       call('on_init SequenceWithSuccessMessage_1'),
+                                       call('__init__ HelloWorldActionWithMessage'),
+                                       call('HelloWorldActionWithMessage: Hello World !!!'),
+                                       call('__del__ HelloWorldActionWithMessage'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('on_delete SequenceWithSuccessMessage_1'),
+                                       call('__del__ SequenceWithSuccessMessage_1')]
+
+    def test_SequenceWithSuccessMessage_2(self):
+        """
+        Tests the SequenceWithSuccessMessage_2
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(SequenceWithSuccessMessage_2)
+        assert mock.called
+        assert bt_runner.get_status() == NodeStatus.SUCCESS
+        assert bt_runner.get_contingency_message() == 'HELLOWORLD_PRINTED'
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ SequenceWithSuccessMessage_2'),
+                                       call('on_init SequenceWithSuccessMessage_2'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('__init__ HelloWorldActionWithMessage'),
+                                       call('HelloWorldActionWithMessage: Hello World !!!'),
+                                       call('__del__ HelloWorldActionWithMessage'),
+                                       call('on_delete SequenceWithSuccessMessage_2'),
+                                       call('__del__ SequenceWithSuccessMessage_2')]

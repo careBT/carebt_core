@@ -31,7 +31,7 @@ class RateControlNode(ControlNode, ABC):
     """
     The `RateControlNode` is a special node to throttle the tick rate of its
     only child. It is similar to the `throttle` mechanism of the `ActionNode`.
-    But the `ActionNode` needs to be already implemented with the throtteling.
+    But the `ActionNode` needs to be already implemented with the throttling.
     The `RateControlNode` on the other hand can throttle all careBT nodes, such
     as `SequenceNode`, `ParallelNode` or as already mentioned an `ActionNode`.
     For the latter one this is especially useful if the implementation of the
@@ -48,7 +48,7 @@ class RateControlNode(ControlNode, ABC):
         bt_runner: 'BehaviorTreeRunner'
             The behavior tree runner which started the tree.
         rate_ms: int
-            Throtteling rate in milliseconds
+            Throttling rate in milliseconds
         params: str
             The input/Output parameters of the node
             e.g. '?x ?y => ?z'
@@ -102,6 +102,8 @@ class RateControlNode(ControlNode, ABC):
                 if(cur_child_state != NodeStatus.FIXED):
                     self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
                 self.set_status(NodeStatus.SUCCESS)
+                self.set_contingency_message(self._child_ec_list[0]
+                                             .instance.get_contingency_message())
 
         if(self.get_status() == NodeStatus.SUCCESS
            or self.get_status() == NodeStatus.FAILURE
