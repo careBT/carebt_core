@@ -20,6 +20,14 @@ ControlNode
    :undoc-members:
    :show-inheritance:
 
+FallbackNode
+^^^^^^^^^^^^
+
+.. automodule:: carebt.fallbackNode
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ParallelNode
 ^^^^^^^^^^^^
 
