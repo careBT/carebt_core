@@ -23,10 +23,10 @@ from carebt.examples.fallback import SimpleFallback
 from carebt.nodeStatus import NodeStatus
 
 
-class TestFallback:
+class TestSimpleFallback:
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_FallbackNode_1(self, mock_print):
+    def test_SimpleFallback_1(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SimpleFallback, '1 2 3')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
@@ -35,7 +35,7 @@ class TestFallback:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_FallbackNode_2(self, mock_print):
+    def test_SimpleFallback_2(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SimpleFallback, '10 2 3')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
@@ -45,7 +45,7 @@ class TestFallback:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_FallbackNode_3(self, mock_print):
+    def test_SimpleFallback_3(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SimpleFallback, '10 20 3')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
@@ -56,7 +56,7 @@ class TestFallback:
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_FallbackNode_4(self, mock_print):
+    def test_SimpleFallback_4(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SimpleFallback, '10 20 30')
         assert bt_runner.get_status() == NodeStatus.FAILURE
