@@ -138,7 +138,17 @@ class ParallelNode(ControlNode, ABC):
                 self.set_status(NodeStatus.FAILURE)
                 self.set_contingency_message(self.__last_child_contingency_msg)
 
+            if(self.get_status() == NodeStatus.SUCCESS
+               or self.get_status() == NodeStatus.FAILURE):
+                # abort children if RUNNING or SUSPENDED
+                for child_ec in self._child_ec_list:
+                    if(child_ec.instance is not None and
+                       (child_ec.instance.get_status() == NodeStatus.RUNNING or
+                            child_ec.instance.get_status() == NodeStatus.SUSPENDED)):
+                        child_ec.instance._internal_on_abort()
+
     def _internal_on_abort(self) -> None:
+        super()._internal_on_abort()
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort children if RUNNING or SUSPENDED
         for child_ec in self._child_ec_list:

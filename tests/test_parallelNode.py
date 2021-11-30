@@ -151,6 +151,8 @@ class TestParallelNode:
                                        call('on_delete TickCountingAction id = 2'),
                                        call('__del__ TickCountingAction id = 2'),
                                        call('TickCountingAction id = 3 tick: 3/5'),
+                                       call('on_abort TickCountingAction id = 1'),
+                                       call('on_abort TickCountingAction id = 3'),
                                        call('on_delete TickCountingParallel'),
                                        call('__del__ TickCountingParallel'),
                                        call('__del__ TickCountingAction id = 3'),
@@ -192,6 +194,7 @@ class TestParallelNode:
                                        call('TickCountingAction id = 3 DONE with SUCCESS'),
                                        call('on_delete TickCountingAction id = 3'),
                                        call('__del__ TickCountingAction id = 3'),
+                                       call('on_abort TickCountingAction id = 2'),
                                        call('on_delete TickCountingParallel'),
                                        call('__del__ TickCountingParallel'),
                                        call('__del__ TickCountingAction id = 2')]
@@ -488,6 +491,7 @@ class TestParallelNode:
                                        call('FailOnCountAction DONE with FAILURE'),
                                        call('on_delete FailOnCountAction'),
                                        call('__del__ FailOnCountAction'),
+                                       call('on_abort TickCountingAction id = 1'),
                                        call('on_delete CountAbortParallel'),
                                        call('__del__ CountAbortParallel'),
                                        call('__del__ TickCountingAction id = 1')]

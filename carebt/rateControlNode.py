@@ -114,6 +114,7 @@ class RateControlNode(ControlNode, ABC):
             self._child_ec_list[0].instance = None
 
     def _internal_on_abort(self) -> None:
+        super()._internal_on_abort()
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort child if RUNNING or SUSPENDED
         if(self._child_ec_list[0].instance.get_status() == NodeStatus.RUNNING or

@@ -121,6 +121,7 @@ class SequenceNode(ControlNode, ABC):
                 self._child_ec_list[self._child_ptr].instance = None
 
     def _internal_on_abort(self) -> None:
+        super()._internal_on_abort()
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
         # abort current child if RUNNING or SUSPENDED
         if(self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.RUNNING or

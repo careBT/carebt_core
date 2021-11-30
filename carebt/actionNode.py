@@ -68,6 +68,7 @@ class ActionNode(TreeNode, ABC):
                 self.__last_ts = current_ts
 
     def _internal_on_abort(self) -> None:
+        super()._internal_on_abort()
         self.bt_runner.get_logger().info('aborting {}'.format(self.__class__.__name__))
         self.on_abort()
         self.set_status(NodeStatus.ABORTED)

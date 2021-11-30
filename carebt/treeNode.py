@@ -87,9 +87,8 @@ class TreeNode(ABC):
     def _internal_on_tick(self) -> None:
         raise NotImplementedError
 
-    @abstractmethod
     def _internal_on_abort(self) -> None:
-        raise NotImplementedError
+        self.cancel_timeout_timer()
 
     @final
     def _internal_get_bt_runner(self) -> 'BehaviorTreeRunner':
