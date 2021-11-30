@@ -71,9 +71,12 @@ class ControlNode(TreeNode, ABC):
                                        .format(child_ec.node.__name__, i))
             else:
                 if(getattr(child_ec.instance, var) is None):
-                    self.get_logger().warn('{} output {} is not set'
-                                           .format(child_ec.node.__name__,
-                                                   var.replace('_', '?', 1)))
+                    # print warning only in case status == SUCCESS or FIXED
+                    if(child_ec.instance.get_status() == NodeStatus.SUCCESS
+                       or child_ec.instance.get_status() == NodeStatus.FIXED):
+                        self.get_logger().warn('{} output {} is not set'
+                                               .format(child_ec.node.__name__,
+                                                       var.replace('_', '?', 1)))
                     setattr(self, child_ec.call_out_params[i].replace('?', '_', 1), None)
                 else:
                     setattr(self, child_ec.call_out_params[i].replace('?', '_', 1),
