@@ -33,3 +33,4 @@ careBT - contingency aware Behavior Trees
    tutorial/longrun_actions
    tutorial/simple_fallback
    tutorial/simple_parallel
+   tutorial/simple_ratecontrol
