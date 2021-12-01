@@ -11,12 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from tests.actionNodes import AddTwoNumbersAction
-from tests.actionNodes import AddTwoNumbersActionWithFailure
 from tests.global_mock import mock
 
+from tests.actionNodes import AddTwoNumbersActionWithFailure
+
 from carebt.fallbackNode import FallbackNode
+from carebt.nodeStatus import NodeStatus
 
 ########################################################################
 
@@ -35,8 +35,8 @@ class AddTwoNumbersFallback1(FallbackNode):
 
     def on_init(self) -> None:
         mock('on_init AddTwoNumbersFallback1')
-        self.append_child(AddTwoNumbersAction, '2 4 => ?result')
-        self.append_child(AddTwoNumbersAction, '3 6 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '2 4 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
 
     def on_delete(self) -> None:
         mock('on_delete AddTwoNumbersFallback1')
@@ -61,7 +61,7 @@ class AddTwoNumbersFallback2(FallbackNode):
     def on_init(self) -> None:
         mock('on_init AddTwoNumbersFallback2')
         self.append_child(AddTwoNumbersActionWithFailure, '3 => ?result')
-        self.append_child(AddTwoNumbersAction, '3 6 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
 
     def on_delete(self) -> None:
         mock('on_delete AddTwoNumbersFallback2')
@@ -87,8 +87,8 @@ class AddTwoNumbersFallback3(FallbackNode):
         mock('on_init AddTwoNumbersFallback3')
         self.append_child(AddTwoNumbersActionWithFailure, '3 => ?result')
         self.append_child(AddTwoNumbersActionWithFailure, '=> ?result')
-        self.append_child(AddTwoNumbersAction, '2 4 => ?result')
-        self.append_child(AddTwoNumbersAction, '3 6 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '2 4 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
 
     def on_delete(self) -> None:
         mock('on_delete AddTwoNumbersFallback3')
@@ -120,3 +120,40 @@ class AddTwoNumbersFallback4(FallbackNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersFallback4')
+
+########################################################################
+
+
+class AddTwoNumbersFallback5(FallbackNode):
+    """
+    The `AddTwoNumbersFallback5` is the same as `AddTwoNumbersFallback2`,
+    but has a contingency-handler which aborts the `Fallbackode`.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ AddTwoNumbersFallback5')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersFallback5')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
+
+        self.register_contingency_handler(AddTwoNumbersActionWithFailure,
+                                          [NodeStatus.FAILURE],
+                                          'NOT_TWO_NUMBERS_PROVIDED',
+                                          self.abort_handler)
+
+    def abort_handler(self):
+        mock('AddTwoNumbersFallback5: abort_handler')
+        self.abort()
+
+    def on_abort(self) -> None:
+        mock('on_abort AddTwoNumbersFallback5')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersFallback5')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersFallback5')

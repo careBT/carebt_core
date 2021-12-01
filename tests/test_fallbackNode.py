@@ -19,7 +19,9 @@ from tests.fallbackNodes import AddTwoNumbersFallback1
 from tests.fallbackNodes import AddTwoNumbersFallback2
 from tests.fallbackNodes import AddTwoNumbersFallback3
 from tests.fallbackNodes import AddTwoNumbersFallback4
+from tests.fallbackNodes import AddTwoNumbersFallback5
 
+from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 
@@ -49,11 +51,11 @@ class TestFallbackNode:
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersFallback1'),
                                        call('on_init AddTwoNumbersFallback1'),
-                                       call('__init__ AddTwoNumbersAction'),
-                                       call('on_init AddTwoNumbersAction'),
-                                       call('AddTwoNumbersAction: calculating: 2 + 4 = 6'),
-                                       call('on_delete AddTwoNumbersAction'),
-                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: calculating: 2 + 4 = 6'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
                                        call('on_delete AddTwoNumbersFallback1'),
                                        call('__del__ AddTwoNumbersFallback1')]
 
@@ -79,11 +81,11 @@ class TestFallbackNode:
                                        call('AddTwoNumbersActionWithFailure: You did not provide two numbers!'),  # noqa: E501
                                        call('on_delete AddTwoNumbersActionWithFailure'),
                                        call('__del__ AddTwoNumbersActionWithFailure'),
-                                       call('__init__ AddTwoNumbersAction'),
-                                       call('on_init AddTwoNumbersAction'),
-                                       call('AddTwoNumbersAction: calculating: 3 + 6 = 9'),
-                                       call('on_delete AddTwoNumbersAction'),
-                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: calculating: 3 + 6 = 9'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
                                        call('on_delete AddTwoNumbersFallback2'),
                                        call('__del__ AddTwoNumbersFallback2')]
 
@@ -114,11 +116,11 @@ class TestFallbackNode:
                                        call('AddTwoNumbersActionWithFailure: You did not provide two numbers!'),  # noqa: E501
                                        call('on_delete AddTwoNumbersActionWithFailure'),
                                        call('__del__ AddTwoNumbersActionWithFailure'),
-                                       call('__init__ AddTwoNumbersAction'),
-                                       call('on_init AddTwoNumbersAction'),
-                                       call('AddTwoNumbersAction: calculating: 2 + 4 = 6'),
-                                       call('on_delete AddTwoNumbersAction'),
-                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: calculating: 2 + 4 = 6'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
                                        call('on_delete AddTwoNumbersFallback3'),
                                        call('__del__ AddTwoNumbersFallback3')]
 
@@ -151,3 +153,31 @@ class TestFallbackNode:
                                        call('__del__ AddTwoNumbersActionWithFailure'),
                                        call('on_delete AddTwoNumbersFallback4'),
                                        call('__del__ AddTwoNumbersFallback4')]
+
+    ########################################################################
+
+    def test_AddTwoNumbersFallback5(self):
+        """
+        Tests the AddTwoNumbersFallback5
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
+        bt_runner.run(AddTwoNumbersFallback5)
+        assert mock.called
+        assert bt_runner.get_status() == NodeStatus.ABORTED
+        assert bt_runner.get_contingency_message() == 'NOT_TWO_NUMBERS_PROVIDED'
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersFallback5'),
+                                       call('on_init AddTwoNumbersFallback5'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: You did not provide two numbers!'),  # noqa: E501
+                                       call('AddTwoNumbersFallback5: abort_handler'),
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
+                                       call('on_abort AddTwoNumbersFallback5'),
+                                       call('on_delete AddTwoNumbersFallback5'),
+                                       call('__del__ AddTwoNumbersFallback5')]
