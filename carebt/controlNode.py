@@ -123,10 +123,6 @@ class ControlNode(TreeNode, ABC):
                                                contingency_handler[3]))
                 # execute function attached to the contingency-handler
                 exec('self.{}()'.format(contingency_handler[3]))
-                self.get_logger().debug('after contingency_handler {} - {} - {}'
-                                        .format(child_ec.instance.__class__.__name__,
-                                                child_ec.instance.get_status(),
-                                                child_ec.instance.get_contingency_message()))
                 break
 
     # PUBLIC
