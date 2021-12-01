@@ -76,16 +76,6 @@ class RootNode(ControlNode, ABC):
             self._child_ec_list[0].instance.on_delete()
             self._child_ec_list[0].instance = None
 
-    def _internal_on_abort(self) -> None:
-        super()._internal_on_abort()
-        # abort child if RUNNING or SUSPENDED
-        if(self._child_ec_list[0].instance.get_status() == NodeStatus.RUNNING or
-           self._child_ec_list[0].instance.get_status() == NodeStatus.SUSPENDED):
-            self._child_ec_list[0].instance._internal_on_abort()
-        self.set_status(NodeStatus.ABORTED)
-        self.set_contingency_message(self._child_ec_list[0].instance.get_contingency_message())
-        self.on_abort()
-
     # PUBLIC
 
     def set_child(self, node: TreeNode, params: str = None) -> None:
