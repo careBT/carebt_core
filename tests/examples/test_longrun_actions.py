@@ -21,6 +21,7 @@ from unittest.mock import patch
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
+from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
 from carebt.examples.longrun_actions import AddTwoNumbersLongRunnungAction
 from carebt.nodeStatus import NodeStatus
 
@@ -47,25 +48,47 @@ class TestLongrunActions:
                            r'AddTwoNumbersMultiTickAction: DONE 3 \+ 4 = 7\n')
         assert bool(re.match(regex, mock_print.getvalue()))
 
+    ########################################################################
+
     @patch('sys.stdout', new_callable=StringIO)
-    def test_AddTwoNumbersMultiTickAction_15ticks(self, mock_print):
+    def test_AddTwoNumbersMultiTickActionWithTimeout_1tick(self, mock_print):
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '1 3 4 => ?result')
+        assert bt_runner.get_status() == NodeStatus.SUCCESS
+        assert bt_runner.get_contingency_message() == ''
+        regex = re.compile(r'AddTwoNumbersMultiTickActionWithTimeout: DONE 3 \+ 4 = 7\n')
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_AddTwoNumbersMultiTickActionWithTimeout_3ticks(self, mock_print):
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '3 3 4 => ?result')
+        assert bt_runner.get_status() == NodeStatus.SUCCESS
+        assert bt_runner.get_contingency_message() == ''
+        regex = re.compile(r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/3\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 2/3\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: DONE 3 \+ 4 = 7\n')
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_AddTwoNumbersMultiTickActionWithTimeout_15ticks(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.OFF)
-        bt_runner.run(AddTwoNumbersMultiTickAction, '15 3 4 => ?result')
+        bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '15 3 4 => ?result')
         assert bt_runner.get_status() == NodeStatus.ABORTED
         assert bt_runner.get_contingency_message() == 'TIMEOUT'
-        regex = re.compile(r'AddTwoNumbersMultiTickAction: \(tick_count = 1/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 2/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 3/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 4/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 5/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 6/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 7/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 8/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 9/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 10/15\)\n'
-                           r'AddTwoNumbersMultiTickAction: on_timeout\n'
-                           r'AddTwoNumbersMultiTickAction: on_abort\n')
+        regex = re.compile(r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 2/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 3/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 4/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 5/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 6/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 7/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 8/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 9/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 10/15\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: on_timeout\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: on_abort\n')
         assert bool(re.match(regex, mock_print.getvalue()))
 
 ########################################################################

@@ -14,13 +14,13 @@
 
 from carebt.parallelNode import ParallelNode
 
-from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
+from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
 
 
 class SimpleParallel(ParallelNode):
     """
     The `SimpleParallel` node has three child nodes of the same type
-    (`AddTwoNumbersMultiTickAction`). With the three input parameters it can be
+    (`AddTwoNumbersMultiTickActionWithTimeout`). With the three input parameters it can be
     controlled how many tick each of the nodes take to complete. The
     `success_threshold` of the `SimpleParallel` node is set to two. That means,
     that the whole node succeeds as soon as two nodes have completed with
@@ -42,6 +42,6 @@ class SimpleParallel(ParallelNode):
         super().__init__(bt_runner, 2, '?ticks1 ?ticks2 ?ticks3')
 
     def on_init(self) -> None:
-        self.add_child(AddTwoNumbersMultiTickAction, '?ticks1 1 1 => ?c1')
-        self.add_child(AddTwoNumbersMultiTickAction, '?ticks2 2 2 => ?c2')
-        self.add_child(AddTwoNumbersMultiTickAction, '?ticks3 3 3 => ?c3')
+        self.add_child(AddTwoNumbersMultiTickActionWithTimeout, '?ticks1 1 1 => ?c1')
+        self.add_child(AddTwoNumbersMultiTickActionWithTimeout, '?ticks2 2 2 => ?c2')
+        self.add_child(AddTwoNumbersMultiTickActionWithTimeout, '?ticks3 3 3 => ?c3')

@@ -31,17 +31,17 @@ class TestSimpleParallel:
         bt_runner.run(SimpleParallel, '2 4 6')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
-        regex = re.compile(r'AddTwoNumbersMultiTickAction: \(tick_count = 1/2\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 1/4\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 1/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: DONE 1 \+ 1 = 2\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 2/4\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 2/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 3/4\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 3/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: DONE 2 \+ 2 = 4\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 4/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: on_abort\n')
+        regex = re.compile(r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/2\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/4\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: DONE 1 \+ 1 = 2\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 2/4\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 2/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 3/4\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 3/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: DONE 2 \+ 2 = 4\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 4/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: on_abort\n')
         assert bool(re.match(regex, mock_print.getvalue()))
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -50,15 +50,15 @@ class TestSimpleParallel:
         bt_runner.run(SimpleParallel, '6 4 2')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
-        regex = re.compile(r'AddTwoNumbersMultiTickAction: \(tick_count = 1/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 1/4\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 1/2\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 2/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 2/4\)\n'
-                           r'AddTwoNumbersMultiTickAction: DONE 3 \+ 3 = 6\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 3/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 3/4\)\n'
-                           r'AddTwoNumbersMultiTickAction: \(tick_count = 4/6\)\n'
-                           r'AddTwoNumbersMultiTickAction: DONE 2 \+ 2 = 4\n'
-                           r'AddTwoNumbersMultiTickAction: on_abort\n')
+        regex = re.compile(r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/4\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 1/2\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 2/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 2/4\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: DONE 3 \+ 3 = 6\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 3/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 3/4\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: \(tick_count = 4/6\)\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: DONE 2 \+ 2 = 4\n'
+                           r'AddTwoNumbersMultiTickActionWithTimeout: on_abort\n')
         assert bool(re.match(regex, mock_print.getvalue()))

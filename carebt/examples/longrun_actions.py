@@ -46,11 +46,6 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
     def on_init(self) -> None:
         self._tick_count = 1
-        # without throttling
-        self.set_timeout(500)
-        # with throttling
-        # self.set_throttle_ms(1000)
-        # self.set_timeout(5000)
 
     def on_tick(self) -> None:
         if(self._tick_count < self._ticks):
@@ -64,13 +59,60 @@ class AddTwoNumbersMultiTickAction(ActionNode):
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.SUCCESS)
 
+########################################################################
+
+
+class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
+    """
+    The `AddTwoNumbersMultiTickActionWithTimeout` adds a timeout to the
+    `AddTwoNumbersMultiTickAction`.
+
+    Input Parameters
+    ----------------
+    ?ticks : int
+        Number of ticks requiered to complete
+    ?x : int
+        The first value
+    ?y : int
+        The second value
+
+    Output Parameters
+    -----------------
+    ?z : int
+        The sum of ?x and ?y
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?ticks ?x ?y => ?z')
+
+    def on_init(self) -> None:
+        self._tick_count = 1
+        # without throttling / with timeout
+        self.set_timeout(500)
+        # with throttling and timeout
+        # self.set_throttle_ms(1000)
+        # self.set_timeout(5000)
+
+    def on_tick(self) -> None:
+        if(self._tick_count < self._ticks):
+            print('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = {}/{})'
+                  .format(self._tick_count, self._ticks))
+            self._tick_count += 1
+            self.set_status(NodeStatus.RUNNING)
+        else:
+            self._z = self._x + self._y
+            print('AddTwoNumbersMultiTickActionWithTimeout: DONE {} + {} = {}'
+                  .format(self._x, self._y, self._z))
+            self.set_status(NodeStatus.SUCCESS)
+
     def on_timeout(self) -> None:
-        print('AddTwoNumbersMultiTickAction: on_timeout')
+        print('AddTwoNumbersMultiTickActionWithTimeout: on_timeout')
         self.abort()
         self.set_contingency_message('TIMEOUT')
 
     def on_abort(self) -> None:
-        print('AddTwoNumbersMultiTickAction: on_abort')
+        print('AddTwoNumbersMultiTickActionWithTimeout: on_abort')
 
 ########################################################################
 
