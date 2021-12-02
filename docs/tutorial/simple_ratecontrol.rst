@@ -6,7 +6,7 @@ Overview
 
 This tutorial demonstrates the **careBT** ``RateControlNode``. Therefore the ``SimpleRateControl`` node
 is implemented which has one child, the ``AddTwoNumbersMultiTickAction``. The ``SimpleRateControl`` node
-throttles the tick rate to 1000 ms.
+throttles the tick rate of the ``AddTwoNumbersMultiTickAction`` node to 1000 ms.
 
 
 Create the SimpleRateControl node
@@ -54,3 +54,6 @@ Start the Python interpreter and run the ``SimpleRateControl`` node:
     AddTwoNumbersMultiTickAction: (tick_count = 3/5)
     AddTwoNumbersMultiTickAction: (tick_count = 4/5)
     AddTwoNumbersMultiTickAction: DONE 2 + 3 = 5
+
+The ``AddTwoNumbersMultiTickAction`` node is executed until the fifth tick completes
+the execution of the node. The time between the ticks is 1000 ms.

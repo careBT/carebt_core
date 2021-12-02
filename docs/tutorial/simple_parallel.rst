@@ -7,7 +7,7 @@ Overview
 This tutorial demonstrates the **careBT** ``ParallelNode``. Therefore the ``SimpleParallel`` node
 is implemented which has three child nodes of the same type (``AddTwoNumbersMultiTickAction``). With
 the input parameters, the amount of ticks can be specified that the children take to complete. As the
-``success_threshold`` is set to two the ``SimpleParallel`` node succeeds in case that two nodes complete
+``success_threshold`` is set to two, the ``SimpleParallel`` node succeeds in case that two nodes complete
 with ``SUCCESS`` or ``FIXED``, or fails in case one child node completes with ``FAILURE`` or
 ``ABORTED``. By 'playing around' with the input parameters different situation can be provoked.
 
@@ -32,7 +32,7 @@ The ``AddTwoNumbersMultiTickAction`` node was already introduced in
 in this example.
 
 The constructor (``__init__``) of the ``SimpleParallel`` needs to call the constructor (``super().__init__``)
-of the ``ParallelNode`` and pass the bt_runner, the success_threshold and the signature as arguments. The
+of the ``ParallelNode`` and passes the bt_runner, the success_threshold and the signature as arguments. The
 success_threshold is set to two, and the signature defines three input parameter.
 
 .. literalinclude:: ../../carebt/examples/parallel.py

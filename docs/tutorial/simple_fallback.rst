@@ -30,7 +30,7 @@ The ``AddTwoNumbersActionWithFailures`` node was already introduced in
 in this example.
 
 The constructor (``__init__``) of the ``SimpleFallback`` needs to call the constructor (``super().__init__``)
-of the ``FallbackNode`` and pass the bt_runner and the signature as arguments. The signature defines three
+of the ``FallbackNode`` and passes the bt_runner and the signature as arguments. The signature defines three
 input parameter called *?b1 ?b2 ?b3*.
 
 .. literalinclude:: ../../carebt/examples/fallback.py

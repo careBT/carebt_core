@@ -9,7 +9,7 @@ called ``AddTwoNumbersAction``, is implemented which receives two numbers (*?x*,
 result to an output parameter (*?z*). This is, of course, a simplified example, as adding two numbers is typically not done by an custom
 action node. But it demonstrates how parameters are working in **careBT**, without caring about the scenario and how "realistic" it is.
 
-The signature (input/output parameters) of the node is defined by a string provided to the constructor of the
+The signature (input/output parameters) of a node is defined by a string provided to the constructor of the
 **careBT** node the custom node inherits from and works for all **careBT** nodes in the same way. The syntax is
 *<list of input parameters> => <list of output parameters>* with parameter names starting with *?*. 
 Each parameter is then available in the custom node class with the name *_<variable-name>*.
@@ -49,7 +49,7 @@ documentation of the node, which also documents the interface (input/output para
     :language: python
     :lines: 20-37
 
-The constructor (``__init__``) of the ``AddTwoNumbersAction`` needs to call the constructor (``super().__init__``)
+The constructor (``__init__``) of the ``AddTwoNumbersAction`` node needs to call the constructor (``super().__init__``)
 of the ``ActionNode`` and passes the bt_runner and the signature as arguments. The input parameters are *?x* and *?y*,
 and the output parameter is *?z*. These parameters are then available inside the node as member variables, called:
 *_x*, *_y* and *_z*.
@@ -60,8 +60,8 @@ and the output parameter is *?z*. These parameters are then available inside the
 
 The ``on_init`` function is called rigth after the node was created. It is the place to put the code which should
 be executed once, after the node was created. In this example it is implemented that the two input parameters are
-checked if values are bound to them during creation. If the variables are not bound (``... is None``), the default value 0
-is set.
+checked if values are bound to them during creation. If the variables are not bound (``... is None``), the value
+is set zero.
 
 .. literalinclude:: ../../carebt/examples/action_with_params.py
     :language: python
@@ -94,6 +94,7 @@ Start the Python interpreter and run the ``AddTwoNumbersAction`` node:
     2021-11-12 22:13:48 WARN AddTwoNumbersAction takes 2 argument(s), but 0 was/were provided
     AddTwoNumbersAction: calculating: 0 + 0 = 0
 
-Above the ``AddTwoNumbersAction`` is executed three times. The first one is the standard case, where
-two input parameters are provided as expected. In the second and third execution one or both input
-parameters are missing. This is announced as a **CareBT**-warning and the default values are used.
+Above the ``AddTwoNumbersAction`` node is executed three times. The first execution is the standard case,
+where two input parameters are provided as expected. In the second and third execution one or both
+input parameters are missing. This is announced as a **CareBT**-warning and the default values are
+used.

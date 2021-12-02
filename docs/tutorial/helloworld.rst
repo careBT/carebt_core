@@ -45,7 +45,7 @@ documentation of the node.
     :lines: 20-27
 
 The constructor (``__init__``) of the ``HelloWorldAction`` needs to call the constructor (``super().__init__``)
-of the ``ActionNode`` and pass the bt_runner as an argument. This is required by the **careBT** execution engine to work
+of the ``ActionNode`` and passes the bt_runner as an argument. This is required by the **careBT** execution engine to work
 properly. The constructor is also the place to register the input/output parameters of the node and will be explained
 in further tutorials.
 

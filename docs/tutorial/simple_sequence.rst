@@ -8,7 +8,7 @@ This tutorial demonstrates a couple of simple **careBT** ``SequenceNodes``. For 
 the ``ActionNode`` (``AddTwoNumbersAction``) implemented in the previous tutorial is reused
 and two additional ``ActionNodes`` are implemented. The first one (``CreateRandomNumberAction``)
 generates a random numer and provides it as output parameter. The second one (``PrintNumberAction``)
-prints the provided number as input parameter on standard output.
+prints the, as input parameter, provided number on standard output.
 
 
 Create the ActionNodes and the SimpleSequence
@@ -32,7 +32,7 @@ This first example called ``SimpleSequence`` contains four child nodes.
         s1 -> s1c4
    }
 
-The first two generate two random numbers, the third one adds them together and the last
+The first two nodes generate two random numbers, the third one adds them and the last
 one prints the result.
 
 Create a file named ``simple_sequence.py`` with following content.
@@ -81,7 +81,7 @@ documentation of the node, which also documents the interface (output parameters
     :lines: 72-84
 
 The constructor (``__init__``) of the ``SimpleSequence`` needs to call the constructor (``super().__init__``)
-of the ``SequenceNode`` and pass the bt_runner and the signature as arguments. The signature defines one
+of the ``SequenceNode`` and passes the bt_runner and the signature as arguments. The signature defines one
 output parameter called *?c*.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py

@@ -7,12 +7,13 @@ Overview
 There are two different types of long running ``ActionNodes``. 
 
 First, there are the ``ActionNodes`` that require more ticks to complete. In this case typically in the
-``on_tick`` callback an action is triggered and/or the result is checked. But the execution time of one
-tick of the ``on_tick`` function should be fast. Otherwise this affects the execution of the **careBT**
-execution engine. Thus, this programming model should be used if an action needs to be triggered or a
-check of a state needs to be executed periodically and the execution time is fast.
+``on_tick`` callback a function (action) is triggered and/or a status in the 'world' is checked.
+However, the execution time of one tick of the ``on_tick`` function has to be fast. Otherwise this affects the
+execution of the **careBT** execution engine. Thus, this programming model should be used if a function
+needs to be triggered or a check of a state needs to be executed periodically and the execution
+time is fast.
 
-Second, there are the ``ActionNodes`` that need to call long running asynchronous actions. In this case
+Second, there are the ``ActionNodes`` that need to call long running asynchronous functions (actions). In this case
 the node is put into the ``SUSPENDED`` state to suppress further calls of the ``on_tick`` callback. When
 initiating the asynchronous action a 'result' callback should be registered that can then take over and
 change the state of the node accordingly. In the following example this asynchronous action is 'simulated'
@@ -55,7 +56,7 @@ In the ``on_init`` function the internal *_tick_count* variable is initialized t
     :lines: 47-48
 
 In the ``on_tick`` function it is checked whether the internal *_tick_count* has reached the provided
-*?tick* limit or not. In case the limit is reached the other two input parameters are added together,
+*?tick* limit or not. In case the limit is reached the other two input parameters are added,
 the result is bound to the output parameter and the node is set so ``SUCCESS``. In case the *_tick_count*
 limit is not reached a message is printed on standard output. The node remains in status ``RUNNING`` and thus,
 it is ticked again.
@@ -95,7 +96,7 @@ Start the Python interpreter and run the ``AddTwoNumbersMultiTickAction`` node:
     AddTwoNumbersMultiTickAction: DONE 4 + 7 = 11
 
 
-Create a multi-tick ActionNode with tiemout
+Create a multi-tick ActionNode with timeout
 -------------------------------------------
 
 Add the following content to ``longrun_actions.py``.
@@ -110,30 +111,30 @@ Or use the provided file: :download:`longrun_actions.py <../../carebt/examples/l
 The code explained
 ^^^^^^^^^^^^^^^^^^
 
-The ``AddTwoNumbersMultiTickActionWithTimeout`` introduces a timeout and throtteling to
+The ``AddTwoNumbersMultiTickActionWithTimeout`` introduces a timeout and throttling to
 the ``AddTwoNumbersMultiTickAction``.
 
 In the ``on_init`` function the internal *_tick_count* variable is initialized to one and a timeout
 is specified for the node which expires after 500 ms. In case the timeout expires the ``on_timeout``
 callback is called. In the second variant (which is commented out) throttling is set to 1000 ms.
 This ensures that the ticks of the node are omitted and not forwarded until 1000 ms have passed. Thus,
-the ``on_tick`` function is called each 1000ms. Furthermore the timeout is set to 5000, that the timeout
-is greater than the throttling.
+the ``on_tick`` function is called each 1000ms. Furthermore the timeout is set to 5000 ms, that the
+timeout is greater than the throttling.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
     :lines: 89-95
 
-The ``on_timeout`` function is called is case the specified timeout timer expires. In this example
+The ``on_timeout`` function is called is case the specified timeout timer expires. In this example,
 it is implemented that the current node is aborted and the contingency-message is set to 'TIMEOUT'.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
     :lines: 109-112
 
-The ``on_abort`` function is called in case that the node is set to ``ABORT``. This is the place
-to do some cleanup which needs to be done in case the 'running' action is aborted. In this example
-only a message is printed on standard output.
+The ``on_abort`` function is called in case that the node is aborted. This function is the place
+to do some cleanup which needs to be done in case the 'running' actions (resources) are aborted.
+In this example only a message is printed on standard output.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
@@ -177,8 +178,8 @@ Start the Python interpreter and run the ``AddTwoNumbersMultiTickAction`` node:
 
 .. hint::
 
-    Change the comments to enable throttling and increase the timeout to also
-    test with feature.
+    Change the comments to enable throttling and increase the timeout to 5000 ms to also
+    test this feature.
 
 
 Create an asynchronous ActionNode
@@ -198,7 +199,7 @@ The code explained
 
 In the ``on_init`` function the node status is set to ``SUSPENDED`` and a Python timer is implemented
 to 'simulate' an asynchronous action. This timer is set to *?calctime* and the ``done_callback`` is
-registerd which is called as soon as the timer has expired.
+registered which is called as soon as the timer has expired.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
