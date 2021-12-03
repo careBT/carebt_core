@@ -14,7 +14,7 @@
 
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
-from tests.actionNodes import AddTwoNumbersLongRunnungActionWithAbort
+from tests.actionNodes import AddTwoNumbersLongRunningActionWithAbort
 from tests.actionNodes import FixMissingNumbersAction
 from tests.actionNodes import HelloWorldAction
 from tests.actionNodes import HelloWorldActionWithMessage
@@ -292,8 +292,8 @@ class AddTwoNumbersSequence7(SequenceNode):
     """
     The `AddTwoNumbersSequence7` has four children and two different
     contingency_handlers. One to handle the `FAILURE` of `AddTwoNumbersActionWithFailure`
-    and `AddTwoNumbersLongRunnungActionWithAbort`, and the other one to handle the
-    `ABORTED` of `AddTwoNumbersLongRunnungActionWithAbort`. For the former the
+    and `AddTwoNumbersLongRunningActionWithAbort`, and the other one to handle the
+    `ABORTED` of `AddTwoNumbersLongRunningActionWithAbort`. For the former the
     regex 'AddTwoNumbers.*' is used in order to activate the contingency-handler for
     both `ActionNodes`.
 
@@ -318,7 +318,7 @@ class AddTwoNumbersSequence7(SequenceNode):
 
         self.append_child(AddTwoNumbersActionWithFailure, '?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
-        self.append_child(AddTwoNumbersLongRunnungActionWithAbort, '?calctime ?a ?b => ?result')
+        self.append_child(AddTwoNumbersLongRunningActionWithAbort, '?calctime ?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 
         self.register_contingency_handler(r'AddTwoNumbers.*',
@@ -326,7 +326,7 @@ class AddTwoNumbersSequence7(SequenceNode):
                                           'NOT_TWO_NUMBERS_PROVIDED',
                                           self.fix_missing_numbers_handler)
 
-        self.register_contingency_handler(AddTwoNumbersLongRunnungActionWithAbort,
+        self.register_contingency_handler(AddTwoNumbersLongRunningActionWithAbort,
                                           [NodeStatus.ABORTED],
                                           'TIMEOUT',
                                           self.fix_timeout_handler)
@@ -363,8 +363,8 @@ class AddTwoNumbersSequence8(SequenceNode):
     """
     The `AddTwoNumbersSequence8` has four children and two different
     contingency_handlers. One to handle the `FAILURE` of `AddTwoNumbersActionWithFailure`
-    and `AddTwoNumbersLongRunnungActionWithAbort`, and the other one to handle the
-    `ABORTED` of `AddTwoNumbersLongRunnungActionWithAbort`. For the former the
+    and `AddTwoNumbersLongRunningActionWithAbort`, and the other one to handle the
+    `ABORTED` of `AddTwoNumbersLongRunningActionWithAbort`. For the former the
     regex 'AddTwoNumbers.*' is used in order to activate the contingency-handler for
     both `ActionNodes`.
 
@@ -391,7 +391,7 @@ class AddTwoNumbersSequence8(SequenceNode):
 
         self.append_child(AddTwoNumbersActionWithFailure, '?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
-        self.append_child(AddTwoNumbersLongRunnungActionWithAbort, '?calctime ?a ?b => ?result')
+        self.append_child(AddTwoNumbersLongRunningActionWithAbort, '?calctime ?a ?b => ?result')
         self.append_child(ShowNumberAction, '?result')
 
         self.register_contingency_handler(r'AddTwoNumbers.*',
@@ -399,7 +399,7 @@ class AddTwoNumbersSequence8(SequenceNode):
                                           'NOT_TWO_NUMBERS_PROVIDED',
                                           self.fix_missing_numbers_handler)
 
-        self.register_contingency_handler(AddTwoNumbersLongRunnungActionWithAbort,
+        self.register_contingency_handler(AddTwoNumbersLongRunningActionWithAbort,
                                           [NodeStatus.ABORTED],
                                           'TIMEOUT',
                                           self.fix_timeout_handler)

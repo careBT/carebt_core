@@ -224,13 +224,13 @@ the status of the node is set to ``SUCCESS``.
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter and run the ``AddTwoNumbersLongRunnungAction`` node:
+Start the Python interpreter and run the ``AddTwoNumbersLongRunningAction`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.longrun_actions import AddTwoNumbersLongRunnungAction
+    >>> from carebt.examples.longrun_actions import AddTwoNumbersLongRunningAction
     >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
     >>> bt_runner = BehaviorTreeRunner()
-    >>> bt_runner.run(AddTwoNumbersLongRunnungAction, '2000 4 7 => ?result')
-    AddTwoNumbersLongRunnungAction: calculating 2000 ms ...
-    AddTwoNumbersLongRunnungAction: DONE 4 + 7 = 11
+    >>> bt_runner.run(AddTwoNumbersLongRunningAction, '2000 4 7 => ?result')
+    AddTwoNumbersLongRunningAction: calculating 2000 ms ...
+    AddTwoNumbersLongRunningAction: DONE 4 + 7 = 11

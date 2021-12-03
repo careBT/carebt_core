@@ -397,7 +397,7 @@ class TestSequenceNode:
     def test_AddTwoNumbersSequence7_50_1_2(self):
         """
         Tests the AddTwoNumbersSequence7 with two valid inputs and ?calctime = 50ms,
-        which is faster than the timeout of the `AddTwoNumbersLongRunnungActionWithAbort`
+        which is faster than the timeout of the `AddTwoNumbersLongRunningActionWithAbort`
         (1000ms) and the `AddTwoNumbersSequence7`(500ms).
 
         """
@@ -421,12 +421,12 @@ class TestSequenceNode:
                                        call('ShowNumberAction: The numer is: 3!'),
                                        call('on_delete ShowNumberAction'),
                                        call('__del__ ShowNumberAction'),
-                                       call('__init__ AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_init AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: calculating 50 ms ... (timeout = 1000 ms)'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: done_callback: 1 + 2 = 3'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('__del__ AddTwoNumbersLongRunnungActionWithAbort'),
+                                       call('__init__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_init AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('AddTwoNumbersLongRunningActionWithAbort: calculating 50 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningActionWithAbort: done_callback: 1 + 2 = 3'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('__del__ AddTwoNumbersLongRunningActionWithAbort'),
                                        call('__init__ ShowNumberAction'),
                                        call('on_init ShowNumberAction'),
                                        call('ShowNumberAction: The numer is: 3!'),
@@ -463,13 +463,13 @@ class TestSequenceNode:
                                        call('ShowNumberAction: The numer is: 3!'),
                                        call('on_delete ShowNumberAction'),
                                        call('__del__ ShowNumberAction'),
-                                       call('__init__ AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_init AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: calculating 750 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('__init__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_init AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('AddTwoNumbersLongRunningActionWithAbort: calculating 750 ms ... (timeout = 1000 ms)'),  # noqa: E501
                                        call('AddTwoNumbersSequence7: on_timeout'),
-                                       call('on_abort AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_delete AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('__del__ AddTwoNumbersLongRunnungActionWithAbort'),
+                                       call('on_abort AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('__del__ AddTwoNumbersLongRunningActionWithAbort'),
                                        call('__init__ ShowNumberAction'),
                                        call('on_init ShowNumberAction'),
                                        call('ShowNumberAction: The numer is: 9999!'),
@@ -481,7 +481,7 @@ class TestSequenceNode:
     def test_AddTwoNumbersSequence7_50_1(self):
         """
         Tests the `AddTwoNumbersSequence7` with ONLY one valid input and ?calctime = 50ms,
-        which is faster than the timeout of the `AddTwoNumbersLongRunnungActionWithAbort`
+        which is faster than the timeout of the `AddTwoNumbersLongRunningActionWithAbort`
         (1000ms) and the `AddTwoNumbersSequence7`(500ms).
 
         """
@@ -506,12 +506,12 @@ class TestSequenceNode:
                                        call('ShowNumberAction: The numer is: 1234!'),
                                        call('on_delete ShowNumberAction'),
                                        call('__del__ ShowNumberAction'),
-                                       call('__init__ AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_init AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: You did not provide two numbers!'),  # noqa: E501
+                                       call('__init__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_init AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('AddTwoNumbersLongRunningActionWithAbort: You did not provide two numbers!'),  # noqa: E501
                                        call('AddTwoNumbersSequence7: fix_missing_numbers_handler'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('__del__ AddTwoNumbersLongRunnungActionWithAbort'),
+                                       call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('__del__ AddTwoNumbersLongRunningActionWithAbort'),
                                        call('__init__ ShowNumberAction'),
                                        call('on_init ShowNumberAction'),
                                        call('ShowNumberAction: The numer is: 1234!'),
@@ -549,14 +549,14 @@ class TestSequenceNode:
                                        call('ShowNumberAction: The numer is: 3!'),
                                        call('on_delete ShowNumberAction'),
                                        call('__del__ ShowNumberAction'),
-                                       call('__init__ AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_init AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: calculating 750 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('__init__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_init AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('AddTwoNumbersLongRunningActionWithAbort: calculating 750 ms ... (timeout = 1000 ms)'),  # noqa: E501
                                        call('AddTwoNumbersSequence8: on_timeout'),
-                                       call('on_abort AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_delete AddTwoNumbersLongRunnungActionWithAbort'),
+                                       call('on_abort AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
                                        call('on_abort AddTwoNumbersSequence8'),
-                                       call('__del__ AddTwoNumbersLongRunnungActionWithAbort'),
+                                       call('__del__ AddTwoNumbersLongRunningActionWithAbort'),
                                        call('on_delete AddTwoNumbersSequence8'),
                                        call('__del__ AddTwoNumbersSequence8')]
 

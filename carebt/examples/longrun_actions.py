@@ -117,9 +117,9 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
 ########################################################################
 
 
-class AddTwoNumbersLongRunnungAction(ActionNode):
+class AddTwoNumbersLongRunningAction(ActionNode):
     """
-    The `AddTwoNumbersLongRunnungAction` demonstrates how it looks like when a
+    The `AddTwoNumbersLongRunningAction` demonstrates how it looks like when a
     `ActionNode` executes an asynchronous function. To make things simple the
     asynchronous function is implemented with a simple Python timer and
     the amount of milliseconds the asynchronous function requires to complete
@@ -145,16 +145,16 @@ class AddTwoNumbersLongRunnungAction(ActionNode):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
 
     def on_init(self) -> None:
-        print('AddTwoNumbersLongRunnungAction: calculating {} ms ...'
+        print('AddTwoNumbersLongRunningAction: calculating {} ms ...'
               .format(self._calctime))
         self.set_status(NodeStatus.SUSPENDED)
         Timer(self._calctime / 1000, self.done_callback).start()
 
     def on_tick(self) -> None:
-        print('AddTwoNumbersLongRunnungAction: on_tick')
+        print('AddTwoNumbersLongRunningAction: on_tick')
 
     def done_callback(self) -> None:
         self._z = self._x + self._y
-        print('AddTwoNumbersLongRunnungAction: DONE {} + {} = {}'
+        print('AddTwoNumbersLongRunningAction: DONE {} + {} = {}'
               .format(self._x, self._y, self._z))
         self.set_status(NodeStatus.SUCCESS)

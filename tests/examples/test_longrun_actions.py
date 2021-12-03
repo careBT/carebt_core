@@ -22,7 +22,7 @@ from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
-from carebt.examples.longrun_actions import AddTwoNumbersLongRunnungAction
+from carebt.examples.longrun_actions import AddTwoNumbersLongRunningAction
 from carebt.nodeStatus import NodeStatus
 
 
@@ -94,11 +94,11 @@ class TestLongrunActions:
 ########################################################################
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_AddTwoNumbersLongRunnungAction_ok(self, mock_print):
+    def test_AddTwoNumbersLongRunningAction_ok(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(AddTwoNumbersLongRunnungAction, '2000 3 4 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningAction, '2000 3 4 => ?result')
         assert bt_runner.get_status() == NodeStatus.SUCCESS
         assert bt_runner.get_contingency_message() == ''
-        regex = re.compile(r'AddTwoNumbersLongRunnungAction: calculating 2000 ms ...\n'
-                           r'AddTwoNumbersLongRunnungAction: DONE 3 \+ 4 = 7\n')
+        regex = re.compile(r'AddTwoNumbersLongRunningAction: calculating 2000 ms ...\n'
+                           r'AddTwoNumbersLongRunningAction: DONE 3 \+ 4 = 7\n')
         assert bool(re.match(regex, mock_print.getvalue()))

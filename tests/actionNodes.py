@@ -391,9 +391,9 @@ class AddTwoNumbersThrottledMultiTickAction(ActionNode):
 ########################################################################
 
 
-class AddTwoNumbersLongRunnungAction(ActionNode):
+class AddTwoNumbersLongRunningAction(ActionNode):
     """
-    The `AddTwoNumbersLongRunnungAction` is a variation of the
+    The `AddTwoNumbersLongRunningAction` is a variation of the
     `AddTwoNumbersAction` which demonstrates how it looks like when a
     `ActionNode` executes an asynchronous function. To make things simple the
     asynchronous function is implemented with a simple Python timer and
@@ -418,40 +418,40 @@ class AddTwoNumbersLongRunnungAction(ActionNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
-        mock('__init__ AddTwoNumbersLongRunnungAction')
+        mock('__init__ AddTwoNumbersLongRunningAction')
 
     def on_init(self) -> None:
-        mock('on_init AddTwoNumbersLongRunnungAction')
+        mock('on_init AddTwoNumbersLongRunningAction')
 
     def on_tick(self) -> None:
-        mock('AddTwoNumbersLongRunnungAction: calculating {} ms ...'
+        mock('AddTwoNumbersLongRunningAction: calculating {} ms ...'
              .format(self._calctime))
-        print('AddTwoNumbersLongRunnungAction: calculating {} ms ...'
+        print('AddTwoNumbersLongRunningAction: calculating {} ms ...'
               .format(self._calctime))
         self.set_status(NodeStatus.SUSPENDED)
         Timer(self._calctime / 1000, self.done_callback).start()
 
     def done_callback(self) -> None:
         self._z = self._x + self._y
-        mock('AddTwoNumbersLongRunnungAction: done: {} + {} = {}'
+        mock('AddTwoNumbersLongRunningAction: done: {} + {} = {}'
              .format(self._x, self._y, self._z))
-        print('AddTwoNumbersLongRunnungAction: done: {} + {} = {}'
+        print('AddTwoNumbersLongRunningAction: done: {} + {} = {}'
               .format(self._x, self._y, self._z))
         self.set_status(NodeStatus.SUCCESS)
 
     def on_delete(self) -> None:
-        mock('on_delete AddTwoNumbersLongRunnungAction')
+        mock('on_delete AddTwoNumbersLongRunningAction')
 
     def __del__(self):
-        mock('__del__ AddTwoNumbersLongRunnungAction')
+        mock('__del__ AddTwoNumbersLongRunningAction')
 
 ########################################################################
 
 
-class AddTwoNumbersLongRunnungActionWithAbort(ActionNode):
+class AddTwoNumbersLongRunningActionWithAbort(ActionNode):
     """
-    The `AddTwoNumbersLongRunnungActionWithAbort` is a variation of the
-    `AddTwoNumbersLongRunnungAction`. It uses the timeout callback to abort
+    The `AddTwoNumbersLongRunningActionWithAbort` is a variation of the
+    `AddTwoNumbersLongRunningAction`. It uses the timeout callback to abort
     the `ActionNode` in case that the execution (asynchronous function) takes
     to long.
 
@@ -482,26 +482,26 @@ class AddTwoNumbersLongRunnungActionWithAbort(ActionNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
-        mock('__init__ AddTwoNumbersLongRunnungActionWithAbort')
+        mock('__init__ AddTwoNumbersLongRunningActionWithAbort')
 
     def on_init(self) -> None:
-        mock('on_init AddTwoNumbersLongRunnungActionWithAbort')
+        mock('on_init AddTwoNumbersLongRunningActionWithAbort')
         self.__TIMEOUT: int = 1000
         self.set_timeout(self.__TIMEOUT)
 
     def on_tick(self) -> None:
         if(self._x is None or self._y is None):
-            mock('AddTwoNumbersLongRunnungActionWithAbort: '
+            mock('AddTwoNumbersLongRunningActionWithAbort: '
                  'You did not provide two numbers!')
-            print('AddTwoNumbersLongRunnungActionWithAbort: '
+            print('AddTwoNumbersLongRunningActionWithAbort: '
                   'You did not provide two numbers!')
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
-            mock('AddTwoNumbersLongRunnungActionWithAbort: calculating {} ms ... '
+            mock('AddTwoNumbersLongRunningActionWithAbort: calculating {} ms ... '
                  '(timeout = {} ms)'
                  .format(self._calctime, self.__TIMEOUT))
-            print('AddTwoNumbersLongRunnungActionWithAbort: calculating {} ms ... '
+            print('AddTwoNumbersLongRunningActionWithAbort: calculating {} ms ... '
                   '(timeout = {} ms)'
                   .format(self._calctime, self.__TIMEOUT))
             self.set_status(NodeStatus.SUSPENDED)
@@ -514,40 +514,40 @@ class AddTwoNumbersLongRunnungActionWithAbort(ActionNode):
         # careBT tick
         if(self.get_status() == NodeStatus.SUSPENDED):
             self._z = self._x + self._y
-            mock('AddTwoNumbersLongRunnungActionWithAbort: done_callback: {} + {} = {}'
+            mock('AddTwoNumbersLongRunningActionWithAbort: done_callback: {} + {} = {}'
                  .format(self._x, self._y, self._z))
-            print('AddTwoNumbersLongRunnungActionWithAbort: done_callback: {} + {} = {}'
+            print('AddTwoNumbersLongRunningActionWithAbort: done_callback: {} + {} = {}'
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.SUCCESS)
             self.__done_timer.cancel()
 
     def on_timeout(self) -> None:
-        mock('on_timeout AddTwoNumbersLongRunnungActionWithAbort')
-        print('on_timeout AddTwoNumbersLongRunnungActionWithAbort')
+        mock('on_timeout AddTwoNumbersLongRunningActionWithAbort')
+        print('on_timeout AddTwoNumbersLongRunningActionWithAbort')
         self.abort()
         self.set_contingency_message('TIMEOUT')
 
     def on_abort(self) -> None:
-        mock('on_abort AddTwoNumbersLongRunnungActionWithAbort')
-        print('on_abort AddTwoNumbersLongRunnungActionWithAbort')
+        mock('on_abort AddTwoNumbersLongRunningActionWithAbort')
+        print('on_abort AddTwoNumbersLongRunningActionWithAbort')
         self.__done_timer.cancel()
 
     def on_delete(self) -> None:
-        mock('on_delete AddTwoNumbersLongRunnungActionWithAbort')
+        mock('on_delete AddTwoNumbersLongRunningActionWithAbort')
         # set the timer to None to make sure that all references (bound method)
         # are released and the object gets destroyed by gc
         self.__done_timer = None
 
     def __del__(self):
-        mock('__del__ AddTwoNumbersLongRunnungActionWithAbort')
+        mock('__del__ AddTwoNumbersLongRunningActionWithAbort')
 
 ########################################################################
 
 
-class AddTwoNumbersLongRunnungActionMissingCallback(ActionNode):
+class AddTwoNumbersLongRunningActionMissingCallback(ActionNode):
     """
-    The `AddTwoNumbersLongRunnungActionMissingCallback` is a variant of the
-    `AddTwoNumbersLongRunnungActionWithAbort` but does not override on_timeout.
+    The `AddTwoNumbersLongRunningActionMissingCallback` is a variant of the
+    `AddTwoNumbersLongRunningActionWithAbort` but does not override on_timeout.
 
     Input Parameters
     ----------------
@@ -567,26 +567,26 @@ class AddTwoNumbersLongRunnungActionMissingCallback(ActionNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
-        mock('__init__ AddTwoNumbersLongRunnungActionMissingCallback')
+        mock('__init__ AddTwoNumbersLongRunningActionMissingCallback')
 
     def on_init(self) -> None:
-        mock('on_init AddTwoNumbersLongRunnungActionMissingCallback')
+        mock('on_init AddTwoNumbersLongRunningActionMissingCallback')
         self.__TIMEOUT: int = 1000
         self.set_timeout(self.__TIMEOUT)
 
     def on_tick(self) -> None:
         if(self._x is None or self._y is None):
-            mock('AddTwoNumbersLongRunnungActionMissingCallback: '
+            mock('AddTwoNumbersLongRunningActionMissingCallback: '
                  'You did not provide two numbers!')
-            print('AddTwoNumbersLongRunnungActionMissingCallback: '
+            print('AddTwoNumbersLongRunningActionMissingCallback: '
                   'You did not provide two numbers!')
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
-            mock('AddTwoNumbersLongRunnungActionMissingCallback: calculating {} ms ... '
+            mock('AddTwoNumbersLongRunningActionMissingCallback: calculating {} ms ... '
                  '(timeout = {} ms)'
                  .format(self._calctime, self.__TIMEOUT))
-            print('AddTwoNumbersLongRunnungActionMissingCallback: calculating {} ms ... '
+            print('AddTwoNumbersLongRunningActionMissingCallback: calculating {} ms ... '
                   '(timeout = {} ms)'
                   .format(self._calctime, self.__TIMEOUT))
             self.set_status(NodeStatus.SUSPENDED)
@@ -599,34 +599,34 @@ class AddTwoNumbersLongRunnungActionMissingCallback(ActionNode):
         # careBT tick
         if(self.get_status() == NodeStatus.SUSPENDED):
             self._z = self._x + self._y
-            mock('AddTwoNumbersLongRunnungActionMissingCallback: done_callback: {} + {} = {}'
+            mock('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
                  .format(self._x, self._y, self._z))
-            print('AddTwoNumbersLongRunnungActionMissingCallback: done_callback: {} + {} = {}'
+            print('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.SUCCESS)
             self.__done_timer.cancel()
 
     def on_abort(self) -> None:
-        mock('on_abort AddTwoNumbersLongRunnungActionMissingCallback')
-        print('on_abort AddTwoNumbersLongRunnungActionMissingCallback')
+        mock('on_abort AddTwoNumbersLongRunningActionMissingCallback')
+        print('on_abort AddTwoNumbersLongRunningActionMissingCallback')
         self.__done_timer.cancel()
 
     def on_delete(self) -> None:
-        mock('on_delete AddTwoNumbersLongRunnungActionMissingCallback')
+        mock('on_delete AddTwoNumbersLongRunningActionMissingCallback')
         # set the timer to None to make sure that all references (bound method)
         # are released and the object gets destroyed by gc
         self.__done_timer = None
 
     def __del__(self):
-        mock('__del__ AddTwoNumbersLongRunnungActionMissingCallback')
+        mock('__del__ AddTwoNumbersLongRunningActionMissingCallback')
 
 ########################################################################
 
 
-class AddTwoNumbersLongRunnungActionMissingCallback2(ActionNode):
+class AddTwoNumbersLongRunningActionMissingCallback2(ActionNode):
     """
-    The `AddTwoNumbersLongRunnungActionMissingCallback2` is a variant of the
-    `AddTwoNumbersLongRunnungActionMissingCallback` but does not override on_abort.
+    The `AddTwoNumbersLongRunningActionMissingCallback2` is a variant of the
+    `AddTwoNumbersLongRunningActionMissingCallback` but does not override on_abort.
 
     Input Parameters
     ----------------
@@ -646,26 +646,26 @@ class AddTwoNumbersLongRunnungActionMissingCallback2(ActionNode):
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
-        mock('__init__ AddTwoNumbersLongRunnungActionMissingCallback2')
+        mock('__init__ AddTwoNumbersLongRunningActionMissingCallback2')
 
     def on_init(self) -> None:
-        mock('on_init AddTwoNumbersLongRunnungActionMissingCallback2')
+        mock('on_init AddTwoNumbersLongRunningActionMissingCallback2')
         self.__TIMEOUT: int = 1000
         self.set_timeout(self.__TIMEOUT)
 
     def on_tick(self) -> None:
         if(self._x is None or self._y is None):
-            mock('AddTwoNumbersLongRunnungActionMissingCallback2: '
+            mock('AddTwoNumbersLongRunningActionMissingCallback2: '
                  'You did not provide two numbers!')
-            print('AddTwoNumbersLongRunnungActionMissingCallback2: '
+            print('AddTwoNumbersLongRunningActionMissingCallback2: '
                   'You did not provide two numbers!')
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
-            mock('AddTwoNumbersLongRunnungActionMissingCallback2: calculating {} ms ... '
+            mock('AddTwoNumbersLongRunningActionMissingCallback2: calculating {} ms ... '
                  '(timeout = {} ms)'
                  .format(self._calctime, self.__TIMEOUT))
-            print('AddTwoNumbersLongRunnungActionMissingCallback2: calculating {} ms ... '
+            print('AddTwoNumbersLongRunningActionMissingCallback2: calculating {} ms ... '
                   '(timeout = {} ms)'
                   .format(self._calctime, self.__TIMEOUT))
             self.set_status(NodeStatus.SUSPENDED)
@@ -678,22 +678,22 @@ class AddTwoNumbersLongRunnungActionMissingCallback2(ActionNode):
         # careBT tick
         if(self.get_status() == NodeStatus.SUSPENDED):
             self._z = self._x + self._y
-            mock('AddTwoNumbersLongRunnungActionMissingCallback: done_callback: {} + {} = {}'
+            mock('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
                  .format(self._x, self._y, self._z))
-            print('AddTwoNumbersLongRunnungActionMissingCallback: done_callback: {} + {} = {}'
+            print('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
                   .format(self._x, self._y, self._z))
             self.set_status(NodeStatus.SUCCESS)
             self.__done_timer.cancel()
 
     def on_delete(self) -> None:
-        mock('on_delete AddTwoNumbersLongRunnungActionMissingCallback2')
+        mock('on_delete AddTwoNumbersLongRunningActionMissingCallback2')
         self.__done_timer.cancel()
         # set the timer to None to make sure that all references (bound method)
         # are released and the object gets destroyed by gc
         self.__done_timer = None
 
     def __del__(self):
-        mock('__del__ AddTwoNumbersLongRunnungActionMissingCallback2')
+        mock('__del__ AddTwoNumbersLongRunningActionMissingCallback2')
 
 ########################################################################
 

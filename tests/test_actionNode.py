@@ -18,10 +18,10 @@ from carebt.abstractLogger import LogLevel
 
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
-from tests.actionNodes import AddTwoNumbersLongRunnungAction
-from tests.actionNodes import AddTwoNumbersLongRunnungActionWithAbort
-from tests.actionNodes import AddTwoNumbersLongRunnungActionMissingCallback
-from tests.actionNodes import AddTwoNumbersLongRunnungActionMissingCallback2
+from tests.actionNodes import AddTwoNumbersLongRunningAction
+from tests.actionNodes import AddTwoNumbersLongRunningActionWithAbort
+from tests.actionNodes import AddTwoNumbersLongRunningActionMissingCallback
+from tests.actionNodes import AddTwoNumbersLongRunningActionMissingCallback2
 from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
 from tests.actionNodes import AddTwoNumbersActionMissingOutput
 from tests.actionNodes import AddTwoNumbersThrottledMultiTickAction
@@ -314,7 +314,7 @@ class TestActionNode:
 
     ########################################################################
 
-    def test_AddTwoNumbersLongRunnungAction_500_3_5(self):
+    def test_AddTwoNumbersLongRunningAction_500_3_5(self):
         """
         Tests a long running calculation
 
@@ -323,25 +323,25 @@ class TestActionNode:
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersLongRunnungAction, '500 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningAction, '500 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 500
         assert int(delta.total_seconds() * 1000) < 600
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunnungAction'),
-                                       call('on_init AddTwoNumbersLongRunnungAction'),
-                                       call('AddTwoNumbersLongRunnungAction: calculating 500 ms ...'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungAction: done: 3 + 5 = 8'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungAction'),
-                                       call('__del__ AddTwoNumbersLongRunnungAction')]
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunningAction'),
+                                       call('on_init AddTwoNumbersLongRunningAction'),
+                                       call('AddTwoNumbersLongRunningAction: calculating 500 ms ...'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningAction: done: 3 + 5 = 8'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersLongRunningAction'),
+                                       call('__del__ AddTwoNumbersLongRunningAction')]
         assert bt_runner._instance._result == 8
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
 
     ########################################################################
 
-    def test_AddTwoNumbersLongRunnungActionWithAbort_100_3_5(self):
+    def test_AddTwoNumbersLongRunningActionWithAbort_100_3_5(self):
         """
         Tests a long running calculation which is faster (100ms) than
         the timeout (1000ms)
@@ -352,23 +352,23 @@ class TestActionNode:
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersLongRunnungActionWithAbort, '100 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningActionWithAbort, '100 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 100
         assert int(delta.total_seconds() * 1000) < 200
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_init AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: calculating 100 ms ... (timeout = 1000 ms)'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: done_callback: 3 + 5 = 8'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('__del__ AddTwoNumbersLongRunnungActionWithAbort')]
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_init AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('AddTwoNumbersLongRunningActionWithAbort: calculating 100 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningActionWithAbort: done_callback: 3 + 5 = 8'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('__del__ AddTwoNumbersLongRunningActionWithAbort')]
         assert bt_runner._instance._result == 8
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
 
-    def test_AddTwoNumbersLongRunnungActionWithAbort_1500_3_5(self):
+    def test_AddTwoNumbersLongRunningActionWithAbort_1500_3_5(self):
         """
         Tests a long running calculation which is slower (1500ms) than
         the timeout (1000ms). In the timeout handler, the node is aborted
@@ -379,26 +379,26 @@ class TestActionNode:
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersLongRunnungActionWithAbort, '1500 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningActionWithAbort, '1500 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 1000
         assert int(delta.total_seconds() * 1000) < 1100
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_init AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('AddTwoNumbersLongRunnungActionWithAbort: calculating 1500 ms ... (timeout = 1000 ms)'),  # noqa: E501
-                                       call('on_timeout AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_abort AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('on_delete AddTwoNumbersLongRunnungActionWithAbort'),
-                                       call('__del__ AddTwoNumbersLongRunnungActionWithAbort')]
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_init AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('AddTwoNumbersLongRunningActionWithAbort: calculating 1500 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('on_timeout AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_abort AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('__del__ AddTwoNumbersLongRunningActionWithAbort')]
         assert not hasattr(bt_runner._instance, '_result')
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
         assert bt_runner._instance.get_contingency_message() == 'TIMEOUT'
 
     ########################################################################
 
-    def test_AddTwoNumbersLongRunnungActionMissingCallback_100_3_5(self):
+    def test_AddTwoNumbersLongRunningActionMissingCallback_100_3_5(self):
         """
         Tests a long running calculation which is faster (100ms) than
         the timeout (1000ms)
@@ -409,23 +409,23 @@ class TestActionNode:
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersLongRunnungActionMissingCallback, '100 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningActionMissingCallback, '100 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 100
         assert int(delta.total_seconds() * 1000) < 200
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('on_init AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungActionMissingCallback: calculating 100 ms ... (timeout = 1000 ms)'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungActionMissingCallback: done_callback: 3 + 5 = 8'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('__del__ AddTwoNumbersLongRunnungActionMissingCallback')]  # noqa: E501
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('on_init AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningActionMissingCallback: calculating 100 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningActionMissingCallback: done_callback: 3 + 5 = 8'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('__del__ AddTwoNumbersLongRunningActionMissingCallback')]  # noqa: E501
         assert bt_runner._instance._result == 8
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
 
-    def test_AddTwoNumbersLongRunnungActionMissingCallback_1500_3_5(self):
+    def test_AddTwoNumbersLongRunningActionMissingCallback_1500_3_5(self):
         """
         Tests a long running calculation which is slower (1500ms) than
         the timeout (1000ms). the timeout handler is not overridden.
@@ -435,25 +435,25 @@ class TestActionNode:
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersLongRunnungActionMissingCallback, '1500 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningActionMissingCallback, '1500 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 1000
         assert int(delta.total_seconds() * 1000) < 1100
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('on_init AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungActionMissingCallback: calculating 1500 ms ... (timeout = 1000 ms)'),  # noqa: E501
-                                       call('on_abort AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungActionMissingCallback'),  # noqa: E501
-                                       call('__del__ AddTwoNumbersLongRunnungActionMissingCallback')]  # noqa: E501
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('on_init AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningActionMissingCallback: calculating 1500 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('on_abort AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersLongRunningActionMissingCallback'),  # noqa: E501
+                                       call('__del__ AddTwoNumbersLongRunningActionMissingCallback')]  # noqa: E501
         assert not hasattr(bt_runner._instance, '_result')
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
         assert bt_runner._instance.get_contingency_message() == 'TIMEOUT'
 
     ########################################################################
 
-    def test_AddTwoNumbersLongRunnungActionMissingCallback2_1500_3_5(self):
+    def test_AddTwoNumbersLongRunningActionMissingCallback2_1500_3_5(self):
         """
         Tests a long running calculation which is slower (1500ms) than
         the timeout (1000ms). on_timeout handler is not overridden and
@@ -464,17 +464,17 @@ class TestActionNode:
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
-        bt_runner.run(AddTwoNumbersLongRunnungActionMissingCallback2, '1500 3 5 => ?result')
+        bt_runner.run(AddTwoNumbersLongRunningActionMissingCallback2, '1500 3 5 => ?result')
         end = datetime.now()
         delta = end - start
         assert int(delta.total_seconds() * 1000) > 1000
         assert int(delta.total_seconds() * 1000) < 1100
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunnungActionMissingCallback2'),  # noqa: E501
-                                       call('on_init AddTwoNumbersLongRunnungActionMissingCallback2'),  # noqa: E501
-                                       call('AddTwoNumbersLongRunnungActionMissingCallback2: calculating 1500 ms ... (timeout = 1000 ms)'),  # noqa: E501
-                                       call('on_delete AddTwoNumbersLongRunnungActionMissingCallback2'),  # noqa: E501
-                                       call('__del__ AddTwoNumbersLongRunnungActionMissingCallback2')]  # noqa: E501
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersLongRunningActionMissingCallback2'),  # noqa: E501
+                                       call('on_init AddTwoNumbersLongRunningActionMissingCallback2'),  # noqa: E501
+                                       call('AddTwoNumbersLongRunningActionMissingCallback2: calculating 1500 ms ... (timeout = 1000 ms)'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersLongRunningActionMissingCallback2'),  # noqa: E501
+                                       call('__del__ AddTwoNumbersLongRunningActionMissingCallback2')]  # noqa: E501
         assert not hasattr(bt_runner._instance, '_result')
         assert bt_runner._instance.get_status() == NodeStatus.ABORTED
         assert bt_runner._instance.get_contingency_message() == 'TIMEOUT'
