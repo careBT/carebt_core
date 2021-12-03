@@ -72,12 +72,11 @@ class TestActionNode:
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.INFO)
-        bt_runner.run(AddTwoNumbersActionMissingOutput)
+        bt_runner.run(AddTwoNumbersActionMissingOutput, '2 3 => ?result')
         assert mock.called
         assert bt_runner.get_tick_count() == 1
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
-        assert not hasattr(bt_runner._instance, '_result')
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersActionMissingOutput'),
                                        call('on_init AddTwoNumbersActionMissingOutput'),
