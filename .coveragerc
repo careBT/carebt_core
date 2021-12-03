@@ -1,5 +1,5 @@
 [run]
-#omit = test/*,setup.py
+omit = carebt/examples/*
 
 [report]
 exclude_lines =
