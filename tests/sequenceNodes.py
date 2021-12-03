@@ -480,3 +480,46 @@ class SequenceWithSuccessMessage_2(SequenceNode):
 
     def __del__(self):
         mock('__del__ SequenceWithSuccessMessage_2')
+
+########################################################################
+
+
+class AddTwoNumbersSequence9(SequenceNode):
+    """
+    The `AddTwoNumbersSequence9` is a variant of the `AddTwoNumbersSequence4`.
+
+    Input Parameters
+    ----------------
+    ?a : int
+        The first number
+    ?b : int
+        The second number
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?a ?b')
+        mock('__init__ AddTwoNumbersSequence9')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersSequence9')
+        self.append_child(AddTwoNumbersActionWithFailure, '?a ?b => ?result')
+        self.append_child(ShowNumberAction, '?result')
+
+        self.register_contingency_handler(AddTwoNumbersActionWithFailure,
+                                          [NodeStatus.FAILURE],
+                                          'NOT_TWO_NUMBERS_PROVIDED',
+                                          self.fix_missing_numbers_handler)
+
+    def fix_missing_numbers_handler(self):
+        print('AddTwoNumbersSequence9: fix_missing_numbers_handler: '
+              'insert FixMissingNumbersAction')
+        self.remove_all_children()
+        self.insert_child_after_current(ShowNumberAction, '?result')
+        self.insert_child_after_current(FixMissingNumbersAction, '=> ?result')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersSequence9')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersSequence9')

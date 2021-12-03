@@ -23,6 +23,7 @@ from tests.sequenceNodes import AddTwoNumbersSequence5
 from tests.sequenceNodes import AddTwoNumbersSequence6
 from tests.sequenceNodes import AddTwoNumbersSequence7
 from tests.sequenceNodes import AddTwoNumbersSequence8
+from tests.sequenceNodes import AddTwoNumbersSequence9
 from tests.sequenceNodes import SequenceWithSuccessMessage_1
 from tests.sequenceNodes import SequenceWithSuccessMessage_2
 
@@ -608,3 +609,38 @@ class TestSequenceNode:
                                        call('__del__ HelloWorldActionWithMessage'),
                                        call('on_delete SequenceWithSuccessMessage_2'),
                                        call('__del__ SequenceWithSuccessMessage_2')]
+
+    ########################################################################
+
+    def test_AddTwoNumbersSequence9_1(self):
+        """
+        Tests the AddTwoNumbersSequence9
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AddTwoNumbersSequence9, '1')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersSequence9'),
+                                       call('on_init AddTwoNumbersSequence9'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: You did not provide two numbers!'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
+                                       call('__init__ FixMissingNumbersAction'),
+                                       call('on_init FixMissingNumbersAction'),
+                                       call('FixMissingNumbersAction: fix missing numbers!'),
+                                       call('on_delete FixMissingNumbersAction'),
+                                       call('__del__ FixMissingNumbersAction'),
+                                       call('__init__ ShowNumberAction'),
+                                       call('on_init ShowNumberAction'),
+                                       call('ShowNumberAction: The numer is: 42!'),
+                                       call('on_delete ShowNumberAction'),
+                                       call('__del__ ShowNumberAction'),
+                                       call('on_delete AddTwoNumbersSequence9'),
+                                       call('__del__ AddTwoNumbersSequence9')]

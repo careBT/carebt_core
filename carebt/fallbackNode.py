@@ -87,9 +87,10 @@ class FallbackNode(ControlNode, ABC):
                     self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                                  .instance.get_contingency_message())
 
+                cur_child_state = self._child_ec_list[self._child_ptr].instance.get_status()
                 # if the current child tick returned with FAILURE or ABORTED
-                elif(cur_child_state == NodeStatus.FAILURE
-                     or cur_child_state == NodeStatus.ABORTED):
+                if(cur_child_state == NodeStatus.FAILURE
+                   or cur_child_state == NodeStatus.ABORTED):
                     self._contingency_message = self._child_ec_list[self._child_ptr]\
                         .instance.get_contingency_message()
                     if(self._child_ec_list[self._child_ptr].instance is not None):
@@ -161,9 +162,11 @@ class FallbackNode(ControlNode, ABC):
 
         """
 
-        # if _child_ec_list is empty
-        if not self._child_ec_list:
-            self._child_ec_list.append(ExecutionContext(node, params))
+        # if all children were removed
+        if(len(self._child_ec_list) != 0
+           and self._child_ec_list[self._child_ptr].instance is None
+           and self._child_ptr == 0):
+            self._child_ec_list.insert(0, ExecutionContext(node, params))
         else:
             self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
 

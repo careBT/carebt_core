@@ -185,8 +185,8 @@ class AddTwoNumbersFallback6(FallbackNode):
     def handle_missing_numbers(self):
         mock('AddTwoNumbersFallback6: handle_missing_numbers')
         self.remove_all_children()
-        self.insert_child_after_current(HelloWorldAction)
         self.insert_child_after_current(AddTwoNumbersActionWithFailure, '3 6 => ?result')
+        self.insert_child_after_current(HelloWorldAction)
 
     def on_delete(self) -> None:
         mock('on_delete AddTwoNumbersFallback6')
