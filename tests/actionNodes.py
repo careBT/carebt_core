@@ -429,7 +429,8 @@ class AddTwoNumbersLongRunningAction(ActionNode):
         print('AddTwoNumbersLongRunningAction: calculating {} ms ...'
               .format(self._calctime))
         self.set_status(NodeStatus.SUSPENDED)
-        Timer(self._calctime / 1000, self.done_callback).start()
+        self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
+        self.__done_timer.start()
 
     def done_callback(self) -> None:
         self._z = self._x + self._y
@@ -439,8 +440,15 @@ class AddTwoNumbersLongRunningAction(ActionNode):
               .format(self._x, self._y, self._z))
         self.set_status(NodeStatus.SUCCESS)
 
+    def on_abort(self) -> None:
+        mock('on_abort AddTwoNumbersLongRunningAction')
+        self.__done_timer.cancel()
+
     def on_delete(self) -> None:
         mock('on_delete AddTwoNumbersLongRunningAction')
+        # set the timer to None to make sure that all references (bound method)
+        # are released and the object gets destroyed by gc
+        self.__done_timer = None
 
     def __del__(self):
         mock('__del__ AddTwoNumbersLongRunningAction')

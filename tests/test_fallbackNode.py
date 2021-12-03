@@ -21,6 +21,7 @@ from tests.fallbackNodes import AddTwoNumbersFallback3
 from tests.fallbackNodes import AddTwoNumbersFallback4
 from tests.fallbackNodes import AddTwoNumbersFallback5
 from tests.fallbackNodes import AddTwoNumbersFallback6
+from tests.fallbackNodes import AddTwoNumbersFallback7
 
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
@@ -212,3 +213,32 @@ class TestFallbackNode:
                                        call('__del__ HelloWorldAction'),
                                        call('on_delete AddTwoNumbersFallback6'),
                                        call('__del__ AddTwoNumbersFallback6')]
+
+    ########################################################################
+
+    def test_AddTwoNumbersFallback7(self):
+        """
+        Tests the AddTwoNumbersFallback7
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
+        bt_runner.run(AddTwoNumbersFallback7)
+        assert mock.called
+        assert bt_runner.get_status() == NodeStatus.ABORTED
+        assert bt_runner.get_contingency_message() == 'TIMEOUT'
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersFallback7'),
+                                       call('on_init AddTwoNumbersFallback7'),
+                                       call('__init__ AddTwoNumbersLongRunningAction'),
+                                       call('on_init AddTwoNumbersLongRunningAction'),
+                                       call('AddTwoNumbersLongRunningAction: calculating 2000 ms ...'),  # noqa: E501
+                                       call('on_timeout AddTwoNumbersFallback7'),
+                                       call('on_abort AddTwoNumbersLongRunningAction'),
+                                       call('on_delete AddTwoNumbersLongRunningAction'),
+                                       call('on_abort AddTwoNumbersFallback7'),
+                                       call('__del__ AddTwoNumbersLongRunningAction'),
+                                       call('on_delete AddTwoNumbersFallback7'),
+                                       call('__del__ AddTwoNumbersFallback7')]

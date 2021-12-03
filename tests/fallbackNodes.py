@@ -13,8 +13,9 @@
 # limitations under the License.
 from tests.global_mock import mock
 
-from tests.actionNodes import HelloWorldAction
+from tests.actionNodes import AddTwoNumbersLongRunningAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
+from tests.actionNodes import HelloWorldAction
 
 from carebt.fallbackNode import FallbackNode
 from carebt.nodeStatus import NodeStatus
@@ -193,3 +194,36 @@ class AddTwoNumbersFallback6(FallbackNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersFallback6')
+
+########################################################################
+
+
+class AddTwoNumbersFallback7(FallbackNode):
+    """
+    The `AddTwoNumbersFallback7`
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ AddTwoNumbersFallback7')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersFallback7')
+        self.set_timeout(1000)
+        self.append_child(AddTwoNumbersLongRunningAction, '2000 2 4 => ?result')
+        self.append_child(HelloWorldAction)
+
+    def on_timeout(self) -> None:
+        mock('on_timeout AddTwoNumbersFallback7')
+        self.abort()
+        self.set_contingency_message('TIMEOUT')
+
+    def on_abort(self) -> None:
+        mock('on_abort AddTwoNumbersFallback7')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersFallback7')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersFallback7')
