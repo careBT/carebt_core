@@ -60,8 +60,9 @@ class ControlNode(TreeNode, ABC):
             if(isinstance(var, str) and var[0] == '?'):
                 var = var.replace('?', '_', 1)
                 var = getattr(self, var)
-            setattr(child_ec.instance,
-                    child_ec.instance._internal_get_in_params()[i].replace('?', '_', 1), var)
+            if(i < len(child_ec.instance._internal_get_in_params())):
+                setattr(child_ec.instance,
+                        child_ec.instance._internal_get_in_params()[i].replace('?', '_', 1), var)
 
     def _internal_bind_out_params(self, child_ec: ExecutionContext) -> None:
         for i, var in enumerate(child_ec.instance._internal_get_out_params()):
