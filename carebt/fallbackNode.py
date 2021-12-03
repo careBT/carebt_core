@@ -163,7 +163,7 @@ class FallbackNode(ControlNode, ABC):
 
         # if _child_ec_list is empty
         if not self._child_ec_list:
-            self.append(node, params)
+            self._child_ec_list.append(ExecutionContext(node, params))
         else:
             self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
 

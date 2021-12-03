@@ -13,6 +13,7 @@
 # limitations under the License.
 from tests.global_mock import mock
 
+from tests.actionNodes import HelloWorldAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
 
 from carebt.fallbackNode import FallbackNode
@@ -143,10 +144,10 @@ class AddTwoNumbersFallback5(FallbackNode):
         self.register_contingency_handler(AddTwoNumbersActionWithFailure,
                                           [NodeStatus.FAILURE],
                                           'NOT_TWO_NUMBERS_PROVIDED',
-                                          self.abort_handler)
+                                          self.handle_missing_numbers)
 
-    def abort_handler(self):
-        mock('AddTwoNumbersFallback5: abort_handler')
+    def handle_missing_numbers(self):
+        mock('AddTwoNumbersFallback5: handle_missing_numbers')
         self.abort()
 
     def on_abort(self) -> None:
@@ -157,3 +158,38 @@ class AddTwoNumbersFallback5(FallbackNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersFallback5')
+
+########################################################################
+
+
+class AddTwoNumbersFallback6(FallbackNode):
+    """
+    The `AddTwoNumbersFallback6` is
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ AddTwoNumbersFallback6')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersFallback6')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
+
+        self.register_contingency_handler(AddTwoNumbersActionWithFailure,
+                                          [NodeStatus.FAILURE],
+                                          'NOT_TWO_NUMBERS_PROVIDED',
+                                          self.handle_missing_numbers)
+
+    def handle_missing_numbers(self):
+        mock('AddTwoNumbersFallback6: handle_missing_numbers')
+        self.remove_all_children()
+        self.insert_child_after_current(HelloWorldAction)
+        self.insert_child_after_current(AddTwoNumbersActionWithFailure, '3 6 => ?result')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersFallback6')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersFallback6')
