@@ -2,5 +2,6 @@
 **/carebt.egg-info/*
 htmlcov/*
 .pytest_cache
+.coverage
 dist
 docs/_build
