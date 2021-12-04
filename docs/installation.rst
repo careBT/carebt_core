@@ -1,10 +1,10 @@
 Installation
 ============
 
-From PyPi (recommended)
+With pip (recommended)
 -----------------------
 
-Install with pip:
+Install with pip from PyPi:
 
 .. code-block:: bash
 
