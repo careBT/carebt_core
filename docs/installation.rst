@@ -10,10 +10,6 @@ Install with pip:
 
     pip install carebt
 
-.. important::
-
-    Currently pip install does not work, as carebt is not published on PyPi. This will be done soon.
-
 From source
 -----------
 
