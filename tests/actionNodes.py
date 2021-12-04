@@ -853,8 +853,8 @@ class TickCountingAction(ActionNode):
                 print('TickCountingAction id = {} DONE with SUCCESS'.format(self._id))
                 self.set_status(NodeStatus.SUCCESS)
             else:
-                mock('TickCountingActionid = {} DONE with FAILURE'.format(self._id))
-                print('TickCountingActionid = {} DONE with FAILURE'.format(self._id))
+                mock('TickCountingAction id = {} DONE with FAILURE'.format(self._id))
+                print('TickCountingAction id = {} DONE with FAILURE'.format(self._id))
                 self.set_status(NodeStatus.FAILURE)
                 self.set_contingency_message('COUNTING_ERROR')
         else:

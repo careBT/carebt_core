@@ -101,24 +101,26 @@ class ParallelNode(ControlNode, ABC):
 
         ################################################
         # tick all children
-        for self._child_ptr, child_ec in enumerate(self._child_ec_list):
+        for pos, child_ec in enumerate(self._child_ec_list[:]):
             if(child_ec.instance is not None):
                 self._internal_bind_in_params(child_ec)
                 self._internal_tick_child(child_ec)
                 self._internal_apply_contingencies(child_ec)
-                self._internal_bind_out_params(child_ec)
-                cur_child_state = child_ec.instance.get_status()
-                if(cur_child_state == NodeStatus.SUCCESS
-                   or cur_child_state == NodeStatus.FIXED):
-                    child_ec.instance.on_delete()
-                    child_ec.instance = None
-                    self._success_count += 1
-                elif(cur_child_state == NodeStatus.FAILURE
-                     or cur_child_state == NodeStatus.ABORTED):
-                    self.__last_child_contingency_msg = child_ec.instance.get_contingency_message()
-                    child_ec.instance.on_delete()
-                    child_ec.instance = None
-                    self._fail_count += 1
+                if(child_ec.instance is not None):
+                    self._internal_bind_out_params(child_ec)
+                    cur_child_state = child_ec.instance.get_status()
+                    if(cur_child_state == NodeStatus.SUCCESS
+                       or cur_child_state == NodeStatus.FIXED):
+                        child_ec.instance.on_delete()
+                        child_ec.instance = None
+                        self._success_count += 1
+                    elif(cur_child_state == NodeStatus.FAILURE
+                         or cur_child_state == NodeStatus.ABORTED):
+                        self.__last_child_contingency_msg = child_ec.instance\
+                                                            .get_contingency_message()
+                        child_ec.instance.on_delete()
+                        child_ec.instance = None
+                        self._fail_count += 1
 
         ################################################
         # finally, check how to proceed
@@ -218,16 +220,11 @@ class ParallelNode(ControlNode, ABC):
 
         """
 
-        if(self._child_ec_list[pos].instance.get_status() == NodeStatus.ABORTED
-           or self._child_ec_list[pos].instance.get_status() == NodeStatus.FAILURE):
-            self._fail_count -= 1
-        elif(self._child_ec_list[pos].instance is None
-             or self._child_ec_list[pos].instance.get_status() == NodeStatus.SUCCESS
-             or self._child_ec_list[pos].instance.get_status() == NodeStatus.FIXED):
-            self._success_count -= 1
-
-        self._success_threshold -= 1
         self._created_child_size -= 1
+        if(self._child_ec_list[pos].instance is not None):
+            self._child_ec_list[pos].instance.abort()
+            self._child_ec_list[pos].instance.on_delete()
+            self._child_ec_list[pos].instance = None
         del self._child_ec_list[pos]
 
     def remove_all_children(self) -> None:
@@ -235,6 +232,9 @@ class ParallelNode(ControlNode, ABC):
         Removes all child nodes.
 
         """
+
+        self._success_count = 0
+        self._fail_count = 0
 
         for _ in range(self._created_child_size):
             self.remove_child(0)

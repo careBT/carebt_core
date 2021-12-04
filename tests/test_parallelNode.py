@@ -24,6 +24,7 @@ from tests.parallelNodes import TickCountingParallelDelAdd1
 from tests.parallelNodes import TickCountingParallelDelAdd2
 from tests.parallelNodes import TickCountingParallelDelAllAdd
 from tests.parallelNodes import TickCountingParallelWithAbort
+from tests.parallelNodes import ParallelRemoveSuccess
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
@@ -147,7 +148,7 @@ class TestParallelNode:
                                        call('TickCountingAction id = 2 tick: 2/3'),
                                        call('TickCountingAction id = 3 tick: 2/5'),
                                        call('TickCountingAction id = 1 tick: 3/4'),
-                                       call('TickCountingActionid = 2 DONE with FAILURE'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
                                        call('on_delete TickCountingAction id = 2'),
                                        call('__del__ TickCountingAction id = 2'),
                                        call('TickCountingAction id = 3 tick: 3/5'),
@@ -230,7 +231,7 @@ class TestParallelNode:
                                        call('TickCountingAction id = 2 tick: 2/3'),
                                        call('TickCountingAction id = 3 tick: 2/5'),
                                        call('TickCountingAction id = 1 tick: 3/4'),
-                                       call('TickCountingActionid = 2 DONE with FAILURE'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
                                        call('on_abort TickCountingAction id = 1'),
                                        call('on_abort TickCountingAction id = 3'),
                                        call('on_delete TickCountingAction id = 2'),
@@ -273,7 +274,9 @@ class TestParallelNode:
                                        call('TickCountingAction id = 2 tick: 2/3'),
                                        call('TickCountingAction id = 3 tick: 2/5'),
                                        call('TickCountingAction id = 1 tick: 3/4'),
-                                       call('TickCountingActionid = 2 DONE with FAILURE'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
+                                       call('on_abort TickCountingAction id = 3'),
+                                       call('on_delete TickCountingAction id = 3'),
                                        call('__del__ TickCountingAction id = 3'),
                                        call('on_delete TickCountingAction id = 2'),
                                        call('__del__ TickCountingAction id = 2'),
@@ -322,7 +325,9 @@ class TestParallelNode:
                                        call('TickCountingAction id = 2 tick: 2/3'),
                                        call('TickCountingAction id = 3 tick: 2/5'),
                                        call('TickCountingAction id = 1 tick: 3/4'),
-                                       call('TickCountingActionid = 2 DONE with FAILURE'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
+                                       call('on_abort TickCountingAction id = 3'),
+                                       call('on_delete TickCountingAction id = 3'),
                                        call('__del__ TickCountingAction id = 3'),
                                        call('on_delete TickCountingAction id = 2'),
                                        call('__del__ TickCountingAction id = 2'),
@@ -381,7 +386,9 @@ class TestParallelNode:
                                        call('TickCountingAction id = 2 tick: 2/3'),
                                        call('TickCountingAction id = 3 tick: 2/5'),
                                        call('TickCountingAction id = 1 tick: 3/4'),
-                                       call('TickCountingActionid = 2 DONE with FAILURE'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
+                                       call('on_abort TickCountingAction id = 3'),
+                                       call('on_delete TickCountingAction id = 3'),
                                        call('__del__ TickCountingAction id = 3'),
                                        call('on_delete TickCountingAction id = 2'),
                                        call('__del__ TickCountingAction id = 2'),
@@ -408,7 +415,6 @@ class TestParallelNode:
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
         assert bt_runner._instance.get_contingency_message() == ''
         print(mock.call_args_list)
-        call('__init__ TickCountingParallelDelAllAdd'),
         assert mock.call_args_list == [call('__init__ TickCountingParallelDelAllAdd'),
                                        call('on_init TickCountingParallelDelAllAdd success_threshold = 2'),  # noqa: E501
                                        call('__init__ TickCountingAction'),
@@ -424,11 +430,16 @@ class TestParallelNode:
                                        call('TickCountingAction id = 2 tick: 2/3'),
                                        call('TickCountingAction id = 3 tick: 2/5'),
                                        call('TickCountingAction id = 1 tick: 3/4'),
-                                       call('TickCountingActionid = 2 DONE with FAILURE'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
+                                       call('on_abort TickCountingAction id = 1'),
+                                       call('on_delete TickCountingAction id = 1'),
                                        call('__del__ TickCountingAction id = 1'),
-                                       call('__del__ TickCountingAction id = 3'),
+                                       call('on_abort TickCountingAction id = 2'),
                                        call('on_delete TickCountingAction id = 2'),
                                        call('__del__ TickCountingAction id = 2'),
+                                       call('on_abort TickCountingAction id = 3'),
+                                       call('on_delete TickCountingAction id = 3'),
+                                       call('__del__ TickCountingAction id = 3'),
                                        call('__init__ TickCountingAction'),
                                        call('on_init TickCountingAction id = 4'),
                                        call('__init__ TickCountingAction'),
@@ -474,7 +485,6 @@ class TestParallelNode:
         assert bt_runner._instance.get_status() == NodeStatus.FAILURE
         assert bt_runner._instance.get_contingency_message() == 'COUNTING_ERROR'
         print(mock.call_args_list)
-        call('__init__ CountAbortParallel'),
         assert mock.call_args_list == [call('__init__ CountAbortParallel'),
                                        call('on_init CountAbortParallel'),
                                        call('__init__ TickCountingAction'),
@@ -495,3 +505,68 @@ class TestParallelNode:
                                        call('on_delete CountAbortParallel'),
                                        call('__del__ CountAbortParallel'),
                                        call('__del__ TickCountingAction id = 1')]
+
+    ########################################################################
+
+    def test_ParallelRemoveSuccess(self):
+        """
+        Tests the ParallelRemoveSuccess
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.TRACE)
+        bt_runner.run(ParallelRemoveSuccess)
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ ParallelRemoveSuccess'),
+                                       call('on_init ParallelRemoveSuccess'),
+                                       call('__init__ TickCountingAction'),
+                                       call('on_init TickCountingAction id = 1'),
+                                       call('__init__ TickCountingAction'),
+                                       call('on_init TickCountingAction id = 2'),
+                                       call('__init__ TickCountingAction'),
+                                       call('on_init TickCountingAction id = 3'),
+                                       call('__init__ TickCountingAction'),
+                                       call('on_init TickCountingAction id = 4'),
+                                       call('__init__ TickCountingAction'),
+                                       call('on_init TickCountingAction id = 5'),
+                                       call('TickCountingAction id = 1 tick: 1/2'),
+                                       call('TickCountingAction id = 2 tick: 1/4'),
+                                       call('TickCountingAction id = 3 tick: 1/6'),
+                                       call('TickCountingAction id = 4 tick: 1/8'),
+                                       call('TickCountingAction id = 5 tick: 1/99'),
+                                       call('TickCountingAction id = 1 DONE with SUCCESS'),
+                                       call('on_delete TickCountingAction id = 1'),
+                                       call('__del__ TickCountingAction id = 1'),
+                                       call('TickCountingAction id = 2 tick: 2/4'),
+                                       call('TickCountingAction id = 3 tick: 2/6'),
+                                       call('TickCountingAction id = 4 tick: 2/8'),
+                                       call('TickCountingAction id = 5 tick: 2/99'),
+                                       call('TickCountingAction id = 2 tick: 3/4'),
+                                       call('TickCountingAction id = 3 tick: 3/6'),
+                                       call('TickCountingAction id = 4 tick: 3/8'),
+                                       call('TickCountingAction id = 5 tick: 3/99'),
+                                       call('TickCountingAction id = 2 DONE with FAILURE'),
+                                       call('on_delete TickCountingAction id = 2'),
+                                       call('__del__ TickCountingAction id = 2'),
+                                       call('TickCountingAction id = 3 tick: 4/6'),
+                                       call('TickCountingAction id = 4 tick: 4/8'),
+                                       call('TickCountingAction id = 5 tick: 4/99'),
+                                       call('TickCountingAction id = 3 tick: 5/6'),
+                                       call('TickCountingAction id = 4 tick: 5/8'),
+                                       call('TickCountingAction id = 5 tick: 5/99'),
+                                       call('TickCountingAction id = 3 DONE with SUCCESS'),
+                                       call('on_delete TickCountingAction id = 3'),
+                                       call('__del__ TickCountingAction id = 3'),
+                                       call('TickCountingAction id = 4 tick: 6/8'),
+                                       call('TickCountingAction id = 5 tick: 6/99'),
+                                       call('on_abort TickCountingAction id = 4'),
+                                       call('on_abort TickCountingAction id = 5'),
+                                       call('on_delete ParallelRemoveSuccess'),
+                                       call('__del__ ParallelRemoveSuccess'),
+                                       call('__del__ TickCountingAction id = 5'),
+                                       call('__del__ TickCountingAction id = 4')]

@@ -302,6 +302,7 @@ class TickCountingParallelDel(ParallelNode):
 
     def handle_error(self) -> None:
         self.remove_child(2)
+        self.set_success_threshold(1)
 
     def on_delete(self) -> None:
         mock('on_delete TickCountingParallelDel')
@@ -391,3 +392,38 @@ class CountAbortParallel(ParallelNode):
 
     def __del__(self):
         mock('__del__ CountAbortParallel')
+
+########################################################################
+
+
+class ParallelRemoveSuccess(ParallelNode):
+    """
+    The `ParallelRemoveSuccess`
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 2, '')
+        mock('__init__ ParallelRemoveSuccess')
+
+    def on_init(self) -> None:
+        mock('on_init ParallelRemoveSuccess')
+        self.add_child(TickCountingAction, '1 2 True => ?cnt')
+        self.add_child(TickCountingAction, '2 4 False => ?cnt')
+        self.add_child(TickCountingAction, '3 6 True => ?cnt')
+        self.add_child(TickCountingAction, '4 8 True => ?cnt')
+        self.add_child(TickCountingAction, '5 99 True => ?cnt')
+
+        self.register_contingency_handler(TickCountingAction,
+                                          [NodeStatus.FAILURE],
+                                          'COUNTING_ERROR',
+                                          self.handle_error)
+
+    def handle_error(self) -> None:
+        self.remove_child(0)
+
+    def on_delete(self) -> None:
+        mock('on_delete ParallelRemoveSuccess')
+
+    def __del__(self):
+        mock('__del__ ParallelRemoveSuccess')
