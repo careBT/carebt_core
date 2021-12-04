@@ -24,4 +24,11 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest
+        coverage run --branch --source=carebt -m pytest
+
+    - uses: paambaati/codeclimate-action@v2.5.3
+      if: always()
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CodeClimate }}
+      with:
+        coverageCommand: coverage xml
