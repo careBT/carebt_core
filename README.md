@@ -1,5 +1,6 @@
 ![build workflow](https://github.com/CareBT/carebt_core/actions/workflows/python-app.yml/badge.svg)
 [![Documentation Status](https://readthedocs.org/projects/carebt/badge/?version=latest)](https://carebt.readthedocs.io/en/latest/?badge=latest)
+[![Maintainability](https://api.codeclimate.com/v1/badges/05295e461f7a98edb412/maintainability)](https://codeclimate.com/github/careBT/carebt_core/maintainability)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # careBT - contingency aware Behavior Trees
