@@ -28,14 +28,15 @@ class _RootNode(RootNode):
 
 
 class BehaviorTreeRunner:
-    """
+    """The careBT `BehaviorTreeRunner` class.
+
     The `BehaviorTreeRunner` is the interface to the careBT execution engine.
     With the `run` method a careBT behavior tree, respectively each careBT
     node can be executed.
-
     """
 
     def __init__(self):
+        """Init the `BehaviorTreeRunner`."""
         self._tick_rate_ms = 50
         self._tick_count = 0
         self._logger = SimplePrintLogger()
@@ -44,7 +45,8 @@ class BehaviorTreeRunner:
     # PUBLIC
 
     def set_tick_rate_ms(self, tick_rate_ms: int) -> None:
-        """
+        """Set the tick rate in milliseconds.
+
         Sets the rate in milliseconds in which the careBT execution engine runs.
         It is the rate at which the nodes are ticked. Default is 50 ms.
 
@@ -54,11 +56,11 @@ class BehaviorTreeRunner:
             The tick rate in milliseconds
 
         """
-
         self._tick_rate_ms = tick_rate_ms
 
     def get_tick_count(self) -> int:
-        """
+        """Return the current tick count.
+
         Returns the current counter of the ticks the careBT execution engine
         has taken for the last execution of the `run` method.
 
@@ -68,11 +70,11 @@ class BehaviorTreeRunner:
             Ticks taken for the behavior tree execution
 
         """
-
         return self._tick_count
 
     def set_logger(self, logger: AbstractLogger):
-        """
+        """Set a custom logger.
+
         Sets a custom logger which is then used by the careBT execution
         engine.
 
@@ -82,12 +84,10 @@ class BehaviorTreeRunner:
             A logger implementation
 
         """
-
         self._logger = logger
 
     def get_logger(self) -> AbstractLogger:
-        """
-        Returns the current logger.
+        """Return the current logger.
 
         Returns
         -------
@@ -95,12 +95,10 @@ class BehaviorTreeRunner:
             The current logger
 
         """
-
         return self._logger
 
     def get_status(self) -> NodeStatus:
-        """
-        Returns the status of the last execution.
+        """Return the status of the last execution.
 
         Returns
         -------
@@ -108,12 +106,10 @@ class BehaviorTreeRunner:
             Current status of the node
 
         """
-
         return self._instance.get_status()
 
     def get_contingency_message(self) -> str:
-        """
-        Returns the contincency message of the last execution.
+        """Return the contincency message of the last execution.
 
         Returns
         -------
@@ -121,12 +117,10 @@ class BehaviorTreeRunner:
             The contingency message
 
         """
-
         return self._instance.get_contingency_message()
 
     def run(self, node: TreeNode, params: str = None) -> None:
-        """
-        Executes the provided node, respectively the provided behavior tree.
+        """Execute the provided node, respectively the provided behavior tree.
 
         Parameters
         ----------
@@ -137,7 +131,6 @@ class BehaviorTreeRunner:
             The parameters for the node which should be executed
 
         """
-
         self._instance = _RootNode(self)
         self._instance.set_status(NodeStatus.IDLE)
         self._instance.set_contingency_message('')

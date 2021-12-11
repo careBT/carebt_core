@@ -13,16 +13,14 @@
 # limitations under the License.
 
 from io import StringIO
-
 import re
-
 from unittest.mock import patch
 
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
-from carebt.examples.sequence_with_contingencies import SimpleSequence
 from carebt.examples.sequence_with_contingencies import ContingencySequence
+from carebt.examples.sequence_with_contingencies import SimpleSequence
 from carebt.nodeStatus import NodeStatus
 
 

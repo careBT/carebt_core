@@ -41,7 +41,7 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 15-93
+    :lines: 15-96
     :linenos:
 
 The code explained
@@ -59,26 +59,26 @@ the output parameter *?number*.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 26-44
+    :lines: 26-45
 
 The ``PrintNumberAction`` is a custom ``ActionNode`` which prints the provided *?number* on standard output.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 49-66
+    :lines: 50-68
 
 The ``SimpleSequence`` node is implemented as a Python class which inherits from ``SequenceNode``.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 71
+    :lines: 73
 
 The class definition is followed by the `Docstring <https://www.python.org/dev/peps/pep-0257/>`__
 documentation of the node, which also documents the interface (output parameters).
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 72-84
+    :lines: 74-87
 
 The constructor (``__init__``) of the ``SimpleSequence`` needs to call the constructor (``super().__init__``)
 of the ``SequenceNode`` and passes the bt_runner and the signature as arguments. The signature defines one
@@ -86,14 +86,14 @@ output parameter called *?c*.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 86-87
+    :lines: 89-90
 
 The ``on_init`` function is called rigth after the node was created. It is the place to put the code which should
 be executed once, after the node was created. For a ``SequenceNode`` the child nodes are typically added here.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 89-93
+    :lines: 92-96
 
 
 Run the example

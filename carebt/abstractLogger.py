@@ -19,10 +19,7 @@ from enum import IntEnum
 
 
 class LogLevel(IntEnum):
-    """
-    An Enum representing the logging levels
-
-    """
+    """An Enum representing the logging levels."""
 
     TRACE = 0
     DEBUG = 1
@@ -33,10 +30,10 @@ class LogLevel(IntEnum):
 
 
 class AbstractLogger(ABC):
-    """
+    """The `AbstractLogger` interface.
+
     The `AbstractLogger` interface has to be implemented for
     a custom logger.
-
     """
 
     def __init__(self):

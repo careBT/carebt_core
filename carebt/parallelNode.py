@@ -22,7 +22,8 @@ from carebt.treeNode import TreeNode
 
 
 class ParallelNode(ControlNode, ABC):
-    """
+    """The careBT `ParallelNode` class.
+
     In a `ParallelNode` the added child nodes are executed in parallel at the same time.
     A `ParallelNode` completes with `SUCCESS` if equal or more than `success_threshold`
     children complete with `SUCCESS` or `FIXED`.
@@ -36,26 +37,22 @@ class ParallelNode(ControlNode, ABC):
     the `ParallelNode` gets ticked, it ticks the children in the order they were added - but
     within the same received tick.
 
+    Parameters
+    ----------
+    bt_runner: 'BehaviorTreeRunner'
+        The behavior tree runner which started the tree.
+    success_threshold: int
+        Threshold how many of the children should complete with `SUCCESS`
+        or `FIXED` that the `ParallelNode` completes with `SUCCESS`.
+    params: str
+        The input/Output parameters of the node
+        e.g. '?x ?y => ?z'
+
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner',
                  success_threshold: int, params: str = None):
-        """
-        Constructor of `ParallelNode`.
-
-        Parameters
-        ----------
-        bt_runner: 'BehaviorTreeRunner'
-            The behavior tree runner which started the tree.
-        success_threshold: int
-            Threshold how many of the children should complete with `SUCCESS`
-            or `FIXED` that the `ParallelNode` completes with `SUCCESS`.
-        params: str
-            The input/Output parameters of the node
-            e.g. '?x ?y => ?z'
-
-        """
-
+        """Init the `ParallelNode` with bt_runner, success_threshold and params."""
         super().__init__(bt_runner, params)
 
         self.__last_child_contingency_msg = ''
@@ -170,8 +167,7 @@ class ParallelNode(ControlNode, ABC):
     # PUBLIC
 
     def set_success_threshold(self, success_threshold: int) -> None:
-        """
-        Sets the success_threshold.
+        """Set the success_threshold.
 
         Parameters
         ----------
@@ -180,25 +176,21 @@ class ParallelNode(ControlNode, ABC):
             or `FIXED` that the `ParallelNode` completes with `SUCCESS`.
 
         """
-
         self._success_threshold = success_threshold
 
     def get_success_threshold(self) -> int:
-        """
-        Returns the success_threshold.
+        """Return the success_threshold.
 
-        RETURNS
+        Returns
         -------
         success_threshold: int
             The success_threshold
 
         """
-
         return self._success_threshold
 
     def add_child(self, node: TreeNode, params: str = None) -> None:
-        """
-        Adds a child node to this `ParallelNode`.
+        """Add a child node.
 
         Parameters
         ----------
@@ -209,12 +201,12 @@ class ParallelNode(ControlNode, ABC):
             The parameters of the added child node
 
         """
-
         self._child_ec_list.append(ExecutionContext(node, params))
 
     def remove_child(self, pos: int) -> None:
-        """
-        Removes the child node at the provided position. The positions are in
+        """Remove a child node.
+
+        Remove the child node at the provided position. The positions are in
         the order the children are added starting with zero.
 
         Parameters
@@ -223,7 +215,6 @@ class ParallelNode(ControlNode, ABC):
             Position of the child to remove
 
         """
-
         self._created_child_size -= 1
         if(self._child_ec_list[pos].instance is not None):
             self._child_ec_list[pos].instance.abort()
@@ -232,11 +223,7 @@ class ParallelNode(ControlNode, ABC):
         del self._child_ec_list[pos]
 
     def remove_all_children(self) -> None:
-        """
-        Removes all child nodes.
-
-        """
-
+        """Remove all child nodes."""
         self._success_count = 0
         self._fail_count = 0
 

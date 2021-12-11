@@ -13,9 +13,7 @@
 # limitations under the License.
 
 from io import StringIO
-
 import re
-
 from unittest.mock import patch
 
 from carebt.abstractLogger import LogLevel

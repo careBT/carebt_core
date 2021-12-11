@@ -14,24 +14,22 @@
 
 from threading import Timer
 
-from tests.actionNodes import HelloWorldAction
-
-from tests.global_mock import mock
-from tests.actionNodes import AddTwoNumbersMultiTickAction
-from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
-from tests.actionNodes import HelloWorldActionWithMessage
-
 from carebt.rateControlNode import NodeStatus
 from carebt.rateControlNode import RateControlNode
+from tests.actionNodes import AddTwoNumbersMultiTickAction
+from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
+from tests.actionNodes import HelloWorldAction
+from tests.actionNodes import HelloWorldActionWithMessage
+from tests.global_mock import mock
 
 ########################################################################
 
 
 class RateControlledAddTwoNumbersMultiTickAction(RateControlNode):
-    """
+    """The `RateControlledAddTwoNumbersMultiTickAction` example node.
+
     The `RateControlledAddTwoNumbersMultiTickAction` throttles down the
     AddTwoNumbersMultiTickAction.
-
     """
 
     def __init__(self, bt):
@@ -52,10 +50,10 @@ class RateControlledAddTwoNumbersMultiTickAction(RateControlNode):
 
 
 class RateControlledAddTwoNumbersMultiTickActionWithTimeout(RateControlNode):
-    """
+    """The `RateControlledAddTwoNumbersMultiTickActionWithTimeout` example node.
+
     The `RateControlledAddTwoNumbersMultiTickActionWithTimeout` throttles down the
     AddTwoNumbersMultiTickActionWithTimeout.
-
     """
 
     def __init__(self, bt):
@@ -76,10 +74,10 @@ class RateControlledAddTwoNumbersMultiTickActionWithTimeout(RateControlNode):
 
 
 class RateControlledAddTwoNumbersMultiTickActionOwnTimeout(RateControlNode):
-    """
+    """The `RateControlledAddTwoNumbersMultiTickActionOwnTimeout` example node.
+
     The `RateControlledAddTwoNumbersMultiTickActionOwnTimeout` throttles down the
     AddTwoNumbersMultiTickAction, but has its own timeout set.
-
     """
 
     def __init__(self, bt):
@@ -106,11 +104,11 @@ class RateControlledAddTwoNumbersMultiTickActionOwnTimeout(RateControlNode):
 
 
 class RateControlledHelloWorldActionWithMessage(RateControlNode):
-    """
+    """The `RateControlledHelloWorldActionWithMessage` example node.
+
     The `RateControlledHelloWorldActionWithMessage` throttles down the
     HelloWorldActionWithMessage. The idea is to test if the contingency-
     message is correctly provided in case the state is `SUCCESS`.
-
     """
 
     def __init__(self, bt):
@@ -131,10 +129,10 @@ class RateControlledHelloWorldActionWithMessage(RateControlNode):
 
 
 class AsyncAddChildRateControl(RateControlNode):
-    """
+    """The `AsyncAddChildRateControl` example node.
+
     The `AsyncAddChildRateControl` starts with an empty child list and adds the
     `HelloWorldAction` child after the timer expires.
-
     """
 
     def __init__(self, bt_runner):

@@ -19,7 +19,6 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'careBT'
-copyright = '2021, Andreas Steck'
 author = 'Andreas Steck'
 
 

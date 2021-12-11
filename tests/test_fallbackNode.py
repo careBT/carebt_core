@@ -14,7 +14,9 @@
 
 from unittest.mock import call
 
-from tests.global_mock import mock
+from carebt.abstractLogger import LogLevel
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
+from carebt.nodeStatus import NodeStatus
 from tests.fallbackNodes import AddTwoNumbersFallback1
 from tests.fallbackNodes import AddTwoNumbersFallback2
 from tests.fallbackNodes import AddTwoNumbersFallback3
@@ -23,28 +25,18 @@ from tests.fallbackNodes import AddTwoNumbersFallback5
 from tests.fallbackNodes import AddTwoNumbersFallback6
 from tests.fallbackNodes import AddTwoNumbersFallback7
 from tests.fallbackNodes import AsyncAddChildFallback
-
-from carebt.abstractLogger import LogLevel
-from carebt.behaviorTreeRunner import BehaviorTreeRunner
-from carebt.nodeStatus import NodeStatus
+from tests.global_mock import mock
 
 ########################################################################
 
 
 class TestFallbackNode:
-    """
-    Tests the `AddTwoNumbersFallback1`.
-
-    """
+    """Tests the `AddTwoNumbersFallback1`."""
 
     ########################################################################
 
     def test_AddTwoNumbersFallback1(self):
-        """
-        Tests the AddTwoNumbersFallback1
-
-        """
-
+        """Tests the AddTwoNumbersFallback1."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersFallback1)
@@ -65,11 +57,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AddTwoNumbersFallback2(self):
-        """
-        Tests the AddTwoNumbersFallback2
-
-        """
-
+        """Tests the AddTwoNumbersFallback2."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersFallback2)
@@ -95,11 +83,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AddTwoNumbersFallback3(self):
-        """
-        Tests the AddTwoNumbersFallback3
-
-        """
-
+        """Tests the AddTwoNumbersFallback3."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersFallback3)
@@ -130,11 +114,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AddTwoNumbersFallback4(self):
-        """
-        Tests the AddTwoNumbersFallback4
-
-        """
-
+        """Tests the AddTwoNumbersFallback4."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersFallback4)
@@ -160,11 +140,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AddTwoNumbersFallback5(self):
-        """
-        Tests the AddTwoNumbersFallback5
-
-        """
-
+        """Tests the AddTwoNumbersFallback5."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
@@ -188,11 +164,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AddTwoNumbersFallback6(self):
-        """
-        Tests the AddTwoNumbersFallback6
-
-        """
-
+        """Tests the AddTwoNumbersFallback6."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
@@ -218,11 +190,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AddTwoNumbersFallback7(self):
-        """
-        Tests the AddTwoNumbersFallback7
-
-        """
-
+        """Tests the AddTwoNumbersFallback7."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
@@ -247,11 +215,7 @@ class TestFallbackNode:
     ########################################################################
 
     def test_AsyncAddChildFallback(self):
-        """
-        Tests the AsyncAddChildFallback
-
-        """
-
+        """Tests the AsyncAddChildFallback."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AsyncAddChildFallback, '')

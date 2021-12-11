@@ -28,7 +28,8 @@ if TYPE_CHECKING:
 
 
 class RateControlNode(ControlNode, ABC):
-    """
+    """The careBT `RateControlNode` class.
+
     The `RateControlNode` is a special node to throttle the tick rate of its
     only child. It is similar to the `throttle` mechanism of the `ActionNode`.
     But the `ActionNode` needs to be already implemented with the throttling.
@@ -37,24 +38,20 @@ class RateControlNode(ControlNode, ABC):
     For the latter one this is especially useful if the implementation of the
     custon `ActionNode` should or could not be modified.
 
+    Parameters
+    ----------
+    bt_runner: 'BehaviorTreeRunner'
+        The behavior tree runner which started the tree.
+    rate_ms: int
+        Throttling rate in milliseconds
+    params: str
+        The input/Output parameters of the node
+        e.g. '?x ?y => ?z'
+
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', rate_ms: int, params: str = None):
-        """
-        Constructor of `RateControlNode`.
-
-        Parameters
-        ----------
-        bt_runner: 'BehaviorTreeRunner'
-            The behavior tree runner which started the tree.
-        rate_ms: int
-            Throttling rate in milliseconds
-        params: str
-            The input/Output parameters of the node
-            e.g. '?x ?y => ?z'
-
-        """
-
+        """Init the `ActionNode` with bt_runner,rate_ms and params."""
         super().__init__(bt_runner, params)
 
         self.__rate_ms = rate_ms
@@ -131,8 +128,9 @@ class RateControlNode(ControlNode, ABC):
     # PUBLIC
 
     def set_child(self, node: TreeNode, params: str = None) -> None:
-        """
-        Sets the child node to this `RateControlNode`. There can only be one child at
+        """Set the child node.
+
+        Set the child node to this `RateControlNode`. There can only be one child at
         the same time.
 
         Parameters
@@ -144,7 +142,6 @@ class RateControlNode(ControlNode, ABC):
             The parameters of the added child node
 
         """
-
         self._child_ptr = 0
         self._child_ec_list.clear()
         self._child_ec_list.append(ExecutionContext(node, params))

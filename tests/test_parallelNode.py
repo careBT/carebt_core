@@ -13,40 +13,32 @@
 # limitations under the License.
 
 from unittest.mock import call
-from carebt.abstractLogger import LogLevel
 
+from carebt.abstractLogger import LogLevel
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
+from carebt.nodeStatus import NodeStatus
 from tests.global_mock import mock
 from tests.parallelNodes import AddTwoNumbersParallel
+from tests.parallelNodes import AsyncAddChildParallel
 from tests.parallelNodes import CountAbortParallel
+from tests.parallelNodes import ParallelRemoveSuccess
 from tests.parallelNodes import TickCountingParallel
 from tests.parallelNodes import TickCountingParallelDel
 from tests.parallelNodes import TickCountingParallelDelAdd1
 from tests.parallelNodes import TickCountingParallelDelAdd2
 from tests.parallelNodes import TickCountingParallelDelAllAdd
 from tests.parallelNodes import TickCountingParallelWithAbort
-from tests.parallelNodes import ParallelRemoveSuccess
-from tests.parallelNodes import AsyncAddChildParallel
-
-from carebt.behaviorTreeRunner import BehaviorTreeRunner
-from carebt.nodeStatus import NodeStatus
 
 ########################################################################
 
 
 class TestParallelNode:
-    """
-    Tests the `ParallelNode`.
-
-    """
+    """Test the `ParallelNode`."""
 
     ########################################################################
 
     def test_AddTwoNumbersParallel(self):
-        """
-        Tests the AddTwoNumbersParallel
-
-        """
-
+        """Test the `AddTwoNumbersParallel` node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersParallel)
@@ -77,13 +69,12 @@ class TestParallelNode:
     ########################################################################
 
     def test_TickCountingParallel_threshold_3_success_3(self):
-        """
-        Tests the `TickCountingParallel`. The success_threshold is set to 3. All three
+        """Test the `TickCountingParallel` node.
+
+        Test the `TickCountingParallel`. The success_threshold is set to 3. All three
         children count up to 4 and complete then with `SUCCESS`. Thus the whole `ParallelNode'
         completes with `SUCCESS`
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallel, '3 4 True 4 True 4 True')
@@ -121,12 +112,11 @@ class TestParallelNode:
                                        call('__del__ TickCountingParallel')]
 
     def test_TickCountingParallel_threshold_3_fail_1(self):
-        """
-        Tests the `TickCountingParallel`. The success_threshold is set to 3. One of the children
+        """Test the `TickCountingParallel` node.
+
+        Test the `TickCountingParallel`. The success_threshold is set to 3. One of the children
         fails after 3 ticks. Thus the whole `ParallelNode' completes with `FAILURE`.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallel, '3 4 True 3 False 5 True')
@@ -161,12 +151,11 @@ class TestParallelNode:
                                        call('__del__ TickCountingAction id = 1')]
 
     def test_TickCountingParallel_threshold_2_success_all(self):
-        """
-        Tests the `TickCountingParallel`. The success_threshold is set to 3. All children
+        """Test the `TickCountingParallel` node.
+
+        Test the `TickCountingParallel`. The success_threshold is set to 3. All children
         succeed, but in different ticks.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallel, '2 2 True 9 True 4 True')
@@ -204,12 +193,11 @@ class TestParallelNode:
     ########################################################################
 
     def test_TickCountingParallelWithAbort_threshold_3_fail_1(self):
-        """
-        Tests the `TickCountingParallelWithAbort`. The success_threshold is set to 3. One of
+        """Test the `TickCountingParallelWithAbort` node.
+
+        Test the `TickCountingParallelWithAbort`. The success_threshold is set to 3. One of
         the children fails after 3 ticks. The contingengy-handler aborts the whole `ParralelNode`.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallelWithAbort, '3 4 True 3 False 5 True')
@@ -245,13 +233,12 @@ class TestParallelNode:
     ########################################################################
 
     def test_TickCountingParallelDelAdd1_threshold_3_fail_1(self):
-        """
-        Tests the `TickCountingParallelDelAdd1`. The success_threshold is set to 2. One of the
+        """Test the `TickCountingParallelDelAdd1` node.
+
+        Test the `TickCountingParallelDelAdd1`. The success_threshold is set to 2. One of the
         children fails after 3 ticks. The contingengy-handler removed child #2 (id=3), adds
         new new children and sets the success_threshold to 3.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallelDelAdd1, '2 4 True 3 False 5 True')
@@ -297,13 +284,12 @@ class TestParallelNode:
     ########################################################################
 
     def test_TickCountingParallelDelAdd2_threshold_3_fail_1(self):
-        """
-        Tests the `TickCountingParallelDelAdd2`. The success_threshold is set to 2. One of the
+        """Test the `TickCountingParallelDelAdd2` node.
+
+        Test the `TickCountingParallelDelAdd2`. The success_threshold is set to 2. One of the
         children fails after 3 ticks. The contingengy-handler removed child #2 (id=3), adds
         new new children and sets the success_threshold to 3.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallelDelAdd2, '2 4 True 3 False 5 True')
@@ -357,13 +343,12 @@ class TestParallelNode:
     ########################################################################
 
     def test_TickCountingParallelDel_threshold_3_fail_1(self):
-        """
-        Tests the `TickCountingParallelDel`. The success_threshold is set to 2. One of the
+        """Test the `TickCountingParallelDel` node.
+
+        Test the `TickCountingParallelDel`. The success_threshold is set to 2. One of the
         children fails after 3 ticks. The contingengy-handler removed child #2 (id=3) and
         sets the success_threshold to 1.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
@@ -402,13 +387,12 @@ class TestParallelNode:
     ########################################################################
 
     def test_TickCountingParallelDelAllAdd_threshold_3_fail_1(self):
-        """
-        Tests the `TickCountingParallelDelAllAdd`. The success_threshold is set to 2. One of the
+        """Test the `TickCountingParallelDelAllAdd` node.
+
+        Test the `TickCountingParallelDelAllAdd`. The success_threshold is set to 2. One of the
         children fails after 3 ticks. The contingengy-handler removed child #2 (id=3), adds
         new new children and sets the success_threshold to 3.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(TickCountingParallelDelAllAdd, '2 4 True 3 False 5 True')
@@ -473,11 +457,7 @@ class TestParallelNode:
     ########################################################################
 
     def test_CountAbortParallel(self):
-        """
-        Tests the CountAbortParallel
-
-        """
-
+        """Test the CountAbortParallel."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.TRACE)
@@ -510,11 +490,7 @@ class TestParallelNode:
     ########################################################################
 
     def test_ParallelRemoveSuccess(self):
-        """
-        Tests the ParallelRemoveSuccess
-
-        """
-
+        """Test the ParallelRemoveSuccess."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.TRACE)
@@ -575,11 +551,7 @@ class TestParallelNode:
     ########################################################################
 
     def test_AsyncAddChildSequence(self):
-        """
-        Tests the AsyncAddChildSequence
-
-        """
-
+        """Tests the AsyncAddChildSequence."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AsyncAddChildParallel, '')

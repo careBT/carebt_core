@@ -14,23 +14,22 @@
 
 from threading import Timer
 
-from tests.actionNodes import AddTwoNumbersLongRunningAction
-from tests.actionNodes import AddTwoNumbersActionWithFailure
-from tests.actionNodes import HelloWorldAction
-from tests.global_mock import mock
-
 from carebt.fallbackNode import FallbackNode
 from carebt.nodeStatus import NodeStatus
+from tests.actionNodes import AddTwoNumbersActionWithFailure
+from tests.actionNodes import AddTwoNumbersLongRunningAction
+from tests.actionNodes import HelloWorldAction
+from tests.global_mock import mock
 
 ########################################################################
 
 
 class AddTwoNumbersFallback1(FallbackNode):
-    """
+    """The `AddTwoNumbersFallback1` example node.
+
     The `AddTwoNumbersFallback1` has two child nodes which both complete with
     `SUCCESS`. The second one should not be executed as the first one already
     succeeds.
-
     """
 
     def __init__(self, bt_runner):
@@ -52,10 +51,10 @@ class AddTwoNumbersFallback1(FallbackNode):
 
 
 class AddTwoNumbersFallback2(FallbackNode):
-    """
+    """The `AddTwoNumbersFallback2` example node.
+
     The `AddTwoNumbersFallback2` has two child nodes. The first one fails,
     the second one succeeds. Thus, both should be executed.
-
     """
 
     def __init__(self, bt_runner):
@@ -77,10 +76,10 @@ class AddTwoNumbersFallback2(FallbackNode):
 
 
 class AddTwoNumbersFallback3(FallbackNode):
-    """
+    """The `AddTwoNumbersFallback3` example node.
+
     The `AddTwoNumbersFallback3` has four child nodes. The first two fail and the
     following two succeed. Thus, the first three should be executed.
-
     """
 
     def __init__(self, bt_runner):
@@ -104,10 +103,10 @@ class AddTwoNumbersFallback3(FallbackNode):
 
 
 class AddTwoNumbersFallback4(FallbackNode):
-    """
+    """The `AddTwoNumbersFallback4` example node.
+
     The `AddTwoNumbersFallback4` has two child nodes which both fail. In
     this case the `FallbackSequence` should also fail.
-
     """
 
     def __init__(self, bt_runner):
@@ -129,10 +128,10 @@ class AddTwoNumbersFallback4(FallbackNode):
 
 
 class AddTwoNumbersFallback5(FallbackNode):
-    """
+    """The `AddTwoNumbersFallback5` example node.
+
     The `AddTwoNumbersFallback5` is the same as `AddTwoNumbersFallback2`,
     but has a contingency-handler which aborts the `Fallbackode`.
-
     """
 
     def __init__(self, bt_runner):
@@ -166,10 +165,7 @@ class AddTwoNumbersFallback5(FallbackNode):
 
 
 class AddTwoNumbersFallback6(FallbackNode):
-    """
-    The `AddTwoNumbersFallback6` is
-
-    """
+    """The `AddTwoNumbersFallback6` example node."""
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner)
@@ -201,10 +197,7 @@ class AddTwoNumbersFallback6(FallbackNode):
 
 
 class AddTwoNumbersFallback7(FallbackNode):
-    """
-    The `AddTwoNumbersFallback7`
-
-    """
+    """The `AddTwoNumbersFallback7` example node."""
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner)
@@ -234,10 +227,10 @@ class AddTwoNumbersFallback7(FallbackNode):
 
 
 class AsyncAddChildFallback(FallbackNode):
-    """
+    """The `AsyncAddChildFallback` example node.
+
     The `AsyncAddChildFallback` starts with an empty child list and adds the
     `HelloWorldAction` child after the timer expires.
-
     """
 
     def __init__(self, bt_runner):

@@ -15,16 +15,17 @@
 import random
 
 from carebt.actionNode import ActionNode
+from carebt.examples.action_with_params import AddTwoNumbersAction
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
-from carebt.examples.action_with_params import AddTwoNumbersAction
 
 ########################################################################
 
 
 class CreateRandomNumberAction(ActionNode):
-    """
+    """The `CreateRandomNumberAction` example node.
+
     The `CreateRandomNumberAction` creates a random number between 1 and 10
     and binds it to the output parameter.
 
@@ -47,7 +48,8 @@ class CreateRandomNumberAction(ActionNode):
 
 
 class PrintNumberAction(ActionNode):
-    """
+    """The `PrintNumberAction` example node.
+
     The `PrintNumberAction` prints the, as input parameter provided, number on
     standard output.
 
@@ -69,7 +71,8 @@ class PrintNumberAction(ActionNode):
 
 
 class SimpleSequence(SequenceNode):
-    """
+    """The `SimpleSequence` example node.
+
     The `SimpleSequence` runs the nodes `CreateRandomNumberAction`,
     `CreateRandomNumberAction`, `AddTwoNumbersAction` and `PrintNumberAction`
     in a sequence. The first two nodes create random numbers, the third one
@@ -96,7 +99,8 @@ class SimpleSequence(SequenceNode):
 
 
 class SimpleSequence2(SequenceNode):
-    """
+    """The `SimpleSequence2` example node.
+
     The `SimpleSequence2` demonstrates a modified version of the
     `SimpleSequence`. The value provided as an input parameter is
     added to a randomly generated value. The result is then added
@@ -130,7 +134,8 @@ class SimpleSequence2(SequenceNode):
 
 
 class SimpleSequence3(SequenceNode):
-    """
+    """The `SimpleSequence3` example node.
+
     The `SimpleSequence3` shows another example sequence where the two sequences
     implemented above are reused.
 

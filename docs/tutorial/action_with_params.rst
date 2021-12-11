@@ -47,7 +47,7 @@ documentation of the node, which also documents the interface (input/output para
 
 .. literalinclude:: ../../carebt/examples/action_with_params.py
     :language: python
-    :lines: 20-37
+    :lines: 20-38
 
 The constructor (``__init__``) of the ``AddTwoNumbersAction`` node needs to call the constructor (``super().__init__``)
 of the ``ActionNode`` and passes the bt_runner and the signature as arguments. The input parameters are *?x* and *?y*,
@@ -56,7 +56,7 @@ and the output parameter is *?z*. These parameters are then available inside the
 
 .. literalinclude:: ../../carebt/examples/action_with_params.py
     :language: python
-    :lines: 39-40
+    :lines: 40-41
 
 The ``on_init`` function is called rigth after the node was created. It is the place to put the code which should
 be executed once, after the node was created. In this example it is implemented that the two input parameters are
@@ -65,7 +65,7 @@ is set zero.
 
 .. literalinclude:: ../../carebt/examples/action_with_params.py
     :language: python
-    :lines: 42-46
+    :lines: 43-47
 
 In the ``on_tick`` function the two inputs are added and assiged to the output. Furthermore, this calculation is
 printed on standard output and the node status is set to ``SUCCESS``. Thus, the ``AddTwoNumbersAction``
@@ -73,7 +73,7 @@ node is not ticked again.
 
 .. literalinclude:: ../../carebt/examples/action_with_params.py
     :language: python
-    :lines: 48-52
+    :lines: 49-53
 
 Run the example
 ^^^^^^^^^^^^^^^

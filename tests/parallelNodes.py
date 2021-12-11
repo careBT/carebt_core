@@ -14,24 +14,23 @@
 
 from threading import Timer
 
+from carebt.nodeStatus import NodeStatus
+from carebt.parallelNode import ParallelNode
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import FailOnCountAction
 from tests.actionNodes import HelloWorldAction
 from tests.actionNodes import TickCountingAction
 from tests.global_mock import mock
 
-from carebt.nodeStatus import NodeStatus
-from carebt.parallelNode import ParallelNode
-
 ########################################################################
 
 
 class AddTwoNumbersParallel(ParallelNode):
-    """
+    """The `AddTwoNumbersParallel` example node.
+
     The `AddTwoNumbersParallel` runs three `AddTwoNumbersAction` in parallel.
     As the success_threshold is set to 3, the `AddTwoNumbersParallel` completes
     also with `SUCCESS`.
-
     """
 
     def __init__(self, bt_runner):
@@ -54,7 +53,8 @@ class AddTwoNumbersParallel(ParallelNode):
 
 
 class TickCountingParallel(ParallelNode):
-    """
+    """The `TickCountingParallel` example node.
+
     The `TickCountingParallel` runs three `TickCountingAction` in parallel.
 
     Input Parameters
@@ -98,7 +98,8 @@ class TickCountingParallel(ParallelNode):
 
 
 class TickCountingParallelWithAbort(ParallelNode):
-    """
+    """The `TickCountingParallelWithAbort` example node.
+
     The `TickCountingParallelWithAbort` is a variant of `TickCountingParallel`
     which aborts on failure.
 
@@ -152,7 +153,8 @@ class TickCountingParallelWithAbort(ParallelNode):
 
 
 class TickCountingParallelDelAdd1(ParallelNode):
-    """
+    """The `TickCountingParallelDelAdd1` example node.
+
     The `TickCountingParallelDelAdd1` is a variant of `TickCountingParallel`
     which deletes child 2 (id=3) and adds one new child on failure.
 
@@ -207,8 +209,9 @@ class TickCountingParallelDelAdd1(ParallelNode):
 
 
 class TickCountingParallelDelAdd2(ParallelNode):
-    """
-    The `TickCountingParallelDelAdd1` is a variant of `TickCountingParallel`
+    """The `TickCountingParallelDelAdd2` example node.
+
+    The `TickCountingParallelDelAdd2` is a variant of `TickCountingParallel`
     which deletes child 2 (id=3) and adds two new children on failure.
 
     Input Parameters
@@ -263,7 +266,8 @@ class TickCountingParallelDelAdd2(ParallelNode):
 
 
 class TickCountingParallelDel(ParallelNode):
-    """
+    """The `TickCountingParallelWithAbort` example node.
+
     The `TickCountingParallelWithAbort` is a variant of `TickCountingParallel`
     which deletes child 2 (id=3) on failure.
 
@@ -317,8 +321,9 @@ class TickCountingParallelDel(ParallelNode):
 
 
 class TickCountingParallelDelAllAdd(ParallelNode):
-    """
-    The `TickCountingParallelWithAbort` is a variant of `TickCountingParallel`
+    """The `TickCountingParallelDelAllAdd` example node.
+
+    The `TickCountingParallelDelAllAdd` is a variant of `TickCountingParallel`
     which deletes all children and adds three new children on failure.
 
     Input Parameters
@@ -374,11 +379,11 @@ class TickCountingParallelDelAllAdd(ParallelNode):
 
 
 class CountAbortParallel(ParallelNode):
-    """
+    """The `CountAbortParallel` example node.
+
     The `CountAbortParallel` runs one child that increments the ?count and
     a second one to check the ?count and fails if ?goal is reached. Thus,
     thue whole `ParallelNode` fails.
-
     """
 
     def __init__(self, bt_runner):
@@ -400,10 +405,7 @@ class CountAbortParallel(ParallelNode):
 
 
 class ParallelRemoveSuccess(ParallelNode):
-    """
-    The `ParallelRemoveSuccess`
-
-    """
+    """The `ParallelRemoveSuccess` example node."""
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner, 2, '')
@@ -435,10 +437,10 @@ class ParallelRemoveSuccess(ParallelNode):
 
 
 class AsyncAddChildParallel(ParallelNode):
-    """
+    """The `AsyncAddChildParallel` example node.
+
     The `AsyncAddChildParallel` starts with an empty child list and adds the
     `HelloWorldAction` child after the timer expires.
-
     """
 
     def __init__(self, bt_runner):

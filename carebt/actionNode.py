@@ -26,27 +26,24 @@ if TYPE_CHECKING:
 
 
 class ActionNode(TreeNode, ABC):
-    """
+    """The careBT `ActionNode` class.
+
     `ActionNodes` are the leafs in a careBT behavior tree. They execute
     the actions in the 'world' the behavior tree is running in. This includes
     manipulating the environment or actively perceiving it.
 
+    Parameters
+    ----------
+    bt_runner: 'BehaviorTreeRunner'
+        The behavior tree runner which started the tree.
+    params: str
+        The input/Output parameters of the node
+        e.g. '?x ?y => ?z'
+
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
-        """
-        Constructor of `ActionNode`.
-
-        Parameters
-        ----------
-        bt_runner: 'BehaviorTreeRunner'
-            The behavior tree runner which started the tree.
-        params: str
-            The input/Output parameters of the node
-            e.g. '?x ?y => ?z'
-
-        """
-
+        """Init the `ActionNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
         self.get_logger().info('creating {}'.format(self.__class__.__name__))
         self._throttle_ms = None
@@ -75,18 +72,18 @@ class ActionNode(TreeNode, ABC):
 
     # @abstractmethod
     def on_tick(self) -> None:
-        """
+        """Is called on each tick.
+
         The `on_tick` callback is called every time the `ActionNode` is ticked by
         its parent node, considering the optional throttle rate.
-
         """
-
         raise NotImplementedError
 
     # PUBLIC
 
     def set_throttle_ms(self, throttle_ms: int) -> None:
-        """
+        """Set the throttle rate in milliseconds.
+
         Reduces the ticks the `ActionNodes` on_tick method is called to the
         provided throttle_ms value. For example, to reduce the calls of the
         `on_tick` callback to 500 milliseconds, the throttle_ms should be set
@@ -98,5 +95,4 @@ class ActionNode(TreeNode, ABC):
             The throttle rate in milliseconds
 
         """
-
         self._throttle_ms = throttle_ms

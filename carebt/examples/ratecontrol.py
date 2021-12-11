@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from carebt.rateControlNode import RateControlNode
-
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
+from carebt.rateControlNode import RateControlNode
 
 
 class SimpleRateControl(RateControlNode):
-    """
+    """The `SimpleRateControl` example node.
+
     The `SimpleRateControl` has one child. In this example this is the
     `AddTwoNumbersMultiTickAction`. This node has no throttling. Due to
     the `RateControlNode` such a throttling can be implemented without

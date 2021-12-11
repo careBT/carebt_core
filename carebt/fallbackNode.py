@@ -26,7 +26,8 @@ if TYPE_CHECKING:
 
 
 class FallbackNode(ControlNode, ABC):
-    """
+    """The careBT `FallbackNode` class.
+
     In a `FallbackNode` the added child nodes are executed one after another until
     one node completes with `SUCCESS` or `FIXED`. The child nodes are executed in the
     order they were added to the sequence. If all children complete with `FAILURE`
@@ -36,22 +37,18 @@ class FallbackNode(ControlNode, ABC):
     only be one at a time - if the status is `RUNNING`. If the status is `SUSPENDED`
     the ticks are not forwarded.
 
+    Parameters
+    ----------
+    bt_runner: 'BehaviorTreeRunner'
+        The behavior tree runner which started the tree.
+    params: str
+        The input/Output parameters of the node
+        e.g. '?x ?y => ?z'
+
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
-        """
-        Constructor of `FallbackNode`.
-
-        Parameters
-        ----------
-        bt_runner: 'BehaviorTreeRunner'
-            The behavior tree runner which started the tree.
-        params: str
-            The input/Output parameters of the node
-            e.g. '?x ?y => ?z'
-
-        """
-
+        """Init the `FallbackNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
 
     # PROTECTED
@@ -135,8 +132,9 @@ class FallbackNode(ControlNode, ABC):
     # PUBLIC
 
     def append_child(self, node: TreeNode, params: str = None) -> None:
-        """
-        Appends a child node at the end of the sequence of this `FallbackNode`.
+        """Append a child.
+
+        Append a child node at the end of the sequence of this `FallbackNode`.
 
         Parameters
         ----------
@@ -147,12 +145,12 @@ class FallbackNode(ControlNode, ABC):
             The parameters of the added child node
 
         """
-
         self._child_ec_list.append(ExecutionContext(node, params))
 
     def insert_child_after_current(self, node: TreeNode, params: str = None) -> None:
-        """
-        Inserts a child node right after the currently executing child node. NOTE: When
+        """Insert a child after the current.
+
+        Insert a child node right after the currently executing child node. NOTE: When
         inserting more than one node, they should be inserted in reverse order. This is
         because each node will be inserted right after the currently executing!
 
@@ -165,7 +163,6 @@ class FallbackNode(ControlNode, ABC):
             The parameters of the added child node
 
         """
-
         # if all children were removed
         if(len(self._child_ec_list) != 0
            and self._child_ec_list[self._child_ptr].instance is None
@@ -175,14 +172,13 @@ class FallbackNode(ControlNode, ABC):
             self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
 
     def remove_all_children(self) -> None:
-        """
-        Removes all children from the `FallbackNode`. This is typically done in a contingency
+        """Remove all child nodes.
+
+        Remove all children from the `FallbackNode`. This is typically done in a contingency
         handler to modify the current execution sequence and adjust it to the current situation.
         New children which should be executed afterwards can be added with `append_child` or
         `insert_child_after_current`.
-
         """
-
         self._child_ec_list[self._child_ptr].instance.on_delete()
         self._child_ec_list.clear()
         self._child_ptr = 0

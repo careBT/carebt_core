@@ -17,7 +17,8 @@ from carebt.nodeStatus import NodeStatus
 
 
 class AddTwoNumbersAction(ActionNode):
-    """
+    """The `AddTwoNumbersAction` demonstrates a careBT `ActionNode`.
+
     The `AddTwoNumbersAction` demonstrates a careBT `ActionNode` with two
     input parameters and one output parameter. It takes the two inputs,
     adds them and returns the result.

@@ -13,37 +13,31 @@
 # limitations under the License.
 
 from datetime import datetime
-
 from unittest.mock import call
-
-from tests.global_mock import mock
-from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickAction
-from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionWithTimeout
-from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionOwnTimeout
-from tests.rateControlNodes import RateControlledHelloWorldActionWithMessage
-from tests.rateControlNodes import AsyncAddChildRateControl
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
+from tests.global_mock import mock
+from tests.rateControlNodes import AsyncAddChildRateControl
+from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickAction
+from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionOwnTimeout
+from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionWithTimeout
+from tests.rateControlNodes import RateControlledHelloWorldActionWithMessage
 
 ########################################################################
 
 
 class TestRateControlNode:
-    """
-    Tests the `RateControlledAddTwoNumbersMultiTickAction`.
-
-    """
+    """Test the `RateControlledAddTwoNumbersMultiTickAction`."""
 
     ########################################################################
 
     def test_RateControlledAddTwoNumbersMultiTickAction(self):
-        """
-        Tests the RateControlledAddTwoNumbersMultiTickAction. The `RateControlNode`
+        """Test the `RateControlledAddTwoNumbersMultiTickAction` node.
+
+        Test the `RateControlledAddTwoNumbersMultiTickAction`. The `RateControlNode`
         throttles down the AddTwoNumbersMultiTickAction.
-
         """
-
         mock.reset_mock()
         bt = BehaviorTreeRunner()
         start = datetime.now()
@@ -73,14 +67,13 @@ class TestRateControlNode:
     ########################################################################
 
     def test_RateControlledAddTwoNumbersMultiTickActionWithTimeout(self):
-        """
-        Tests the test_RateControlledAddTwoNumbersMultiTickActionWithTimeout. The
+        """Test the `RateControlledAddTwoNumbersMultiTickActionWithTimeout` node.
+
+        Test the test_RateControlledAddTwoNumbersMultiTickActionWithTimeout. The
         `RateControlNode` throttles down the AddTwoNumbersMultiTickAction. But in
         this case the timeout in the `AddTwoNumbersMultiTickAction` aborts the
         AddTwoNumbersMultiTickAction.
-
         """
-
         mock.reset_mock()
         bt = BehaviorTreeRunner()
         start = datetime.now()
@@ -108,13 +101,12 @@ class TestRateControlNode:
     ########################################################################
 
     def test_RateControlledAddTwoNumbersMultiTickAction_timeout(self):
-        """
-        Tests the RateControlledAddTwoNumbersMultiTickAction. The `RateControlNode`
+        """Test the `RateControlledAddTwoNumbersMultiTickActionOwnTimeout` node.
+
+        Test the RateControlledAddTwoNumbersMultiTickAction. The `RateControlNode`
         throttles down the AddTwoNumbersMultiTickAction. This time a timeout in the
         `RateControlNode` aborts the `RateControlNode`.
-
         """
-
         mock.reset_mock()
         bt = BehaviorTreeRunner()
         start = datetime.now()
@@ -142,11 +134,7 @@ class TestRateControlNode:
     ########################################################################
 
     def test_RateControlledHelloWorldActionWithMessage(self):
-        """
-        Tests the RateControlledHelloWorldActionWithMessage.
-
-        """
-
+        """Test the `RateControlledHelloWorldActionWithMessage` node."""
         mock.reset_mock()
         bt = BehaviorTreeRunner()
         bt.run(RateControlledHelloWorldActionWithMessage)
@@ -156,11 +144,7 @@ class TestRateControlNode:
     ########################################################################
 
     def test_AsyncAddChildSequence(self):
-        """
-        Tests the AsyncAddChildSequence
-
-        """
-
+        """Tests the AsyncAddChildSequence node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AsyncAddChildRateControl, '')

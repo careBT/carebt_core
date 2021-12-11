@@ -17,13 +17,13 @@ from carebt.nodeStatus import NodeStatus
 
 
 class HelloWorldAction(ActionNode):
-    """
+    """The `HelloWorldAction` example node.
+
     The `HelloWorldAction` provides a classical Hello World example.
     It demonstrates a simple implementation of a careBT `ActionNode`.
 
     When running the `HelloWorldAction`,
     'HelloWorldAction: Hello World !!!' is printed on standard output.
-
     """
 
     def __init__(self, bt_runner):

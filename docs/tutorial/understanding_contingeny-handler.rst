@@ -24,7 +24,7 @@ of contingency-handlers.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 23-78
+    :lines: 22-78
     :linenos:
 
 The code explained
@@ -95,7 +95,7 @@ Or use the provided file: :download:`sequence_with_contingencies.py <../../careb
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 83-110
+    :lines: 83-111
     :linenos:
 
 The code explained
@@ -158,7 +158,7 @@ Or use the provided file: :download:`sequence_with_contingencies.py <../../careb
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 115-169
+    :lines: 116-171
     :linenos:
 
 
@@ -172,14 +172,14 @@ function is called.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 148-151
+    :lines: 150-153
 
 The ``fix_large_result`` function removes all children from the sequence and adds the two new child nodes
 ``CreateRandomNumberAction`` and ``PrintNumberAction``.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 160-164
+    :lines: 162-166
 
 The second contingency-handler is also attached to the ``AddTwoNumbersActionWithFailures`` child and triggers 
 in case the child node completes with ``FAILURE`` and the contingency-message matches the regular expression 
@@ -189,7 +189,7 @@ for example, as follows: ``r'ONE_PARAM_MISSING|BOTH_PARAMS_MISSING'`` or ``r'.*_
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 153-158
+    :lines: 155-160
 
 The ``fix_missing_input`` function sets the output parameter ``_c`` resp. ``?c`` to zero and the currently
 executing child - which is the ``AddTwoNumbersActionWithFailures`` - to ``FIXED``. As ``FIXED`` is handled
@@ -198,7 +198,7 @@ in the same way as ``SUCCESS`` the execution continues with the ``PrintNumberAct
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 166-169
+    :lines: 168-171
 
 
 Run the example

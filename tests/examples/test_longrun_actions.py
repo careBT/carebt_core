@@ -13,16 +13,14 @@
 # limitations under the License.
 
 from io import StringIO
-
 import re
-
 from unittest.mock import patch
 
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
+from carebt.examples.longrun_actions import AddTwoNumbersLongRunningAction
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
-from carebt.examples.longrun_actions import AddTwoNumbersLongRunningAction
 from carebt.nodeStatus import NodeStatus
 
 

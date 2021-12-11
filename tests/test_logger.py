@@ -12,21 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from tests.global_mock import mock
-from tests.actionNodes import HelloWorldAction
+from io import StringIO
+import re
+from unittest.mock import call
+from unittest.mock import patch
 
 from carebt.abstractLogger import AbstractLogger
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from carebt.simplePrintLogger import SimplePrintLogger
-
-from io import StringIO
-
-import re
-
-from unittest.mock import call
-from unittest.mock import patch
+from tests.actionNodes import HelloWorldAction
+from tests.global_mock import mock
 
 
 class CustomLogger(AbstractLogger):

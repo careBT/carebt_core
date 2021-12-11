@@ -14,6 +14,8 @@
 
 from threading import Timer
 
+from carebt.nodeStatus import NodeStatus
+from carebt.sequenceNode import SequenceNode
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
 from tests.actionNodes import AddTwoNumbersLongRunningActionWithAbort
@@ -24,17 +26,14 @@ from tests.actionNodes import ProvideMissingNumbersAction
 from tests.actionNodes import ShowNumberAction
 from tests.global_mock import mock
 
-from carebt.nodeStatus import NodeStatus
-from carebt.sequenceNode import SequenceNode
-
 ########################################################################
 
 
 class AddTwoNumbersSequence1(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence1` example node.
+
     The `AddTwoNumbersSequence1` shows how an ouput parameter of a Node
     can be used as an input for another subsequent Node.
-
     """
 
     def __init__(self, bt_runner):
@@ -56,7 +55,8 @@ class AddTwoNumbersSequence1(SequenceNode):
 
 
 class AddTwoNumbersSequence2(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence2` example node.
+
     The `AddTwoNumbersSequence2` shows how the contingency, that at least
     one input parameter is missing, looks like. The `AddTwoNumbersActionWithFailure`
     completes with status `FAILURE` and provides the message `NOT_TWO_NUMBERS_PROVIDED`.
@@ -98,7 +98,8 @@ class AddTwoNumbersSequence2(SequenceNode):
 
 
 class AddTwoNumbersSequence3(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence3` example node.
+
     The `AddTwoNumbersSequence3` is an extension of the `AddTwoNumbersSequence2`.
     The contingency that `AddTwoNumbersActionWithFailure` completes with status
     `FAILURE` and provides the message `NOT_TWO_NUMBERS_PROVIDED` is handeled by
@@ -146,7 +147,8 @@ class AddTwoNumbersSequence3(SequenceNode):
 
 
 class AddTwoNumbersSequence4(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence4` example node.
+
     The `AddTwoNumbersSequence4` is a variant of the `AddTwoNumbersSequence3`.
     The contingency that `AddTwoNumbersActionWithFailure` completes with status
     `FAILURE` and provides the message `NOT_TWO_NUMBERS_PROVIDED` is handeled by
@@ -195,7 +197,8 @@ class AddTwoNumbersSequence4(SequenceNode):
 
 
 class AddTwoNumbersSequence5(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence5` example node.
+
     The `AddTwoNumbersSequence5` is another variant of the `AddTwoNumbersSequence3`.
     In this case the contingency is handled by (i) removing all children
     and (ii) adding the three new children: `ProvideMissingNumbersAction`,
@@ -243,7 +246,8 @@ class AddTwoNumbersSequence5(SequenceNode):
 
 
 class AddTwoNumbersSequence6(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence6` example node.
+
     The `AddTwoNumbersSequence6` is a variant of the `AddTwoNumbersSequence5`.
     In this variant the values of `?a` and `?b` are hard coded in the contingency-handler,
     instead of using the `ProvideMissingNumbersAction`.
@@ -291,7 +295,8 @@ class AddTwoNumbersSequence6(SequenceNode):
 
 
 class AddTwoNumbersSequence7(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence7` example node.
+
     The `AddTwoNumbersSequence7` has four children and two different
     contingency_handlers. One to handle the `FAILURE` of `AddTwoNumbersActionWithFailure`
     and `AddTwoNumbersLongRunningActionWithAbort`, and the other one to handle the
@@ -362,7 +367,8 @@ class AddTwoNumbersSequence7(SequenceNode):
 
 
 class AddTwoNumbersSequence8(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence8` example node.
+
     The `AddTwoNumbersSequence8` has four children and two different
     contingency_handlers. One to handle the `FAILURE` of `AddTwoNumbersActionWithFailure`
     and `AddTwoNumbersLongRunningActionWithAbort`, and the other one to handle the
@@ -437,11 +443,11 @@ class AddTwoNumbersSequence8(SequenceNode):
 
 
 class SequenceWithSuccessMessage_1(SequenceNode):
-    """
+    """The `SequenceWithSuccessMessage_1` example node.
+
     The `SequenceWithSuccessMessage_1` has two child nodes. The first one
     provides a contingency-message, the second one not. Thus, the sequence
     should not provide a contingency-message.
-
     """
 
     def __init__(self, bt_runner):
@@ -461,11 +467,11 @@ class SequenceWithSuccessMessage_1(SequenceNode):
 
 
 class SequenceWithSuccessMessage_2(SequenceNode):
-    """
+    """The `SequenceWithSuccessMessage_2` example node.
+
     The `SequenceWithSuccessMessage_2` two child nodes. The first one
     provides no contingency-message, the second one provides one. Thus,
     the sequence should provide the contingency-message of the second node.
-
     """
 
     def __init__(self, bt_runner):
@@ -487,7 +493,8 @@ class SequenceWithSuccessMessage_2(SequenceNode):
 
 
 class AddTwoNumbersSequence9(SequenceNode):
-    """
+    """The `AddTwoNumbersSequence9` example node.
+
     The `AddTwoNumbersSequence9` is a variant of the `AddTwoNumbersSequence4`.
 
     Input Parameters
@@ -530,10 +537,10 @@ class AddTwoNumbersSequence9(SequenceNode):
 
 
 class AsyncAddChildSequence(SequenceNode):
-    """
+    """The `AsyncAddChildSequence` example node.
+
     The `AsyncAddChildSequence` starts with an empty child list and adds the
     `HelloWorldAction` child after the timer expires.
-
     """
 
     def __init__(self, bt_runner):

@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from carebt.fallbackNode import FallbackNode
-
 from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
+from carebt.fallbackNode import FallbackNode
 
 
 class SimpleFallback(FallbackNode):
-    """
+    """The `SimpleFallback` example node.
+
     The `SimpleFallback` has three input parameters and contains three child
     nodes of the same type (`AddTwoNumbersActionWithFailures`). Each of the child
     nodes has the first input parameter fixed and the second one is taken from the

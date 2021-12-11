@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from carebt.parallelNode import ParallelNode
-
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
+from carebt.parallelNode import ParallelNode
 
 
 class SimpleParallel(ParallelNode):
-    """
+    """The `SimpleParallel` example node.
+
     The `SimpleParallel` node has three child nodes of the same type
     (`AddTwoNumbersMultiTickActionWithTimeout`). With the three input parameters it can be
     controlled how many tick each of the nodes take to complete. The

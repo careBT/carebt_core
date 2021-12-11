@@ -13,15 +13,15 @@
 # limitations under the License.
 
 from carebt.actionNode import ActionNode
+from carebt.examples.simple_sequence import CreateRandomNumberAction
+from carebt.examples.simple_sequence import PrintNumberAction
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 
-from carebt.examples.simple_sequence import CreateRandomNumberAction
-from carebt.examples.simple_sequence import PrintNumberAction
-
 
 class AddTwoNumbersActionWithFailures(ActionNode):
-    """
+    """The `AddTwoNumbersActionWithFailures` example node.
+
     The `AddTwoNumbersActionWithFailures` demonstrates a careBT `ActionNode`
     with two input parameters and one output parameter. It takes the two inputs,
     adds them and returns the result. Furthermore, this node can complete with
@@ -81,7 +81,8 @@ class AddTwoNumbersActionWithFailures(ActionNode):
 
 
 class SimpleSequence(SequenceNode):
-    """
+    """The `SimpleSequence` example node.
+
     The `SimpleSequence` shows what happens if a child node in the sequence fails.
     The used `AddTwoNumbersActionWithFailures` can fail in case that one or both
     input parameters are missing or that the result of the sum is greater than ten.
@@ -113,7 +114,8 @@ class SimpleSequence(SequenceNode):
 
 
 class ContingencySequence(SequenceNode):
-    """
+    """The `ContingencySequence` example node.
+
     The `ContingencySequence` extends the `Sequence` by showing how contingency
     handlers can be registered. In case of the contingency `RESULT_TOO_LARGE` all
     child nodes are removed and the two nodes `CreateRandomNumberAction` and

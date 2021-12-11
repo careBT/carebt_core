@@ -13,41 +13,31 @@
 # limitations under the License.
 
 from datetime import datetime
+from unittest.mock import call
 
 from carebt.abstractLogger import LogLevel
-
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
+from carebt.nodeStatus import NodeStatus
 from tests.actionNodes import AddTwoNumbersAction
+from tests.actionNodes import AddTwoNumbersActionMissingOutput
 from tests.actionNodes import AddTwoNumbersActionWithFailure
 from tests.actionNodes import AddTwoNumbersLongRunningAction
-from tests.actionNodes import AddTwoNumbersLongRunningActionWithAbort
 from tests.actionNodes import AddTwoNumbersLongRunningActionMissingCallback
 from tests.actionNodes import AddTwoNumbersLongRunningActionMissingCallback2
+from tests.actionNodes import AddTwoNumbersLongRunningActionWithAbort
 from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
-from tests.actionNodes import AddTwoNumbersActionMissingOutput
 from tests.actionNodes import AddTwoNumbersThrottledMultiTickAction
 from tests.actionNodes import HelloWorldAction
 from tests.global_mock import mock
 
-from unittest.mock import call
-
-from carebt.behaviorTreeRunner import BehaviorTreeRunner
-from carebt.nodeStatus import NodeStatus
-
 
 class TestActionNode:
-    """
-    Tests the `ActionNode`.
-
-    """
+    """Tests the `ActionNode`."""
 
     ########################################################################
 
     def test_HelloWorldAction(self):
-        """
-        Tests if a simple `ActionNode` runs.
-
-        """
-
+        """Tests if a simple `ActionNode` runs."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.INFO)
@@ -64,11 +54,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersActionMissingOutput(self):
-        """
-        Tests the case when the output is not bound.
-
-        """
-
+        """Tests the case when the output is not bound."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.INFO)
@@ -87,11 +73,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersAction_3_5(self):
-        """
-        Test two valid inputs one output
-
-        """
-
+        """Test two valid inputs one output."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersAction, '3 5 => ?result')
@@ -106,11 +88,7 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersAction_0_0(self):
-        """
-        Test two valid inputs (0 + 0) one output
-
-        """
-
+        """Test two valid inputs (0 + 0) one output."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersAction, '0 0 => ?result')
@@ -125,11 +103,7 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersAction_9(self):
-        """
-        Test one input is missing, but default of missing ?y is 5678
-
-        """
-
+        """Test one input is missing, but default of missing ?y is 5678."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersAction, '9 => ?result')
@@ -144,12 +118,7 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersAction(self):
-        """
-        Test both inputs are missing, but default of missing ?x is 1234 and
-        ?y is 5678
-
-        """
-
+        """Test both inputs are missing, but default of missing ?x is 1234 and ?y is 5678."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersAction, '=> ?result')
@@ -164,11 +133,7 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersAction_missing_out(self):
-        """
-        Test both inputs present, but output is missing
-
-        """
-
+        """Test both inputs present, but output is missing."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersAction, '1 2')
@@ -185,11 +150,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersActionWithFailure_3_5(self):
-        """
-        Test two valid inputs one output
-
-        """
-
+        """Test two valid inputs one output."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersActionWithFailure, '3 5 => ?result')
@@ -204,11 +165,7 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersActionWithFailure_7(self):
-        """
-        Test one input missing -> node should fail
-
-        """
-
+        """Test one input missing -> node should fail."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersActionWithFailure, '7 => ?result')
@@ -225,11 +182,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersMultiTickActionWithTimeout_5_3_5(self):
-        """
-        Test that calculation takes 5 ticks and one tick takes 10ms
-
-        """
-
+        """Test that calculation takes 5 ticks and one tick takes 10ms."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
@@ -256,12 +209,7 @@ class TestActionNode:
         assert bt_runner.get_tick_count() == 6
 
     def test_AddTwoNumbersMultiTickActionWithTimeout_5_3_5_timeout(self):
-        """
-        Test that calculation takes 5 ticks and one tick takes 500ms
-        -> the timeout occures.
-
-        """
-
+        """Test that calculation takes 5 ticks and one tick takes 500ms -> the timeout occures."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(500)
@@ -281,12 +229,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersThrottledMultiTickAction_5_3_5(self):
-        """
-        Test that calculation takes 5 ticks and this forwarded ticks
-        are throttled to 500ms.
-
-        """
-
+        """Test that calculation takes 5 ticks and this forwarded ticks are throttled to 500ms."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
@@ -314,11 +257,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersLongRunningAction_500_3_5(self):
-        """
-        Tests a long running calculation
-
-        """
-
+        """Test a long running calculation."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
@@ -341,12 +280,7 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersLongRunningActionWithAbort_100_3_5(self):
-        """
-        Tests a long running calculation which is faster (100ms) than
-        the timeout (1000ms)
-
-        """
-
+        """Test a long running calculation which is faster (100ms) than the timeout (1000ms)."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
@@ -368,13 +302,12 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersLongRunningActionWithAbort_1500_3_5(self):
-        """
-        Tests a long running calculation which is slower (1500ms) than
+        """Test AddTwoNumbersLongRunningActionWithAbort example node.
+
+        Test a long running calculation which is slower (1500ms) than
         the timeout (1000ms). In the timeout handler, the node is aborted
         with message `TIMEOUT`. The `?result` is not set.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
@@ -398,12 +331,11 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersLongRunningActionMissingCallback_100_3_5(self):
-        """
-        Tests a long running calculation which is faster (100ms) than
+        """Test AddTwoNumbersLongRunningActionMissingCallback example node.
+
+        Test a long running calculation which is faster (100ms) than
         the timeout (1000ms)
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.set_tick_rate_ms(10)
@@ -425,12 +357,11 @@ class TestActionNode:
         assert bt_runner._instance.get_contingency_message() == ''
 
     def test_AddTwoNumbersLongRunningActionMissingCallback_1500_3_5(self):
-        """
+        """Test AddTwoNumbersLongRunningActionMissingCallback example node.
+
         Tests a long running calculation which is slower (1500ms) than
         the timeout (1000ms). the timeout handler is not overridden.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()
@@ -453,13 +384,13 @@ class TestActionNode:
     ########################################################################
 
     def test_AddTwoNumbersLongRunningActionMissingCallback2_1500_3_5(self):
-        """
-        Tests a long running calculation which is slower (1500ms) than
+        """Test AddTwoNumbersLongRunningActionMissingCallback2 example node.
+
+        Test a long running calculation which is slower (1500ms) than
         the timeout (1000ms). on_timeout handler is not overridden and
         also on_abort is not overridden.
 
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         start = datetime.now()

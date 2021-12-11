@@ -16,10 +16,7 @@ from enum import Enum
 
 
 class NodeStatus(Enum):
-    """
-    An Enum representing the status of a careBT node
-
-    """
+    """An Enum representing the status of a careBT node."""
 
     IDLE = 0
     """Node is waiting for first execution"""

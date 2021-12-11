@@ -14,6 +14,8 @@
 
 from unittest.mock import call
 
+from carebt.behaviorTreeRunner import BehaviorTreeRunner
+from carebt.nodeStatus import NodeStatus
 from tests.global_mock import mock
 from tests.sequenceNodes import AddTwoNumbersSequence1
 from tests.sequenceNodes import AddTwoNumbersSequence2
@@ -24,30 +26,20 @@ from tests.sequenceNodes import AddTwoNumbersSequence6
 from tests.sequenceNodes import AddTwoNumbersSequence7
 from tests.sequenceNodes import AddTwoNumbersSequence8
 from tests.sequenceNodes import AddTwoNumbersSequence9
+from tests.sequenceNodes import AsyncAddChildSequence
 from tests.sequenceNodes import SequenceWithSuccessMessage_1
 from tests.sequenceNodes import SequenceWithSuccessMessage_2
-from tests.sequenceNodes import AsyncAddChildSequence
-
-from carebt.behaviorTreeRunner import BehaviorTreeRunner
-from carebt.nodeStatus import NodeStatus
 
 ########################################################################
 
 
 class TestSequenceNode:
-    """
-    Tests the `SequenceNode`.
-
-    """
+    """Test the `SequenceNode`."""
 
     ########################################################################
 
     def test_AddTwoNumbersSequence1(self):
-        """
-        Tests the AddTwoNumbersSequence1
-
-        """
-
+        """Test the `AddTwoNumbersSequence1` node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence1)
@@ -73,11 +65,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence2_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence2 with two valid inputs.
-
-        """
-
+        """Test the `AddTwoNumbersSequence2` node with two valid inputs."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence2, '1 2')
@@ -101,13 +89,12 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence2')]
 
     def test_AddTwoNumbersSequence2_1(self):
-        """
-        Tests the AddTwoNumbersSequence2 with one missing input. The
+        """Test the `AddTwoNumbersSequence2` node.
+
+        Test the AddTwoNumbersSequence2 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails, thus the ShowNumberAction`
         is not executed and the `AddTwoNumbersSequence2` also fails.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence2, '1')
@@ -128,11 +115,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence3_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence3 with two valid inputs.
-
-        """
-
+        """Test the `AddTwoNumbersSequence3` node with two valid inputs."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence3, '1 2')
@@ -156,13 +139,12 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence3')]
 
     def test_AddTwoNumbersSequence3_1(self):
-        """
-        Tests the AddTwoNumbersSequence3 with one missing input. The
+        """Test the `AddTwoNumbersSequence3` node.
+
+        Test the AddTwoNumbersSequence3 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails, thus the ShowNumberAction`
         is not executed and the `AddTwoNumbersSequence2` also fails.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence3, '1')
@@ -189,11 +171,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence4_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence4 with two valid inputs.
-
-        """
-
+        """Test the `AddTwoNumbersSequence4` node with two valid inputs."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence4, '1 2')
@@ -217,14 +195,13 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence4')]
 
     def test_AddTwoNumbersSequence4_1(self):
-        """
+        """Tests the `AddTwoNumbersSequence4` node.
+
         Tests the AddTwoNumbersSequence4 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails. The contingency-handler
         inserts the child `FixMissingNumbersAction` which sets the `?result` to 42
         and thus, the sequence continues as desired with the `ShowNumberAction`.
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence4, '1')
@@ -255,11 +232,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence5_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence5 with two valid inputs.
-
-        """
-
+        """Test the `AddTwoNumbersSequence5` node with two valid inputs."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence5, '1 2')
@@ -283,15 +256,14 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence5')]
 
     def test_AddTwoNumbersSequence5_1(self):
-        """
-        Tests the AddTwoNumbersSequence5 with one missing input. The
+        """Test the `AddTwoNumbersSequence5` node.
+
+        Test the AddTwoNumbersSequence5 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails. The contingency-handler
         removes all children and adds the following three nodes:
         `ProvideMissingNumbersAction`, `AddTwoNumbersActionWithFailure`
         and `ShowNumberAction`
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence5, '1')
@@ -328,11 +300,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence6_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence6 with two valid inputs.
-
-        """
-
+        """Test the `AddTwoNumbersSequence6` node with two valid inputs."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence6, '1 2')
@@ -356,15 +324,14 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence6')]
 
     def test_AddTwoNumbersSequence6_1(self):
-        """
-        Tests the AddTwoNumbersSequence6 with one missing input. The
+        """Test the `AddTwoNumbersSequence6` node.
+
+        Test the AddTwoNumbersSequence6 with one missing input. The
         `AddTwoNumbersActionWithFailure` fails. The contingency-handler
         removes all children, sets ?a to 111 and ?b to 222 and
         adds the following two nodes: `AddTwoNumbersActionWithFailure`
         and `ShowNumberAction`
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence6, '1')
@@ -396,13 +363,12 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence7_50_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence7 with two valid inputs and ?calctime = 50ms,
+        """Test the `AddTwoNumbersSequence7` node.
+
+        Test the AddTwoNumbersSequence7 with two valid inputs and ?calctime = 50ms,
         which is faster than the timeout of the `AddTwoNumbersLongRunningActionWithAbort`
         (1000ms) and the `AddTwoNumbersSequence7`(500ms).
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence7, '50 1 2')
@@ -437,14 +403,14 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence7')]
 
     def test_AddTwoNumbersSequence7_750_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence7 with two valid inputs and ?calctime = 750ms,
+        """Test the `AddTwoNumbersSequence7` node.
+
+        Test the AddTwoNumbersSequence7 with two valid inputs and ?calctime = 750ms,
         which is slower as the timeout in `AddTwoNumbersSequence7`(500ms).
 
         The timeout in the `AddTwoNumbersSequence7` aborts the current child, fixes it that
         the sequence can continue and sets the ?result to 9999.
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence7, '750 1 2')
@@ -480,13 +446,12 @@ class TestSequenceNode:
                                        call('__del__ AddTwoNumbersSequence7')]
 
     def test_AddTwoNumbersSequence7_50_1(self):
-        """
-        Tests the `AddTwoNumbersSequence7` with ONLY one valid input and ?calctime = 50ms,
+        """Test the `AddTwoNumbersSequence7` node.
+
+        Test the `AddTwoNumbersSequence7` with ONLY one valid input and ?calctime = 50ms,
         which is faster than the timeout of the `AddTwoNumbersLongRunningActionWithAbort`
         (1000ms) and the `AddTwoNumbersSequence7`(500ms).
-
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence7, '1250 1')
@@ -524,13 +489,13 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence8_750_1_2(self):
-        """
-        Tests the AddTwoNumbersSequence8 with two valid inputs and ?calctime = 750ms,
+        """Test the `AddTwoNumbersSequence8` node.
+
+        Test the AddTwoNumbersSequence8 with two valid inputs and ?calctime = 750ms,
         which slower as the `AddTwoNumbersSequence7`(500ms).
 
         The timeout in the `AddTwoNumbersSequence7` aborts the sequence.
         """
-
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence8, '750 1 2')
@@ -564,11 +529,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_SequenceWithSuccessMessage_1(self):
-        """
-        Tests the SequenceWithSuccessMessage_1
-
-        """
-
+        """Test the `SequenceWithSuccessMessage` node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SequenceWithSuccessMessage_1)
@@ -588,11 +549,7 @@ class TestSequenceNode:
                                        call('__del__ SequenceWithSuccessMessage_1')]
 
     def test_SequenceWithSuccessMessage_2(self):
-        """
-        Tests the SequenceWithSuccessMessage_2
-
-        """
-
+        """Test the `SequenceWithSuccessMessage_2` node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(SequenceWithSuccessMessage_2)
@@ -614,11 +571,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AddTwoNumbersSequence9_1(self):
-        """
-        Tests the AddTwoNumbersSequence9
-
-        """
-
+        """Test the `AddTwoNumbersSequence9` node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AddTwoNumbersSequence9, '1')
@@ -649,11 +602,7 @@ class TestSequenceNode:
     ########################################################################
 
     def test_AsyncAddChildSequence(self):
-        """
-        Tests the AsyncAddChildSequence
-
-        """
-
+        """Test the `AsyncAddChildSequence` node."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.run(AsyncAddChildSequence, '')

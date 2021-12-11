@@ -29,13 +29,15 @@ if TYPE_CHECKING:
 
 
 class ControlNode(TreeNode, ABC):
-    """
+    """The careBT `ControlNode` class.
+
     `ControlNode` is the basic class for all nodes in careBT which provide a
     control flow functionality, like `SequenceNode` and `ParallelNode`.
 
     """
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
+        """Init the `ControlNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
 
         # list for the child nodes
@@ -134,7 +136,8 @@ class ControlNode(TreeNode, ABC):
                                      node_status_list: NodeStatus,
                                      contingency_message: str,
                                      contingency_function: Callable) -> None:
-        """
+        """Register a contingency-handler.
+
         Registers a function which is called in case the provided contingency information
         are met. The registered contingency-handlers are tried to match to the current
         status and contingency message in the order they are registered.
@@ -155,7 +158,6 @@ class ControlNode(TreeNode, ABC):
             The function which is called to handle the contingency.
 
         """
-
         # for the function only store the name, thus there is no 'bound method' to self
         # which increases the ref count and prevents the gc to delete the object
         self._contingency_handler_list.append((node,
@@ -165,7 +167,8 @@ class ControlNode(TreeNode, ABC):
 
     @final
     def fix_current_child(self) -> None:
-        """
+        """Fix the current child.
+
         Mark the current child node as `FIXED`. This function should typiclly be
         called inside of a contingency-handler in case the handler fixes the situation
         and the control flow of the current `ControlNode` can be continued. `FIXED`
@@ -173,26 +176,20 @@ class ControlNode(TreeNode, ABC):
         that the node was 'fixed'.
 
         """
-
         self.get_logger().trace('{} -> fix_current_child called'
                                 .format(self.__class__.__name__))
         self.set_current_child_status(NodeStatus.FIXED)
 
     @final
     def abort_current_child(self) -> None:
-        """
-        Abort the currently executing child.
-
-        """
-
+        """Abort the currently executing child."""
         self.get_logger().trace('{} -> abort_current_child called'
                                 .format(self.__class__.__name__))
         self._child_ec_list[self._child_ptr].instance.abort()
 
     @final
     def set_current_child_status(self, node_status: NodeStatus) -> None:
-        """
-        Sets the status of the currently executing child node to the provided node_status.
+        """Set the status of the currently executing child node.
 
         Parameters
         ----------
@@ -200,7 +197,6 @@ class ControlNode(TreeNode, ABC):
             Status of the node
 
         """
-
         self.get_logger().trace('{} -> set_current_child_status to {}'
                                 .format(self.__class__.__name__, node_status))
         self._child_ec_list[self._child_ptr].instance.set_status(node_status)

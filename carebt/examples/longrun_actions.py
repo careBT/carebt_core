@@ -19,7 +19,8 @@ from carebt.nodeStatus import NodeStatus
 
 
 class AddTwoNumbersMultiTickAction(ActionNode):
-    """
+    """The `AddTwoNumbersMultiTickAction` example node.
+
     The `AddTwoNumbersMultiTickAction` demonstrates how it looks like when a
     `ActionNode` requires more ticks to complete. To make things simple the
     amount of ticks required to complete the action is provided as input
@@ -63,7 +64,8 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
 
 class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
-    """
+    """The `AddTwoNumbersMultiTickActionWithTimeout` example node.
+
     The `AddTwoNumbersMultiTickActionWithTimeout` adds a timeout to the
     `AddTwoNumbersMultiTickAction`.
 
@@ -118,7 +120,8 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
 
 
 class AddTwoNumbersLongRunningAction(ActionNode):
-    """
+    """The `AddTwoNumbersLongRunningAction` example node.
+
     The `AddTwoNumbersLongRunningAction` demonstrates how it looks like when a
     `ActionNode` executes an asynchronous function. To make things simple the
     asynchronous function is implemented with a simple Python timer and

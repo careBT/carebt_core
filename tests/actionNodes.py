@@ -14,22 +14,21 @@
 
 from threading import Timer
 
-from tests.global_mock import mock
-
 from carebt.actionNode import ActionNode
 from carebt.nodeStatus import NodeStatus
+from tests.global_mock import mock
 
 ########################################################################
 
 
 class HelloWorldAction(ActionNode):
-    """
+    """The `HelloWorldAction` example node.
+
     The `HelloWorldAction` provides a classical Hello World example.
     It demonstrates a simple implementation of a careBT `ActionNode`.
 
     When running the `HelloWorldAction`,
     'HelloWorldAction: Hello World !!!' is printed on standard output.
-
     """
 
     def __init__(self, bt_runner):
@@ -48,10 +47,10 @@ class HelloWorldAction(ActionNode):
 
 
 class HelloWorldActionWithMessage(ActionNode):
-    """
+    """The `HelloWorldActionWithMessage` example node.
+
     The `HelloWorldActionWithMessage` is a modfication of the `HelloWorldAction`
     example. The difference is that the node also provides a contingency-message.
-
     """
 
     def __init__(self, bt_runner):
@@ -71,7 +70,8 @@ class HelloWorldActionWithMessage(ActionNode):
 
 
 class AddTwoNumbersAction(ActionNode):
-    """
+    """The `AddTwoNumbersAction` example node.
+
     The `AddTwoNumbersAction` demonstrates a careBT `ActionNode` with two
     input parameters and one output parameter. It takes the two inputs,
     adds them and returns the result.
@@ -119,7 +119,8 @@ class AddTwoNumbersAction(ActionNode):
 
 
 class AddTwoNumbersActionMissingOutput(ActionNode):
-    """
+    """The `AddTwoNumbersActionMissingOutput` example node.
+
     The `AddTwoNumbersActionMissingOutput` misses to set the ouput ?z.
 
     Input Parameters
@@ -157,7 +158,8 @@ class AddTwoNumbersActionMissingOutput(ActionNode):
 
 
 class AddTwoNumbersActionWithFailure(ActionNode):
-    """
+    """The `AddTwoNumbersActionWithFailure` example node.
+
     The `AddTwoNumbersActionWithFailure` is an extension of the
     `AddTwoNumbersAction`. It does not have default values for the two input
     parameters `?x` and `?y`. But in case that at least one of the two input
@@ -215,7 +217,8 @@ class AddTwoNumbersActionWithFailure(ActionNode):
 
 
 class AddTwoNumbersMultiTickAction(ActionNode):
-    """
+    """The `AddTwoNumbersMultiTickAction` example node.
+
     The `AddTwoNumbersMultiTickAction` is a variation of the
     `AddTwoNumbersAction` which demonstrates how it looks like when a
     `ActionNode` requires more ticks to complete. To make things simple
@@ -272,7 +275,8 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
 
 class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
-    """
+    """The `AddTwoNumbersMultiTickActionWithTimeout` example node.
+
     The `AddTwoNumbersMultiTickActionWithTimeout` is a variation of the
     `AddTwoNumbersAction` which demonstrates how it looks like when a
     `ActionNode` requires more ticks to complete. To make things simple
@@ -335,7 +339,8 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
 
 
 class AddTwoNumbersThrottledMultiTickAction(ActionNode):
-    """
+    """The `AddTwoNumbersThrottledMultiTickAction` example node.
+
     The `AddTwoNumbersThrottledMultiTickAction` is a variation of the
     `AddTwoNumbersMultiTickAction` which demonstrates how ticking an
     `ActionNode` can be throttled to the provided value. In this example
@@ -392,7 +397,8 @@ class AddTwoNumbersThrottledMultiTickAction(ActionNode):
 
 
 class AddTwoNumbersLongRunningAction(ActionNode):
-    """
+    """The `AddTwoNumbersLongRunningAction` example node.
+
     The `AddTwoNumbersLongRunningAction` is a variation of the
     `AddTwoNumbersAction` which demonstrates how it looks like when a
     `ActionNode` executes an asynchronous function. To make things simple the
@@ -457,7 +463,8 @@ class AddTwoNumbersLongRunningAction(ActionNode):
 
 
 class AddTwoNumbersLongRunningActionWithAbort(ActionNode):
-    """
+    """The `AddTwoNumbersLongRunningActionWithAbort` example node.
+
     The `AddTwoNumbersLongRunningActionWithAbort` is a variation of the
     `AddTwoNumbersLongRunningAction`. It uses the timeout callback to abort
     the `ActionNode` in case that the execution (asynchronous function) takes
@@ -553,7 +560,8 @@ class AddTwoNumbersLongRunningActionWithAbort(ActionNode):
 
 
 class AddTwoNumbersLongRunningActionMissingCallback(ActionNode):
-    """
+    """The `AddTwoNumbersLongRunningActionMissingCallback` example node.
+
     The `AddTwoNumbersLongRunningActionMissingCallback` is a variant of the
     `AddTwoNumbersLongRunningActionWithAbort` but does not override on_timeout.
 
@@ -632,7 +640,8 @@ class AddTwoNumbersLongRunningActionMissingCallback(ActionNode):
 
 
 class AddTwoNumbersLongRunningActionMissingCallback2(ActionNode):
-    """
+    """The `AddTwoNumbersLongRunningActionMissingCallback2` example node.
+
     The `AddTwoNumbersLongRunningActionMissingCallback2` is a variant of the
     `AddTwoNumbersLongRunningActionMissingCallback` but does not override on_abort.
 
@@ -707,7 +716,8 @@ class AddTwoNumbersLongRunningActionMissingCallback2(ActionNode):
 
 
 class ShowNumberAction(ActionNode):
-    """
+    """The `ShowNumberAction` example node.
+
     The `ShowNumberAction` simply prints the provided numer on the standard
     output. If `?number` the default -1 is used.
 
@@ -742,7 +752,8 @@ class ShowNumberAction(ActionNode):
 
 
 class ProvideMissingNumbersAction(ActionNode):
-    """
+    """The `ProvideMissingNumbersAction` example node.
+
     The `ProvideMissingNumbersAction` is an `ActionNode` with two output parameters.
     The ouput values are hardcoded to 11 respectively 22.
 
@@ -779,7 +790,8 @@ class ProvideMissingNumbersAction(ActionNode):
 
 
 class FixMissingNumbersAction(ActionNode):
-    """
+    """The `FixMissingNumbersAction` example node.
+
     The `FixMissingNumbersAction` is an `ActionNode` with one output parameters.
     The ouput value is set to 42.
 
@@ -813,7 +825,8 @@ class FixMissingNumbersAction(ActionNode):
 
 
 class TickCountingAction(ActionNode):
-    """
+    """The `TickCountingAction` example node.
+
     The `TickCountingAction` increments the ?count and returns it on each tick. If
     the ?count is equal to the ?goal the nodes completes with `SUCCESS`.
 
@@ -880,7 +893,8 @@ class TickCountingAction(ActionNode):
 
 
 class FailOnCountAction(ActionNode):
-    """
+    """The `FailOnCountAction` example node.
+
     The `FailOnCountAction` fails as soon as the ?goal is reached by ?count.
 
     Input Parameters

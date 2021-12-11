@@ -31,10 +31,10 @@ class _PrintColors:
 
 
 class SimplePrintLogger(AbstractLogger):
-    """
+    """The careBT `SimplePrintLogger` class.
+
     A simple logger implementaion which prints the statements on standard
     output.
-
     """
 
     def __init__(self):
