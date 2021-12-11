@@ -11,11 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from tests.global_mock import mock
+
+from threading import Timer
 
 from tests.actionNodes import AddTwoNumbersLongRunningAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
 from tests.actionNodes import HelloWorldAction
+from tests.global_mock import mock
 
 from carebt.fallbackNode import FallbackNode
 from carebt.nodeStatus import NodeStatus
@@ -227,3 +229,26 @@ class AddTwoNumbersFallback7(FallbackNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersFallback7')
+
+########################################################################
+
+
+class AsyncAddChildFallback(FallbackNode):
+    """
+    The `AsyncAddChildFallback` starts with an empty child list and adds the
+    `HelloWorldAction` child after the timer expires.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '')
+        mock('__init__ AsyncAddChildFallback')
+
+    def on_init(self) -> None:
+        mock('on_init AsyncAddChildFallback')
+        Timer(0.5, self.done_callback).start()
+
+    def done_callback(self) -> None:
+        mock('AsyncAddChildFallback: DONE')
+        self.set_status(NodeStatus.RUNNING)
+        self.append_child(HelloWorldAction)

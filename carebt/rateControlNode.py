@@ -67,6 +67,10 @@ class RateControlNode(ControlNode, ABC):
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
 
+        # if child list is empty, there is nothing to do
+        if(len(self._child_ec_list) == 0):
+            return
+
         ################################################
         # create instance
         if(self._child_ec_list[0].instance is None):

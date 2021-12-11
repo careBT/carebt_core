@@ -25,6 +25,7 @@ from tests.parallelNodes import TickCountingParallelDelAdd2
 from tests.parallelNodes import TickCountingParallelDelAllAdd
 from tests.parallelNodes import TickCountingParallelWithAbort
 from tests.parallelNodes import ParallelRemoveSuccess
+from tests.parallelNodes import AsyncAddChildParallel
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
@@ -570,3 +571,28 @@ class TestParallelNode:
                                        call('__del__ ParallelRemoveSuccess'),
                                        call('__del__ TickCountingAction id = 5'),
                                        call('__del__ TickCountingAction id = 4')]
+
+    ########################################################################
+
+    def test_AsyncAddChildSequence(self):
+        """
+        Tests the AsyncAddChildSequence
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AsyncAddChildParallel, '')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AsyncAddChildParallel'),
+                                       call('on_init AsyncAddChildParallel'),
+                                       call('AsyncAddChildParallel: DONE'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction')]

@@ -12,11 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from threading import Timer
+
+from tests.actionNodes import HelloWorldAction
+
 from tests.global_mock import mock
 from tests.actionNodes import AddTwoNumbersMultiTickAction
 from tests.actionNodes import AddTwoNumbersMultiTickActionWithTimeout
 from tests.actionNodes import HelloWorldActionWithMessage
 
+from carebt.rateControlNode import NodeStatus
 from carebt.rateControlNode import RateControlNode
 
 ########################################################################
@@ -121,3 +126,26 @@ class RateControlledHelloWorldActionWithMessage(RateControlNode):
 
     def __del__(self):
         mock('__del__ RateControlledHelloWorldActionWithMessage')
+
+########################################################################
+
+
+class AsyncAddChildRateControl(RateControlNode):
+    """
+    The `AsyncAddChildRateControl` starts with an empty child list and adds the
+    `HelloWorldAction` child after the timer expires.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 200, '')
+        mock('__init__ AsyncAddChildRateControl')
+
+    def on_init(self) -> None:
+        mock('on_init AsyncAddChildRateControl')
+        Timer(0.5, self.done_callback).start()
+
+    def done_callback(self) -> None:
+        mock('AsyncAddChildRateControl: DONE')
+        self.set_status(NodeStatus.RUNNING)
+        self.set_child(HelloWorldAction)

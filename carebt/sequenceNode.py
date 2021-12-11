@@ -65,6 +65,10 @@ class SequenceNode(ControlNode, ABC):
         if(self.get_status() != NodeStatus.RUNNING):
             self.set_status(NodeStatus.RUNNING)
 
+        # if child list is empty, there is nothing to do
+        if(len(self._child_ec_list) == 0):
+            return
+
         ################################################
         # if there is no current child to be ticked, create one
         if(self._child_ec_list[self._child_ptr].instance is None):

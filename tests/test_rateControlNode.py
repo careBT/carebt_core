@@ -21,6 +21,7 @@ from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickAction
 from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionWithTimeout
 from tests.rateControlNodes import RateControlledAddTwoNumbersMultiTickActionOwnTimeout
 from tests.rateControlNodes import RateControlledHelloWorldActionWithMessage
+from tests.rateControlNodes import AsyncAddChildRateControl
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
@@ -151,3 +152,25 @@ class TestRateControlNode:
         bt.run(RateControlledHelloWorldActionWithMessage)
         assert bt._instance.get_status() == NodeStatus.SUCCESS
         assert bt._instance.get_contingency_message() == 'HELLOWORLD_PRINTED'
+
+    ########################################################################
+
+    def test_AsyncAddChildSequence(self):
+        """
+        Tests the AsyncAddChildSequence
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AsyncAddChildRateControl, '')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AsyncAddChildRateControl'),
+                                       call('on_init AsyncAddChildRateControl'),
+                                       call('AsyncAddChildRateControl: DONE'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction')]

@@ -22,6 +22,7 @@ from tests.fallbackNodes import AddTwoNumbersFallback4
 from tests.fallbackNodes import AddTwoNumbersFallback5
 from tests.fallbackNodes import AddTwoNumbersFallback6
 from tests.fallbackNodes import AddTwoNumbersFallback7
+from tests.fallbackNodes import AsyncAddChildFallback
 
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
@@ -242,3 +243,25 @@ class TestFallbackNode:
                                        call('__del__ AddTwoNumbersLongRunningAction'),
                                        call('on_delete AddTwoNumbersFallback7'),
                                        call('__del__ AddTwoNumbersFallback7')]
+
+    ########################################################################
+
+    def test_AsyncAddChildFallback(self):
+        """
+        Tests the AsyncAddChildFallback
+
+        """
+
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AsyncAddChildFallback, '')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AsyncAddChildFallback'),
+                                       call('on_init AsyncAddChildFallback'),
+                                       call('AsyncAddChildFallback: DONE'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction')]

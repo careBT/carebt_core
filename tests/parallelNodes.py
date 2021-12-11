@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from threading import Timer
+
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import FailOnCountAction
+from tests.actionNodes import HelloWorldAction
 from tests.actionNodes import TickCountingAction
 from tests.global_mock import mock
 
@@ -427,3 +430,27 @@ class ParallelRemoveSuccess(ParallelNode):
 
     def __del__(self):
         mock('__del__ ParallelRemoveSuccess')
+
+########################################################################
+
+
+class AsyncAddChildParallel(ParallelNode):
+    """
+    The `AsyncAddChildParallel` starts with an empty child list and adds the
+    `HelloWorldAction` child after the timer expires.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 2, '')
+        mock('__init__ AsyncAddChildParallel')
+
+    def on_init(self) -> None:
+        mock('on_init AsyncAddChildParallel')
+        Timer(0.5, self.done_callback).start()
+
+    def done_callback(self) -> None:
+        mock('AsyncAddChildParallel: DONE')
+        self.set_status(NodeStatus.RUNNING)
+        self.add_child(HelloWorldAction)
+        self.add_child(HelloWorldAction)

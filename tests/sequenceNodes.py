@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from threading import Timer
+
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
 from tests.actionNodes import AddTwoNumbersLongRunningActionWithAbort
@@ -523,3 +525,26 @@ class AddTwoNumbersSequence9(SequenceNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersSequence9')
+
+########################################################################
+
+
+class AsyncAddChildSequence(SequenceNode):
+    """
+    The `AsyncAddChildSequence` starts with an empty child list and adds the
+    `HelloWorldAction` child after the timer expires.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '')
+        mock('__init__ AsyncAddChildSequence')
+
+    def on_init(self) -> None:
+        mock('on_init AsyncAddChildSequence')
+        Timer(0.5, self.done_callback).start()
+
+    def done_callback(self) -> None:
+        mock('AsyncAddChildSequence: DONE')
+        self.set_status(NodeStatus.RUNNING)
+        self.append_child(HelloWorldAction)

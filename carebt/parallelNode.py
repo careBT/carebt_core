@@ -73,6 +73,10 @@ class ParallelNode(ControlNode, ABC):
     def _internal_on_tick(self) -> None:
         self.get_logger().info('ticking {}'.format(self.__class__.__name__))
 
+        # if child list is empty, there is nothing to do
+        if(len(self._child_ec_list) == 0):
+            return
+
         ################################################
         # create all children
         if(self.get_status() == NodeStatus.IDLE):
