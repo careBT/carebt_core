@@ -61,7 +61,7 @@ class RateControlNode(ControlNode, ABC):
     # PROTECTED
 
     def _internal_on_tick(self) -> None:
-        self.get_logger().info('ticking {}'.format(self.__class__.__name__))
+        self.get_logger().trace('ticking {}'.format(self.__class__.__name__))
         self.set_status(NodeStatus.RUNNING)
 
         # if child list is empty, there is nothing to do

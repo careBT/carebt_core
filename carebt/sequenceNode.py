@@ -58,7 +58,7 @@ class SequenceNode(ControlNode, ABC):
     # PROTECTED
 
     def _internal_on_tick(self) -> None:
-        self.get_logger().info('ticking {}'.format(self.__class__.__name__))
+        self.get_logger().trace('ticking {}'.format(self.__class__.__name__))
         if(self.get_status() != NodeStatus.RUNNING):
             self.set_status(NodeStatus.RUNNING)
 
