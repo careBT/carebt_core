@@ -49,23 +49,23 @@ class ActionNode(TreeNode, ABC):
 
         super().__init__(bt_runner, params)
         self.get_logger().info('creating {}'.format(self.__class__.__name__))
-        self.__throttle_ms = None
-        self.__last_ts = datetime.min
+        self._throttle_ms = None
+        self._last_ts = datetime.min
         self.set_status(NodeStatus.IDLE)
 
     # PROTECTED
 
     def _internal_on_tick(self) -> None:
         current_ts = datetime.now()
-        if(self.__throttle_ms is None or
-                int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__throttle_ms):
+        if(self._throttle_ms is None or
+                int((current_ts - self._last_ts).total_seconds() * 1000) >= self._throttle_ms):
             if(self.get_status() == NodeStatus.IDLE or
                     self.get_status() == NodeStatus.RUNNING):
                 self.bt_runner.get_logger().trace('ticking {} - {}'
                                                   .format(self.__class__.__name__,
                                                           self.get_status()))
                 self.on_tick()
-                self.__last_ts = current_ts
+                self._last_ts = current_ts
 
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
@@ -99,4 +99,4 @@ class ActionNode(TreeNode, ABC):
 
         """
 
-        self.__throttle_ms = throttle_ms
+        self._throttle_ms = throttle_ms
