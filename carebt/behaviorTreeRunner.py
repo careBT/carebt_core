@@ -148,8 +148,8 @@ class BehaviorTreeRunner:
         while(self._instance.get_status() == NodeStatus.IDLE
                 or self._instance.get_status() == NodeStatus.RUNNING):
             self._tick_count += 1
-            self.get_logger().info('---------------------------------- tick-count: {}'
-                                   .format(self._tick_count))
+            self.get_logger().trace('---------------------------------- tick-count: {}'
+                                    .format(self._tick_count))
             self._instance._internal_on_tick()
             sleep(self._tick_rate_ms / 1000)
 

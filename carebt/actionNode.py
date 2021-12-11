@@ -61,9 +61,9 @@ class ActionNode(TreeNode, ABC):
                 int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__throttle_ms):
             if(self.get_status() == NodeStatus.IDLE or
                     self.get_status() == NodeStatus.RUNNING):
-                self.bt_runner.get_logger().info('ticking {} - {}'
-                                                 .format(self.__class__.__name__,
-                                                         self.get_status()))
+                self.bt_runner.get_logger().trace('ticking {} - {}'
+                                                  .format(self.__class__.__name__,
+                                                          self.get_status()))
                 self.on_tick()
                 self.__last_ts = current_ts
 

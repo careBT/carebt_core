@@ -151,9 +151,7 @@ class TestLogger:
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
         bt_runner.run(HelloWorldAction)
-        regex = re.compile('....-..-.. ..:..:.. INFO ---------------------------------- tick-count: 1\n'  # noqa: E501
-                           '....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
-                           '....-..-.. ..:..:.. INFO ticking HelloWorldAction - NodeStatus.IDLE\n'  # noqa: E501
+        regex = re.compile('....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
                            'HelloWorldAction: Hello World !!!\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO bt execution finished\n'  # noqa: E501
@@ -188,10 +186,8 @@ class TestLogger:
         regex = re.compile('HelloWorldAction: Hello World !!!\n')
         print(mock_print.getvalue())
         print(mock.call_args_list)
-        assert mock.call_args_list == [call('INFO ---------------------------------- tick-count: 1'),  # noqa: E501
-                                       call('INFO creating HelloWorldAction'),  # noqa: E501
+        assert mock.call_args_list == [call('INFO creating HelloWorldAction'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
-                                       call('INFO ticking HelloWorldAction - NodeStatus.IDLE'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
