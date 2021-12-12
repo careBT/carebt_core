@@ -102,7 +102,7 @@ class ParallelNode(ControlNode, ABC):
 
         ################################################
         # tick all children
-        for pos, child_ec in enumerate(self._child_ec_list[:]):
+        for self._child_ptr, child_ec in enumerate(self._child_ec_list[:]):
             if(child_ec.instance is not None):
                 self._internal_bind_in_params(child_ec)
                 self._internal_tick_child(child_ec)
