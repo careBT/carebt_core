@@ -75,20 +75,9 @@ class ParallelNode(ControlNode, ABC):
             return
 
         ################################################
-        # create all children
-        if(self.get_status() == NodeStatus.IDLE):
-            for self._child_ptr, child_ec in enumerate(self._child_ec_list):
-                # create node instance
-                child_ec.instance = child_ec.node(self._internal_get_bt_runner())
-                self._internal_bind_out_params(child_ec)
-                self._internal_bind_in_params(child_ec)
-                child_ec.instance.on_init()
-            self.set_status(NodeStatus.RUNNING)
-            self._created_child_size = len(self._child_ec_list)
-
-        ################################################
-        # create newly added children
-        if((self.get_status() == NodeStatus.RUNNING
+        # create children
+        if((self.get_status() == NodeStatus.IDLE
+            or self.get_status() == NodeStatus.RUNNING
             or self.get_status() == NodeStatus.SUSPENDED)
            and self._created_child_size < len(self._child_ec_list)):
             for _ in range(len(self._child_ec_list) - self._created_child_size):
@@ -99,9 +88,11 @@ class ParallelNode(ControlNode, ABC):
                 self._internal_bind_in_params(child_ec)
                 child_ec.instance.on_init()
                 self._created_child_size += 1
+            if(self.get_status() == NodeStatus.IDLE):
+                self.set_status(NodeStatus.RUNNING)
 
         ################################################
-        # tick all children
+        # tick children
         for self._child_ptr, child_ec in enumerate(self._child_ec_list[:]):
             if(child_ec.instance is not None):
                 self._internal_bind_in_params(child_ec)
