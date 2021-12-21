@@ -80,8 +80,6 @@ class ParallelNode(ControlNode, ABC):
                 self._internal_bind_in_params(child_ec)
                 child_ec.instance.on_init()
                 self._created_child_size += 1
-            if(self.get_status() == NodeStatus.IDLE):
-                self.set_status(NodeStatus.RUNNING)
 
     def _internal_tick_child_nodes(self, tick: bool) -> None:
         if(tick is True):
