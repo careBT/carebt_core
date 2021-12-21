@@ -13,9 +13,7 @@
 # limitations under the License.
 
 from abc import ABC
-
 from datetime import datetime
-
 from typing import TYPE_CHECKING
 
 from carebt.nodeStatus import NodeStatus
@@ -46,9 +44,6 @@ class ActionNode(TreeNode, ABC):
         """Init the `ActionNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
         self.get_logger().info('creating {}'.format(self.__class__.__name__))
-        self._throttle_ms = None
-        self._last_ts = datetime.min
-        self.set_status(NodeStatus.IDLE)
 
     # PROTECTED
 
@@ -69,30 +64,3 @@ class ActionNode(TreeNode, ABC):
         self.bt_runner.get_logger().info('aborting {}'.format(self.__class__.__name__))
         self.on_abort()
         self.set_status(NodeStatus.ABORTED)
-
-    # @abstractmethod
-    def on_tick(self) -> None:
-        """Is called on each tick.
-
-        The `on_tick` callback is called every time the `ActionNode` is ticked by
-        its parent node, considering the optional throttle rate.
-        """
-        raise NotImplementedError
-
-    # PUBLIC
-
-    def set_throttle_ms(self, throttle_ms: int) -> None:
-        """Set the throttle rate in milliseconds.
-
-        Reduces the ticks the `ActionNodes` on_tick method is called to the
-        provided throttle_ms value. For example, to reduce the calls of the
-        `on_tick` callback to 500 milliseconds, the throttle_ms should be set
-        to 500.
-
-        Parameters
-        ----------
-        throttle_ms: int
-            The throttle rate in milliseconds
-
-        """
-        self._throttle_ms = throttle_ms

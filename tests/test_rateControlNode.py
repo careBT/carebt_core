@@ -48,7 +48,7 @@ class TestRateControlNode:
         assert int(delta.total_seconds() * 1000) < 1350
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ RateControlledAddTwoNumbersMultiTickAction'),  # noqa: E501
-                                       call('__init__ RateControlledAddTwoNumbersMultiTickAction'),  # noqa: E501
+                                       call('on_init RateControlledAddTwoNumbersMultiTickAction'),  # noqa: E501
                                        call('__init__ AddTwoNumbersMultiTickAction'),
                                        call('on_init AddTwoNumbersMultiTickAction'),
                                        call('AddTwoNumbersMultiTickAction: (tick_count = 1/5)'),
@@ -84,7 +84,7 @@ class TestRateControlNode:
         assert int(delta.total_seconds() * 1000) < 1200
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ RateControlledAddTwoNumbersMultiTickActionWithTimeout'),  # noqa: E501
-                                       call('__init__ RateControlledAddTwoNumbersMultiTickActionWithTimeout'),  # noqa: E501
+                                       call('on_init RateControlledAddTwoNumbersMultiTickActionWithTimeout'),  # noqa: E501
                                        call('__init__ AddTwoNumbersMultiTickActionWithTimeout'),  # noqa: E501
                                        call('on_init AddTwoNumbersMultiTickActionWithTimeout'),  # noqa: E501
                                        call('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = 1/5)'),  # noqa: E501
@@ -117,7 +117,7 @@ class TestRateControlNode:
         assert int(delta.total_seconds() * 1000) < 1200
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout'),  # noqa: E501
-                                       call('__init__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout'),  # noqa: E501
+                                       call('on_init RateControlledAddTwoNumbersMultiTickActionOwnTimeout'),  # noqa: E501
                                        call('__init__ AddTwoNumbersMultiTickAction'),
                                        call('on_init AddTwoNumbersMultiTickAction'),
                                        call('AddTwoNumbersMultiTickAction: (tick_count = 1/5)'),
@@ -125,9 +125,10 @@ class TestRateControlNode:
                                        call('AddTwoNumbersMultiTickAction: (tick_count = 3/5)'),
                                        call('AddTwoNumbersMultiTickAction: (tick_count = 4/5)'),
                                        call('on_timeout RateControlledAddTwoNumbersMultiTickActionOwnTimeout'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersMultiTickAction'),
+                                       call('__del__ AddTwoNumbersMultiTickAction'),
                                        call('on_delete RateControlledAddTwoNumbersMultiTickActionOwnTimeout'),  # noqa: E501
-                                       call('__del__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout'),  # noqa: E501
-                                       call('__del__ AddTwoNumbersMultiTickAction')]  # noqa: E501
+                                       call('__del__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout')]  # noqa: E501
         assert bt._instance.get_status() == NodeStatus.ABORTED
         assert bt._instance.get_contingency_message() == 'TIMEOUT'
 

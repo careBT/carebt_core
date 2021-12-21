@@ -14,9 +14,8 @@
 
 from abc import ABC
 from abc import abstractmethod
-
+from datetime import datetime
 from threading import Timer
-
 from typing import final
 from typing import TYPE_CHECKING
 
@@ -36,6 +35,11 @@ class TreeNode(ABC):
 
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         self.bt_runner = bt_runner
+        # PROTECTED
+        self._throttle_ms = None
+        self._last_ts = datetime.min
+
+        # PRIVATE
         self.__node_status = NodeStatus.IDLE
         self.__contingency_message = ''
         self.__params = params
@@ -108,6 +112,14 @@ class TreeNode(ABC):
         """Is called on init.
 
         The `on_init` callback is called right after the node is instantiated.
+        """
+        pass
+
+    def on_tick(self) -> None:
+        """Is called on each tick.
+
+        The `on_tick` callback is called every time the `Node` is ticked by
+        its parent node, considering the optional throttle rate.
         """
         pass
 
@@ -248,3 +260,19 @@ class TreeNode(ABC):
     def abort(self) -> None:
         """Abort the current node."""
         self._internal_on_abort()
+
+    def set_throttle_ms(self, throttle_ms: int) -> None:
+        """Set the throttle rate in milliseconds.
+
+        Reduces the ticks the `Nodes` on_tick method is called to the
+        provided throttle_ms value. For example, to reduce the calls of the
+        `on_tick` callback to 500 milliseconds, the throttle_ms should be set
+        to 500.
+
+        Parameters
+        ----------
+        throttle_ms: int
+            The throttle rate in milliseconds
+
+        """
+        self._throttle_ms = throttle_ms

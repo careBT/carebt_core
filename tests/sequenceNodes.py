@@ -54,6 +54,35 @@ class AddTwoNumbersSequence1(SequenceNode):
 ########################################################################
 
 
+class AddTwoNumbersSequence1a(SequenceNode):
+    """The `AddTwoNumbersSequence1a` example node.
+
+    The `AddTwoNumbersSequence1a` is the same one as the `AddTwoNumbersSequence1` but
+    with the `on_tick` function callback implemented and a throttling rate of 200ms.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        self.set_throttle_ms(200)
+        mock('__init__ AddTwoNumbersSequence1a')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersSequence1a')
+        self.append_child(AddTwoNumbersAction, '3 6 => ?result')
+        self.append_child(ShowNumberAction, '?result')
+
+    def on_tick(self) -> None:
+        mock('on_tick AddTwoNumbersSequence1a')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersSequence1a')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersSequence1a')
+
+########################################################################
+
+
 class AddTwoNumbersSequence2(SequenceNode):
     """The `AddTwoNumbersSequence2` example node.
 

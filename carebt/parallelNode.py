@@ -67,15 +67,7 @@ class ParallelNode(ControlNode, ABC):
 
     # PROTECTED
 
-    def _internal_on_tick(self) -> None:
-        self.get_logger().trace('ticking {}'.format(self.__class__.__name__))
-
-        # if child list is empty, there is nothing to do
-        if(len(self._child_ec_list) == 0):
-            return
-
-        ################################################
-        # create children
+    def _internal_create_child_nodes(self) -> None:
         if((self.get_status() == NodeStatus.IDLE
             or self.get_status() == NodeStatus.RUNNING
             or self.get_status() == NodeStatus.SUSPENDED)
@@ -91,31 +83,30 @@ class ParallelNode(ControlNode, ABC):
             if(self.get_status() == NodeStatus.IDLE):
                 self.set_status(NodeStatus.RUNNING)
 
-        ################################################
-        # tick children
-        for self._child_ptr, child_ec in enumerate(self._child_ec_list[:]):
-            if(child_ec.instance is not None):
-                self._internal_bind_in_params(child_ec)
-                self._internal_tick_child(child_ec)
-                self._internal_apply_contingencies(child_ec)
+    def _internal_tick_child_nodes(self, tick: bool) -> None:
+        if(tick is True):
+            for self._child_ptr, child_ec in enumerate(self._child_ec_list[:]):
                 if(child_ec.instance is not None):
-                    self._internal_bind_out_params(child_ec)
-                    cur_child_state = child_ec.instance.get_status()
-                    if(cur_child_state == NodeStatus.SUCCESS
-                       or cur_child_state == NodeStatus.FIXED):
-                        child_ec.instance.on_delete()
-                        child_ec.instance = None
-                        self._success_count += 1
-                    elif(cur_child_state == NodeStatus.FAILURE
-                         or cur_child_state == NodeStatus.ABORTED):
-                        self.__last_child_contingency_msg = child_ec.instance\
-                                                            .get_contingency_message()
-                        child_ec.instance.on_delete()
-                        child_ec.instance = None
-                        self._fail_count += 1
+                    self._internal_bind_in_params(child_ec)
+                    self._internal_tick_child(child_ec)
+                    self._internal_apply_contingencies(child_ec)
+                    if(child_ec.instance is not None):
+                        self._internal_bind_out_params(child_ec)
+                        cur_child_state = child_ec.instance.get_status()
+                        if(cur_child_state == NodeStatus.SUCCESS
+                           or cur_child_state == NodeStatus.FIXED):
+                            child_ec.instance.on_delete()
+                            child_ec.instance = None
+                            self._success_count += 1
+                        elif(cur_child_state == NodeStatus.FAILURE
+                             or cur_child_state == NodeStatus.ABORTED):
+                            self.__last_child_contingency_msg = child_ec.instance\
+                                                                .get_contingency_message()
+                            child_ec.instance.on_delete()
+                            child_ec.instance = None
+                            self._fail_count += 1
 
-        ################################################
-        # finally, check how to proceed
+    def _internal_prepare_next_tick(self) -> None:
         if(self.get_status() != NodeStatus.ABORTED):
             if(self._success_count >= self._success_threshold):
                 self.get_logger().debug('_success_count >= _success_threshold -- {} >= {}'
@@ -140,6 +131,8 @@ class ParallelNode(ControlNode, ABC):
                        (child_ec.instance.get_status() == NodeStatus.RUNNING or
                             child_ec.instance.get_status() == NodeStatus.SUSPENDED)):
                         child_ec.instance._internal_on_abort()
+                        child_ec.instance.on_delete()
+                        child_ec.instance = None
 
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
@@ -150,6 +143,8 @@ class ParallelNode(ControlNode, ABC):
                (child_ec.instance.get_status() == NodeStatus.RUNNING or
                     child_ec.instance.get_status() == NodeStatus.SUSPENDED)):
                 child_ec.instance._internal_on_abort()
+                child_ec.instance.on_delete()
+                child_ec.instance = None
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                      .instance.get_contingency_message())

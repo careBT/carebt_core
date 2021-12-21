@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
 from unittest.mock import call
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from tests.global_mock import mock
 from tests.sequenceNodes import AddTwoNumbersSequence1
+from tests.sequenceNodes import AddTwoNumbersSequence1a
 from tests.sequenceNodes import AddTwoNumbersSequence2
 from tests.sequenceNodes import AddTwoNumbersSequence3
 from tests.sequenceNodes import AddTwoNumbersSequence4
@@ -61,6 +63,39 @@ class TestSequenceNode:
                                        call('__del__ ShowNumberAction'),
                                        call('on_delete AddTwoNumbersSequence1'),
                                        call('__del__ AddTwoNumbersSequence1')]
+
+    ########################################################################
+
+    def test_AddTwoNumbersSequence1a(self):
+        """Test the `AddTwoNumbersSequence1a` node."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        start = datetime.now()
+        bt_runner.run(AddTwoNumbersSequence1a)
+        end = datetime.now()
+        delta = end - start
+        assert int(delta.total_seconds() * 1000) > 200
+        assert int(delta.total_seconds() * 1000) < 300
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersSequence1a'),
+                                       call('on_init AddTwoNumbersSequence1a'),
+                                       call('__init__ AddTwoNumbersAction'),
+                                       call('on_init AddTwoNumbersAction'),
+                                       call('AddTwoNumbersAction: calculating: 3 + 6 = 9'),
+                                       call('on_tick AddTwoNumbersSequence1a'),
+                                       call('on_delete AddTwoNumbersAction'),
+                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ ShowNumberAction'),
+                                       call('on_init ShowNumberAction'),
+                                       call('ShowNumberAction: The numer is: 9!'),
+                                       call('on_tick AddTwoNumbersSequence1a'),
+                                       call('on_delete ShowNumberAction'),
+                                       call('__del__ ShowNumberAction'),
+                                       call('on_delete AddTwoNumbersSequence1a'),
+                                       call('__del__ AddTwoNumbersSequence1a')]
 
     ########################################################################
 

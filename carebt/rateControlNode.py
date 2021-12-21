@@ -13,9 +13,6 @@
 # limitations under the License.
 
 from abc import ABC
-
-from datetime import datetime
-
 from typing import TYPE_CHECKING
 
 from carebt.controlNode import ControlNode
@@ -50,26 +47,16 @@ class RateControlNode(ControlNode, ABC):
 
     """
 
-    def __init__(self, bt_runner: 'BehaviorTreeRunner', rate_ms: int, params: str = None):
+    def __init__(self, bt_runner: 'BehaviorTreeRunner', throttle_ms: int, params: str = None):
         """Init the `ActionNode` with bt_runner,rate_ms and params."""
         super().__init__(bt_runner, params)
 
-        self.__rate_ms = rate_ms
-        self.__last_ts = datetime.min
+        self._throttle_ms = throttle_ms
         self.set_status(NodeStatus.IDLE)
 
     # PROTECTED
 
-    def _internal_on_tick(self) -> None:
-        self.get_logger().trace('ticking {}'.format(self.__class__.__name__))
-        self.set_status(NodeStatus.RUNNING)
-
-        # if child list is empty, there is nothing to do
-        if(len(self._child_ec_list) == 0):
-            return
-
-        ################################################
-        # create instance
+    def _internal_create_child_nodes(self) -> None:
         if(self._child_ec_list[0].instance is None):
             # create node instance
             self._child_ec_list[0].instance = \
@@ -77,16 +64,14 @@ class RateControlNode(ControlNode, ABC):
             self._internal_bind_in_params(self._child_ec_list[self._child_ptr])
             self._child_ec_list[0].instance.on_init()
 
-        # tick child if __rate_ms has elapsed
-        current_ts = datetime.now()
-        if(int((current_ts - self.__last_ts).total_seconds() * 1000) >= self.__rate_ms):
-            self._internal_tick_child(self._child_ec_list[0])
-            self.__last_ts = current_ts
+    def _internal_tick_child_nodes(self, tick: bool) -> None:
+        if(tick is True):
+            self._internal_tick_child(self._child_ec_list[self._child_ptr])
 
         self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
-        self._internal_apply_contingencies(self._child_ec_list[0])
+        self._internal_apply_contingencies(self._child_ec_list[self._child_ptr])
 
-        # finally, check how to proceed in the sequence
+    def _internal_prepare_next_tick(self) -> None:
         if(self.get_status() == NodeStatus.RUNNING):
             cur_child_state = self._child_ec_list[0].instance.get_status()
 
@@ -125,6 +110,9 @@ class RateControlNode(ControlNode, ABC):
             self._child_ec_list[0].instance._internal_on_abort()
         self.set_status(NodeStatus.ABORTED)
         self.set_contingency_message(self._child_ec_list[0].instance.get_contingency_message())
+        if(self._child_ec_list[0].instance is not None):
+            self._child_ec_list[0].instance.on_delete()
+            self._child_ec_list[0].instance = None
         self.on_abort()
 
     # PUBLIC

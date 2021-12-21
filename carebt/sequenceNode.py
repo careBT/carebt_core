@@ -57,17 +57,7 @@ class SequenceNode(ControlNode, ABC):
 
     # PROTECTED
 
-    def _internal_on_tick(self) -> None:
-        self.get_logger().trace('ticking {}'.format(self.__class__.__name__))
-        if(self.get_status() != NodeStatus.RUNNING):
-            self.set_status(NodeStatus.RUNNING)
-
-        # if child list is empty, there is nothing to do
-        if(len(self._child_ec_list) == 0):
-            return
-
-        ################################################
-        # if there is no current child to be ticked, create one
+    def _internal_create_child_nodes(self) -> None:
         if(self._child_ec_list[self._child_ptr].instance is None):
             # create node instance
             self._child_ec_list[self._child_ptr].instance = \
@@ -75,12 +65,14 @@ class SequenceNode(ControlNode, ABC):
             self._internal_bind_in_params(self._child_ec_list[self._child_ptr])
             self._child_ec_list[self._child_ptr].instance.on_init()
 
-        # tick child
-        self._internal_tick_child(self._child_ec_list[self._child_ptr])
+    def _internal_tick_child_nodes(self, tick: bool) -> None:
+        if(tick is True):
+            self._internal_tick_child(self._child_ec_list[self._child_ptr])
+
+        self._internal_bind_out_params(self._child_ec_list[self._child_ptr])
         self._internal_apply_contingencies(self._child_ec_list[self._child_ptr])
 
-        ################################################
-        # finally, check how to proceed in the sequence
+    def _internal_prepare_next_tick(self) -> None:
         if(self.get_status() == NodeStatus.RUNNING):
             if self._child_ec_list[self._child_ptr].instance is not None:
                 cur_child_state = self._child_ec_list[self._child_ptr].instance.get_status()
@@ -156,7 +148,7 @@ class SequenceNode(ControlNode, ABC):
         self._child_ec_list.append(ExecutionContext(node, params))
 
     def insert_child_after_current(self, node: TreeNode, params: str = None) -> None:
-        """Insert a child node.
+        """Insert a child node after the current.
 
         Insert a child node right after the currently executing child node. NOTE: When
         inserting more than one node, they should be inserted in reverse order. This is
@@ -186,7 +178,6 @@ class SequenceNode(ControlNode, ABC):
         handler to modify the current execution sequence and adjust it to the current situation.
         New children which should be executed afterwards can be added with `append_child` or
         `insert_child_after_current`.
-
         """
         self._child_ec_list[self._child_ptr].instance.on_delete()
         self._child_ec_list.clear()

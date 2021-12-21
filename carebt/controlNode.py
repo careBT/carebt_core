@@ -13,9 +13,8 @@
 # limitations under the License.
 
 from abc import ABC
-
+from datetime import datetime
 import re
-
 from typing import Callable
 from typing import final
 from typing import TYPE_CHECKING
@@ -52,6 +51,48 @@ class ControlNode(TreeNode, ABC):
 
     # PROTECTED
 
+    def _internal_on_tick(self) -> None:
+        if(self.get_status() != NodeStatus.RUNNING):
+            self.set_status(NodeStatus.RUNNING)
+
+        # if child list is empty, there is nothing to do
+        if(len(self._child_ec_list) == 0):
+            return
+
+        # create child nodes
+        self._internal_create_child_nodes()
+
+        # _throttle_ms -> tick
+        tick: bool = False
+        current_ts = datetime.now()
+        if(self._throttle_ms is None
+           or int((current_ts - self._last_ts).total_seconds() * 1000) >= self._throttle_ms):
+            self.bt_runner.get_logger().trace('ticking {} - {}'
+                                              .format(self.__class__.__name__,
+                                                      self.get_status()))
+            tick = True
+            self._last_ts = current_ts
+
+        # tick child nodes and apply contingency-handler
+        self._internal_tick_child_nodes(tick)
+
+        if(tick is True):
+            self.on_tick()
+
+        self._internal_prepare_next_tick()
+
+    # @abstractmethod
+    def _internal_create_child_nodes(self) -> None:
+        raise NotImplementedError
+
+    # @abstractmethod
+    def _internal_tick_child_nodes(self, tick: bool) -> None:
+        raise NotImplementedError
+
+    # @abstractmethod
+    def _internal_prepare_next_tick(self) -> None:
+        raise NotImplementedError
+
     def _internal_bind_in_params(self, child_ec: ExecutionContext) -> None:
         if(len(child_ec.call_in_params) != len(child_ec.instance._internal_get_in_params())):
             self.get_logger().warn('{} takes {} argument(s), but {} was/were provided'
@@ -69,18 +110,11 @@ class ControlNode(TreeNode, ABC):
     def _internal_bind_out_params(self, child_ec: ExecutionContext) -> None:
         for i, var in enumerate(child_ec.instance._internal_get_out_params()):
             var = var.replace('?', '_', 1)
-            if(len(child_ec.call_out_params) <= i):
-                self.get_logger().warn('{} output {} not provided'
-                                       .format(child_ec.node.__name__, i))
-            else:
+            if(len(child_ec.call_out_params) > i):
                 if(getattr(child_ec.instance, var) is None):
-                    # print warning only in case status == SUCCESS or FIXED
-                    if(child_ec.instance.get_status() == NodeStatus.SUCCESS
-                       or child_ec.instance.get_status() == NodeStatus.FIXED):
-                        self.get_logger().warn('{} output {} is not set'
-                                               .format(child_ec.node.__name__,
-                                                       var.replace('_', '?', 1)))
-                    setattr(self, child_ec.call_out_params[i].replace('?', '_', 1), None)
+                    if(getattr(self,
+                               child_ec.call_out_params[i].replace('?', '_', 1), None) is None):
+                        setattr(self, child_ec.call_out_params[i].replace('?', '_', 1), None)
                 else:
                     setattr(self, child_ec.call_out_params[i].replace('?', '_', 1),
                             getattr(child_ec.instance, var))

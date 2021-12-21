@@ -404,6 +404,35 @@ class CountAbortParallel(ParallelNode):
 ########################################################################
 
 
+class CountAbortParallelWithTick(ParallelNode):
+    """The `CountAbortParallelWithTick` example node.
+
+    The `CountAbortParallelWithTick` is the same one as the `CountAbortParallel` but
+    with the `on_tick` function callback implemented and a throttling rate of 200ms.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 2, '')
+        self.set_throttle_ms(200)
+        mock('__init__ CountAbortParallelWithTick')
+
+    def on_init(self) -> None:
+        mock('on_init CountAbortParallelWithTick')
+        self.add_child(TickCountingAction, '1 99 True => ?cnt')
+        self.add_child(FailOnCountAction, '5 ?cnt')
+
+    def on_tick(self) -> None:
+        mock('on_tick CountAbortParallelWithTick')
+
+    def on_delete(self) -> None:
+        mock('on_delete CountAbortParallelWithTick')
+
+    def __del__(self):
+        mock('__del__ CountAbortParallelWithTick')
+
+########################################################################
+
+
 class ParallelRemoveSuccess(ParallelNode):
     """The `ParallelRemoveSuccess` example node."""
 

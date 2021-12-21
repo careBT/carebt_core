@@ -37,7 +37,7 @@ class RateControlledAddTwoNumbersMultiTickAction(RateControlNode):
         mock('__init__ RateControlledAddTwoNumbersMultiTickAction')
 
     def on_init(self) -> None:
-        mock('__init__ RateControlledAddTwoNumbersMultiTickAction')
+        mock('on_init RateControlledAddTwoNumbersMultiTickAction')
         self.set_child(AddTwoNumbersMultiTickAction, '5 1 2 => ?result')
 
     def on_delete(self) -> None:
@@ -61,7 +61,7 @@ class RateControlledAddTwoNumbersMultiTickActionWithTimeout(RateControlNode):
         mock('__init__ RateControlledAddTwoNumbersMultiTickActionWithTimeout')
 
     def on_init(self) -> None:
-        mock('__init__ RateControlledAddTwoNumbersMultiTickActionWithTimeout')
+        mock('on_init RateControlledAddTwoNumbersMultiTickActionWithTimeout')
         self.set_child(AddTwoNumbersMultiTickActionWithTimeout, '5 1 2 => ?result')
 
     def on_delete(self) -> None:
@@ -85,7 +85,7 @@ class RateControlledAddTwoNumbersMultiTickActionOwnTimeout(RateControlNode):
         mock('__init__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout')
 
     def on_init(self) -> None:
-        mock('__init__ RateControlledAddTwoNumbersMultiTickActionOwnTimeout')
+        mock('on_init RateControlledAddTwoNumbersMultiTickActionOwnTimeout')
         self.set_child(AddTwoNumbersMultiTickAction, '5 1 2 => ?result')
         self.set_timeout(1000)
 
@@ -116,7 +116,7 @@ class RateControlledHelloWorldActionWithMessage(RateControlNode):
         mock('__init__ RateControlledHelloWorldActionWithMessage')
 
     def on_init(self) -> None:
-        mock('__init__ RateControlledHelloWorldActionWithMessage')
+        mock('on_init RateControlledHelloWorldActionWithMessage')
         self.set_child(HelloWorldActionWithMessage)
 
     def on_delete(self) -> None:
