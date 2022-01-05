@@ -201,7 +201,7 @@ class ParallelNode(ControlNode, ABC):
         """
         self._created_child_size -= 1
         if(self._child_ec_list[pos].instance is not None):
-            self._child_ec_list[pos].instance.abort()
+            self._child_ec_list[pos].instance._internal_on_abort()
             self._child_ec_list[pos].instance.on_delete()
             self._child_ec_list[pos].instance = None
         del self._child_ec_list[pos]
