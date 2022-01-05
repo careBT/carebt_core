@@ -29,6 +29,7 @@ from tests.sequenceNodes import AddTwoNumbersSequence7
 from tests.sequenceNodes import AddTwoNumbersSequence8
 from tests.sequenceNodes import AddTwoNumbersSequence9
 from tests.sequenceNodes import AsyncAddChildSequence
+from tests.sequenceNodes import RemoveAllChildrenSequence
 from tests.sequenceNodes import SequenceWithSuccessMessage_1
 from tests.sequenceNodes import SequenceWithSuccessMessage_2
 
@@ -651,3 +652,17 @@ class TestSequenceNode:
                                        call('__init__ HelloWorldAction'),
                                        call('HelloWorldAction: Hello World !!!'),
                                        call('__del__ HelloWorldAction')]
+
+    ########################################################################
+
+    def test_RemoveAllChildrenSequence(self):
+        """Test the `RemoveAllChildrenSequence` node."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(RemoveAllChildrenSequence, '')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ RemoveAllChildrenSequence'),
+                                       call('on_init RemoveAllChildrenSequence')]

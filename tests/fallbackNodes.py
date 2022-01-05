@@ -245,3 +245,22 @@ class AsyncAddChildFallback(FallbackNode):
         mock('AsyncAddChildFallback: DONE')
         self.set_status(NodeStatus.RUNNING)
         self.append_child(HelloWorldAction)
+
+########################################################################
+
+
+class RemoveAllChildrenFallback(FallbackNode):
+    """The `RemoveAllChildrenFallback` node.
+
+    The `RemoveAllChildrenFallback` starts with an empty child list and calls
+    remove_all_children().
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '')
+        mock('__init__ RemoveAllChildrenFallback')
+
+    def on_init(self) -> None:
+        mock('on_init RemoveAllChildrenFallback')
+        self.remove_all_children()
+        self.set_status(NodeStatus.SUCCESS)

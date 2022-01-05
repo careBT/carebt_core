@@ -25,6 +25,7 @@ from tests.fallbackNodes import AddTwoNumbersFallback5
 from tests.fallbackNodes import AddTwoNumbersFallback6
 from tests.fallbackNodes import AddTwoNumbersFallback7
 from tests.fallbackNodes import AsyncAddChildFallback
+from tests.fallbackNodes import RemoveAllChildrenFallback
 from tests.global_mock import mock
 
 ########################################################################
@@ -229,3 +230,17 @@ class TestFallbackNode:
                                        call('__init__ HelloWorldAction'),
                                        call('HelloWorldAction: Hello World !!!'),
                                        call('__del__ HelloWorldAction')]
+
+    ########################################################################
+
+    def test_RemoveAllChildrenFallback(self):
+        """Test the `RemoveAllChildrenFallback` node."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(RemoveAllChildrenFallback, '')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ RemoveAllChildrenFallback'),
+                                       call('on_init RemoveAllChildrenFallback')]

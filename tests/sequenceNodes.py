@@ -584,3 +584,22 @@ class AsyncAddChildSequence(SequenceNode):
         mock('AsyncAddChildSequence: DONE')
         self.set_status(NodeStatus.RUNNING)
         self.append_child(HelloWorldAction)
+
+########################################################################
+
+
+class RemoveAllChildrenSequence(SequenceNode):
+    """The `RemoveAllChildrenSequence` node.
+
+    The `RemoveAllChildrenSequence` starts with an empty child list and calls
+    remove_all_children().
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '')
+        mock('__init__ RemoveAllChildrenSequence')
+
+    def on_init(self) -> None:
+        mock('on_init RemoveAllChildrenSequence')
+        self.remove_all_children()
+        self.set_status(NodeStatus.SUCCESS)

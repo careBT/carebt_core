@@ -179,6 +179,8 @@ class SequenceNode(ControlNode, ABC):
         New children which should be executed afterwards can be added with `append_child` or
         `insert_child_after_current`.
         """
-        self._child_ec_list[self._child_ptr].instance.on_delete()
+        if(len(self._child_ec_list) != 0
+           and self._child_ec_list[self._child_ptr].instance is not None):
+            self._child_ec_list[self._child_ptr].instance.on_delete()
         self._child_ec_list.clear()
         self._child_ptr = 0
