@@ -117,13 +117,15 @@ class SequenceNode(ControlNode, ABC):
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
+        if(self._child_ec_list[self._child_ptr].instance is not None):
+            self.set_status(NodeStatus.ABORTED)
+            self.set_contingency_message(self._child_ec_list[self._child_ptr]
+                                         .instance.get_contingency_message())
         # abort current child if RUNNING or SUSPENDED
         if(self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.RUNNING or
            self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.SUSPENDED):
             self._child_ec_list[self._child_ptr].instance._internal_on_abort()
-        self.set_status(NodeStatus.ABORTED)
-        self.set_contingency_message(self._child_ec_list[self._child_ptr]
-                                     .instance.get_contingency_message())
+
         if(self._child_ec_list[self._child_ptr].instance is not None):
             self._child_ec_list[self._child_ptr].instance.on_delete()
             self._child_ec_list[self._child_ptr].instance = None

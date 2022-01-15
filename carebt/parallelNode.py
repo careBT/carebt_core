@@ -135,6 +135,10 @@ class ParallelNode(ControlNode, ABC):
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
         self.get_logger().info('aborting {}'.format(self.__class__.__name__))
+        if(self._child_ec_list[self._child_ptr].instance is not None):
+            self.set_status(NodeStatus.ABORTED)
+            self.set_contingency_message(self._child_ec_list[self._child_ptr]
+                                         .instance.get_contingency_message())
         # abort children if RUNNING or SUSPENDED
         for child_ec in self._child_ec_list:
             if(child_ec.instance is not None and
@@ -143,9 +147,6 @@ class ParallelNode(ControlNode, ABC):
                 child_ec.instance._internal_on_abort()
                 child_ec.instance.on_delete()
                 child_ec.instance = None
-        self.set_status(NodeStatus.ABORTED)
-        self.set_contingency_message(self._child_ec_list[self._child_ptr]
-                                     .instance.get_contingency_message())
         self.on_abort()
 
     # PUBLIC
