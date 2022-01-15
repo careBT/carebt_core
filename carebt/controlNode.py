@@ -219,7 +219,9 @@ class ControlNode(TreeNode, ABC):
         """Abort the currently executing child."""
         self.get_logger().trace('{} -> abort_current_child called'
                                 .format(self.__class__.__name__))
-        self._child_ec_list[self._child_ptr].instance.abort()
+        if(self._child_ptr < len(self._child_ec_list)
+           and self._child_ec_list[self._child_ptr].instance is not None):
+            self._child_ec_list[self._child_ptr].instance.abort()
 
     @final
     def set_current_child_status(self, node_status: NodeStatus) -> None:
