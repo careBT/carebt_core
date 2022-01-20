@@ -137,4 +137,4 @@ class RateControlNode(ControlNode, ABC):
         """
         self._child_ptr = 0
         self._child_ec_list.clear()
-        self._child_ec_list.append(ExecutionContext(node, params))
+        self._child_ec_list.append(ExecutionContext(self, node, params))

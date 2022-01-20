@@ -18,6 +18,7 @@ from unittest.mock import call
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from tests.global_mock import mock
+from tests.sequenceNodes import AddTwoNumbersDynamic
 from tests.sequenceNodes import AddTwoNumbersSequence1
 from tests.sequenceNodes import AddTwoNumbersSequence1a
 from tests.sequenceNodes import AddTwoNumbersSequence2
@@ -666,3 +667,45 @@ class TestSequenceNode:
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ RemoveAllChildrenSequence'),
                                        call('on_init RemoveAllChildrenSequence')]
+
+########################################################################
+
+    def test_AddTwoNumbersDynamic(self):
+        """Test the `AddTwoNumbersDynamic` node."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AddTwoNumbersDynamic, '')
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersAction'),
+                                       call('on_init AddTwoNumbersAction'),
+                                       call('AddTwoNumbersAction: calculating: 2 + 5 = 7'),
+                                       call('on_delete AddTwoNumbersAction'),
+                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ ShowNumberAction'),
+                                       call('on_init ShowNumberAction'),
+                                       call('ShowNumberAction: The numer is: 7!'),
+                                       call('on_delete ShowNumberAction'),
+                                       call('__del__ ShowNumberAction'),
+                                       call('__init__ AddTwoNumbersAction'),
+                                       call('on_init AddTwoNumbersAction'),
+                                       call('AddTwoNumbersAction: calculating: 5 + 5 = 10'),
+                                       call('on_delete AddTwoNumbersAction'),
+                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ ShowNumberAction'),
+                                       call('on_init ShowNumberAction'),
+                                       call('ShowNumberAction: The numer is: 10!'),
+                                       call('on_delete ShowNumberAction'),
+                                       call('__del__ ShowNumberAction'),
+                                       call('__init__ AddTwoNumbersAction'),
+                                       call('on_init AddTwoNumbersAction'),
+                                       call('AddTwoNumbersAction: calculating: 9 + 5 = 14'),
+                                       call('on_delete AddTwoNumbersAction'),
+                                       call('__del__ AddTwoNumbersAction'),
+                                       call('__init__ ShowNumberAction'),
+                                       call('on_init ShowNumberAction'),
+                                       call('ShowNumberAction: The numer is: 14!'),
+                                       call('on_delete ShowNumberAction'),
+                                       call('__del__ ShowNumberAction')]

@@ -17,7 +17,7 @@ from carebt.treeNode import TreeNode
 
 class ExecutionContext():
 
-    def __init__(self, node: TreeNode, params: str):
+    def __init__(self, parent: TreeNode, node: TreeNode, params: str):
         self.call_in_params = []
         self.call_out_params = []
 
@@ -27,8 +27,13 @@ class ExecutionContext():
 
             # extract call input params if available
             for p in filter(None, params.split('=>')[0].split(' ')):
+                # param is a careBt variable (starts with ?)
                 if(p[0] == '?'):
                     self.call_in_params.append(p)
+                # param is a member variable of the parent
+                elif(getattr(parent, p, None) is not None):
+                    self.call_in_params.append(eval(f'parent.{p}'))
+                # param is a value
                 else:
                     self.call_in_params.append(eval(p))
             self.call_in_params = tuple(self.call_in_params)

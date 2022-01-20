@@ -603,3 +603,21 @@ class RemoveAllChildrenSequence(SequenceNode):
         mock('on_init RemoveAllChildrenSequence')
         self.remove_all_children()
         self.set_status(NodeStatus.SUCCESS)
+
+########################################################################
+
+
+class AddTwoNumbersDynamic(SequenceNode):
+    """The `AddTwoNumbersDynamic` example node.
+
+    The `AddTwoNumbersDynamic` shows.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+
+    def on_init(self) -> None:
+        values = [2, 5, 9]
+        for self.x in values:
+            self.append_child(AddTwoNumbersAction, 'x 5 => ?result')
+            self.append_child(ShowNumberAction, '?result')

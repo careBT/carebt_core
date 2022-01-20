@@ -186,7 +186,7 @@ class ParallelNode(ControlNode, ABC):
             The parameters of the added child node
 
         """
-        self._child_ec_list.append(ExecutionContext(node, params))
+        self._child_ec_list.append(ExecutionContext(self, node, params))
 
     def remove_child(self, pos: int) -> None:
         """Remove a child node.

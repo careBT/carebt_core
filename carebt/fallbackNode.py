@@ -139,7 +139,7 @@ class FallbackNode(ControlNode, ABC):
             The parameters of the added child node
 
         """
-        self._child_ec_list.append(ExecutionContext(node, params))
+        self._child_ec_list.append(ExecutionContext(self, node, params))
 
     def insert_child_after_current(self, node: TreeNode, params: str = None) -> None:
         """Insert a child node after the current.
@@ -161,9 +161,9 @@ class FallbackNode(ControlNode, ABC):
         if(len(self._child_ec_list) != 0
            and self._child_ec_list[self._child_ptr].instance is None
            and self._child_ptr == 0):
-            self._child_ec_list.insert(0, ExecutionContext(node, params))
+            self._child_ec_list.insert(0, ExecutionContext(self, node, params))
         else:
-            self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(node, params))
+            self._child_ec_list.insert(self._child_ptr + 1, ExecutionContext(self, node, params))
 
     def remove_all_children(self) -> None:
         """Remove all child nodes.
