@@ -617,7 +617,7 @@ class AddTwoNumbersDynamic(SequenceNode):
         super().__init__(bt_runner)
 
     def on_init(self) -> None:
-        values = [2, 5, 9]
-        for self.x in values:
-            self.append_child(AddTwoNumbersAction, 'x 5 => ?result')
+        values = [(2, 11), (5, 22), (9, 33)]
+        for self.v in values:
+            self.append_child(AddTwoNumbersAction, 'v[0] 5 => ?result')
             self.append_child(ShowNumberAction, '?result')

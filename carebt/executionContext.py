@@ -30,12 +30,13 @@ class ExecutionContext():
                 # param is a careBt variable (starts with ?)
                 if(p[0] == '?'):
                     self.call_in_params.append(p)
-                # param is a member variable of the parent
-                elif(getattr(parent, p, None) is not None):
-                    self.call_in_params.append(eval(f'parent.{p}'))
-                # param is a value
                 else:
-                    self.call_in_params.append(eval(p))
+                    try:
+                        # param is a member variable of the parent
+                        self.call_in_params.append(eval(f'parent.{p}'))
+                    except:
+                        # param is a value
+                        self.call_in_params.append(eval(p))
             self.call_in_params = tuple(self.call_in_params)
 
             # extract call output params if available
