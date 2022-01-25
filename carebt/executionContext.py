@@ -34,7 +34,7 @@ class ExecutionContext():
                     try:
                         # param is a member variable of the parent
                         self.call_in_params.append(eval(f'parent.{p}'))
-                    except:
+                    except SyntaxError:
                         # param is a value
                         self.call_in_params.append(eval(p))
             self.call_in_params = tuple(self.call_in_params)
