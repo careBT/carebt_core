@@ -19,13 +19,13 @@ from unittest.mock import patch
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.simple_sequence import CreateRandomNumberAction
 from carebt.examples.simple_sequence import PrintNumberAction
-from carebt.examples.simple_sequence import SimpleSequence
+from carebt.examples.simple_sequence import SimpleSequence1
 from carebt.examples.simple_sequence import SimpleSequence2
 from carebt.examples.simple_sequence import SimpleSequence3
 from carebt.nodeStatus import NodeStatus
 
 
-class TestSimpleSequence:
+class TestSimpleSequence1:
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_CreateRandomNumberAction(self, mock_print):
@@ -46,9 +46,9 @@ class TestSimpleSequence:
         assert bt_runner.get_contingency_message() == ''
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_SimpleSequence(self, mock_print):
+    def test_SimpleSequence1(self, mock_print):
         bt_runner = BehaviorTreeRunner()
-        bt_runner.run(SimpleSequence, '=> ?x')
+        bt_runner.run(SimpleSequence1, '=> ?x')
         regex = re.compile(r'CreateRandomNumberAction: number = [0-9]+\n'
                            + r'CreateRandomNumberAction: number = [0-9]+\n'
                            + r'AddTwoNumbersAction: calculating: [0-9]+ \+ [0-9]+ = [0-9]+\n'

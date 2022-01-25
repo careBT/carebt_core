@@ -70,8 +70,8 @@ class PrintNumberAction(ActionNode):
 ########################################################################
 
 
-class SimpleSequence(SequenceNode):
-    """The `SimpleSequence` example node.
+class SimpleSequence1(SequenceNode):
+    """The `SimpleSequence1` example node.
 
     The `SimpleSequence` runs the nodes `CreateRandomNumberAction`,
     `CreateRandomNumberAction`, `AddTwoNumbersAction` and `PrintNumberAction`
@@ -102,7 +102,7 @@ class SimpleSequence2(SequenceNode):
     """The `SimpleSequence2` example node.
 
     The `SimpleSequence2` demonstrates a modified version of the
-    `SimpleSequence`. The value provided as an input parameter is
+    `SimpleSequence1`. The value provided as an input parameter is
     added to a randomly generated value. The result is then added
     to another randomly generated value. This final result is then
     provided as an output of the `SequenceNode`.
@@ -145,7 +145,7 @@ class SimpleSequence3(SequenceNode):
         super().__init__(bt_runner)
 
     def on_init(self) -> None:
-        self.append_child(SimpleSequence, '=> ?x')
+        self.append_child(SimpleSequence1, '=> ?x')
         self.append_child(PrintNumberAction, '?x')
         self.append_child(SimpleSequence2, '?x => ?y')
         self.append_child(PrintNumberAction, '?y')

@@ -11,15 +11,15 @@ generates a random numer and provides it as output parameter. The second one (``
 prints the, as input parameter, provided number on standard output.
 
 
-Create the ActionNodes and the SimpleSequence
----------------------------------------------
+Create the ActionNodes and the SimpleSequence1
+----------------------------------------------
 
-This first example called ``SimpleSequence`` contains four child nodes.
+This first example called ``SimpleSequence1`` contains four child nodes.
 
 .. graphviz::
 
     digraph foo {
-        s1 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence"];
+        s1 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence1"];
 
         s1c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
         s1c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
@@ -67,7 +67,7 @@ The ``PrintNumberAction`` is a custom ``ActionNode`` which prints the provided *
     :language: python
     :lines: 50-68
 
-The ``SimpleSequence`` node is implemented as a Python class which inherits from ``SequenceNode``.
+The ``SimpleSequence1`` node is implemented as a Python class which inherits from ``SequenceNode``.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
@@ -80,7 +80,7 @@ documentation of the node, which also documents the interface (output parameters
     :language: python
     :lines: 74-87
 
-The constructor (``__init__``) of the ``SimpleSequence`` needs to call the constructor (``super().__init__``)
+The constructor (``__init__``) of the ``SimpleSequence1`` needs to call the constructor (``super().__init__``)
 of the ``SequenceNode`` and passes the bt_runner and the signature as arguments. The signature defines one
 output parameter called *?c*.
 
@@ -99,20 +99,20 @@ be executed once, after the node was created. For a ``SequenceNode`` the child n
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter and run the ``SimpleSequence`` node:
+Start the Python interpreter and run the ``SimpleSequence1`` node:
 
 .. code-block:: python
 
     >>> import carebt
-    >>> from carebt.examples.simple_sequence import SimpleSequence
+    >>> from carebt.examples.simple_sequence import SimpleSequence1
     >>> bt_runner = carebt.BehaviorTreeRunner()
-    >>> bt_runner.run(SimpleSequence, '=> ?x')
+    >>> bt_runner.run(SimpleSequence1, '=> ?x')
     CreateRandomNumberAction: number = 6
     CreateRandomNumberAction: number = 5
     AddTwoNumbersAction: calculating: 6 + 5 = 11
     PrintNumberAction: number = 11
 
-    >>> bt_runner.run(SimpleSequence, '=> ?x')
+    >>> bt_runner.run(SimpleSequence1, '=> ?x')
     CreateRandomNumberAction: number = 7
     CreateRandomNumberAction: number = 9
     AddTwoNumbersAction: calculating: 7 + 9 = 16
@@ -142,7 +142,7 @@ Create the SimpleSequence2
         s2 -> s2c6
    }
 
-The ``SimpleSequence2`` is a modified version of the ``SimpleSequence``. It shows how simple a different
+The ``SimpleSequence2`` is a modified version of the ``SimpleSequence1``. It shows how simple a different
 sequence of children can be created and how the parameters can be bound across the different children.
 
 Add the following content to ``simple_sequence.py``.
@@ -156,7 +156,7 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter and run the ``SimpleSequence`` node:
+Start the Python interpreter and run the ``SimpleSequence2`` node:
 
 .. code-block:: python
 
@@ -198,7 +198,7 @@ Create the SimpleSequence3
         rank2 -> rank3 [color=white];
         rank3 -> rank4 [color=white];
 
-        s1 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence"];
+        s1 [shape=box, margin="0.05,0.1", label="«SequenceNode»\nSimpleSequence1"];
 
         s1c1 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
         s1c2 [shape=box, margin="0.05,0.1", label="«ActionNode»\nCreateRandomNumberAction"];
@@ -264,7 +264,7 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter and run the ``SimpleSequence`` node:
+Start the Python interpreter and run the ``SimpleSequence3`` node:
 
 .. code-block:: python
 
