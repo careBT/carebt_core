@@ -103,9 +103,9 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.simple_sequence import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.simple_sequence import SimpleSequence
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence, '=> ?x')
     CreateRandomNumberAction: number = 6
     CreateRandomNumberAction: number = 5
@@ -160,9 +160,9 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.simple_sequence import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.simple_sequence import SimpleSequence2
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence2, '5 => ?x')
     CreateRandomNumberAction: number = 2
     AddTwoNumbersAction: calculating: 5 + 2 = 7
@@ -268,9 +268,9 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.simple_sequence import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.simple_sequence import SimpleSequence3
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence3)
     CreateRandomNumberAction: number = 5
     CreateRandomNumberAction: number = 8

@@ -69,8 +69,8 @@ Start the Python interpreter and run the ``HelloWorldAction`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.helloworld import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.helloworld import HelloWorldAction
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(HelloWorldAction)
     HelloWorldAction: Hello World !!!

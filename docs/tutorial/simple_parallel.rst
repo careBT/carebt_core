@@ -53,9 +53,9 @@ Start the Python interpreter and run the ``SimpleParallel`` node:
 
 .. code-block:: python
 
+    >>> import carebt
     >>> from carebt.examples.parallel import SimpleParallel
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleParallel, '2 4 6')
     AddTwoNumbersMultiTickAction: (tick_count = 1/2)
     AddTwoNumbersMultiTickAction: (tick_count = 1/4)

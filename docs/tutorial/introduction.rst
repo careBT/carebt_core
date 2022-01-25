@@ -15,28 +15,40 @@ as they build off from each other.
 Get Started
 -----------
 
-The easiest way to run the examples is to clone the ``carebt-core`` repository and run
-the python interpreter from there:
+The easiest way to run the examples is to install ``carebt`` with pip.
 
 .. code-block:: bash
 
-    $ git clone https://github.com/careBT/carebt_core.git
-    $ cd carebt_core
+    pip install carebt
+
+Then run your python interpreter:
+
+.. code-block:: bash
+
     $ python
 
 And then run the examples from the tutorials, as for example, the ``HelloWorldAction``:
 
 .. code-block:: python
 
-    >>> from carebt.examples.helloworld import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.helloworld import HelloWorldAction
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(HelloWorldAction)
     HelloWorldAction: Hello World !!!
 
+Or import all examples and run the ``HelloWorldAction``:
+
+.. code-block:: python
+
+    >>> import carebt
+    >>> import carebt.examples
+    >>> bt_runner = carebt.BehaviorTreeRunner()
+    >>> bt_runner.run(carebt.examples.HelloWorldAction)
+    HelloWorldAction: Hello World !!!
 
 .. hint::
     If creating a own Python package for the tutorial, the import statements for
-    the examples need to be adjusted. E.g. :python:`from helloworld import *` in case of
-    starting the Python interpreter directly from the source folder. But that depends on
-    the used package structure.
+    the examples need to be adjusted. E.g. :python:`from helloworld import HelloWorldAction`
+    in case of starting the Python interpreter directly from the source folder. But that depends
+    on the used package structure.

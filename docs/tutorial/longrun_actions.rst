@@ -73,9 +73,9 @@ Start the Python interpreter and run the ``AddTwoNumbersMultiTickAction`` node:
 
 .. code-block:: python
 
+    >>> import carebt
     >>> from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(AddTwoNumbersMultiTickAction, '1 4 7 => ?result')
     AddTwoNumbersMultiTickAction: DONE 4 + 7 = 11
     >>> bt_runner.run(AddTwoNumbersMultiTickAction, '5 4 7 => ?result')
@@ -148,9 +148,9 @@ Start the Python interpreter and run the ``AddTwoNumbersMultiTickAction`` node:
 
 .. code-block:: python
 
+    >>> import carebt
     >>> from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '1 4 7 => ?result')
     AddTwoNumbersMultiTickActionWithTimeout: DONE 4 + 7 = 11
     >>> bt_runner.run(AddTwoNumbersMultiTickActionWithTimeout, '3 4 7 => ?result')
@@ -228,9 +228,9 @@ Start the Python interpreter and run the ``AddTwoNumbersLongRunningAction`` node
 
 .. code-block:: python
 
+    >>> import carebt
     >>> from carebt.examples.longrun_actions import AddTwoNumbersLongRunningAction
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(AddTwoNumbersLongRunningAction, '2000 4 7 => ?result')
     AddTwoNumbersLongRunningAction: calculating 2000 ms ...
     AddTwoNumbersLongRunningAction: DONE 4 + 7 = 11

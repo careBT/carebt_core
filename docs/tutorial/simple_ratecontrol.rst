@@ -45,9 +45,9 @@ Start the Python interpreter and run the ``SimpleRateControl`` node:
 
 .. code-block:: python
 
+    >>> import carebt
     >>> from carebt.examples.ratecontrol import SimpleRateControl
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleRateControl, '5 2 3 => ?result')
     AddTwoNumbersMultiTickAction: (tick_count = 1/5)
     AddTwoNumbersMultiTickAction: (tick_count = 2/5)

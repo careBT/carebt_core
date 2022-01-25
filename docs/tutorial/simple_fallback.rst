@@ -51,9 +51,9 @@ Start the Python interpreter and run the ``SimpleFallback`` node:
 
 .. code-block:: python
 
+    >>> import carebt
     >>> from carebt.examples.fallback import SimpleFallback
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleFallback, '1 2 3')
     AddTwoNumbersActionWithFailures: calculating: 1 + 1 = 2
     >>> bt_runner.run(SimpleFallback, '10 2 3')

@@ -82,9 +82,9 @@ Start the Python interpreter and run the ``AddTwoNumbersAction`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.action_with_params import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.action_with_params import AddTwoNumbersAction
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(AddTwoNumbersAction, '2 3 => ?sum')
     AddTwoNumbersAction: calculating: 2 + 3 = 5
     >>> bt_runner.run(AddTwoNumbersAction, '4 => ?sum')

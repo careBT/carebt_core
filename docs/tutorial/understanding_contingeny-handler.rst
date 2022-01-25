@@ -57,9 +57,9 @@ Start the Python interpreter and run the ``AddTwoNumbersActionWithFailures`` nod
 
 .. code-block:: python
 
-    >>> from carebt.examples.sequence_with_contingencies import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(AddTwoNumbersActionWithFailures, '3 5 => ?x')
     AddTwoNumbersActionWithFailures: calculating: 3 + 5 = 8
     >>> bt_runner.run(AddTwoNumbersActionWithFailures, '3 => ?x')
@@ -111,9 +111,9 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.sequence_with_contingencies import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.sequence_with_contingencies import SimpleSequence
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(SimpleSequence, '2 5')
     AddTwoNumbersActionWithFailures: calculating: 2 + 5 = 7
     PrintNumberAction: number = 7
@@ -208,9 +208,9 @@ Start the Python interpreter and run the ``ContingencySequence`` node:
 
 .. code-block:: python
 
-    >>> from carebt.examples.sequence_with_contingencies import *
-    >>> from carebt.behaviorTreeRunner import BehaviorTreeRunner
-    >>> bt_runner = BehaviorTreeRunner()
+    >>> import carebt
+    >>> from carebt.examples.sequence_with_contingencies import ContingencySequence
+    >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(ContingencySequence, '6 4')
     AddTwoNumbersActionWithFailures: calculating: 6 + 4 = 10
     PrintNumberAction: number = 10
