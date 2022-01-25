@@ -14,16 +14,20 @@ frameworks it can be used in. However, such an integration can easily be done. F
 applications such a framework could be `ROS <https://www.ros.org/>`__
 or `ROS2 <https://www.ros.org/>`__, for example.
 
-.. note::
-
-  An integration into the ROS2 framework will *hopefully* be released soon ;)
-
 **careBT** is:
 
+*  implemented in Python
 *  easy to use
 *  lightweight
 *  well tested (test-coverage > 95%)
-*  well documented (in progress)
+*  well documented
+
+Framework integration
+---------------------
+
+The following framework integrations of **careBT** are currently available:
+
+* ROS2: https://github.com/careBT/carebt_ros2
 
 Background
 ----------
@@ -54,7 +58,7 @@ The above led to the idea to develop **careBT** by combining the powerful concep
 of *SmartTCL* with the clean structure of behavior trees. And to use Python as programming
 language as it is an interpreted programming language with a relatively fast learning curve.
 Furthermore the development of **careBT** is split into the framework independent
-**careBT-core** and its framework specific derivates.
+**careBT-core** and its framework specific integrations (e.g. ROS2: https://github.com/careBT/carebt_ros2).
 
 An excerpt of some scenarios which demonstrate the powerful mechanisms of *SmartTCL*
 can be seen in the following videos on YouTube:
