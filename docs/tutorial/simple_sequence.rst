@@ -150,7 +150,7 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 98-127
+    :lines: 101-131
     :linenos:
 
 Run the example
@@ -258,7 +258,7 @@ Or use the provided file: :download:`simple_sequence.py <../../carebt/examples/s
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 132-146
+    :lines: 136-151
     :linenos:
 
 Run the example
