@@ -24,7 +24,7 @@ of contingency-handlers.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 22-78
+    :lines: 15-78
     :linenos:
 
 The code explained
