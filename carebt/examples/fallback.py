@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from carebt import FallbackNode
 from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
-from carebt.fallbackNode import FallbackNode
 
 
 class SimpleFallback(FallbackNode):

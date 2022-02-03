@@ -14,10 +14,10 @@
 
 import random
 
-from carebt.actionNode import ActionNode
+from carebt import ActionNode
+from carebt import NodeStatus
+from carebt import SequenceNode
 from carebt.examples.action_with_params import AddTwoNumbersAction
-from carebt.nodeStatus import NodeStatus
-from carebt.sequenceNode import SequenceNode
 
 
 ########################################################################

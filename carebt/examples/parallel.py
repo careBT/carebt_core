@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from carebt import ParallelNode
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
-from carebt.parallelNode import ParallelNode
 
 
 class SimpleParallel(ParallelNode):

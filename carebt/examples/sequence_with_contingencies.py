@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from carebt.actionNode import ActionNode
+from carebt import ActionNode
+from carebt import NodeStatus
+from carebt import SequenceNode
 from carebt.examples.simple_sequence import CreateRandomNumberAction
 from carebt.examples.simple_sequence import PrintNumberAction
-from carebt.nodeStatus import NodeStatus
-from carebt.sequenceNode import SequenceNode
 
 
 class AddTwoNumbersActionWithFailures(ActionNode):

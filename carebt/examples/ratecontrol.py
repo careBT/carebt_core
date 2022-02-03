@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from carebt import RateControlNode
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
-from carebt.rateControlNode import RateControlNode
 
 
 class SimpleRateControl(RateControlNode):

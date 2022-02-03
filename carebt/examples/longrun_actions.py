@@ -14,8 +14,8 @@
 
 from threading import Timer
 
-from carebt.actionNode import ActionNode
-from carebt.nodeStatus import NodeStatus
+from carebt import ActionNode
+from carebt import NodeStatus
 
 
 class AddTwoNumbersMultiTickAction(ActionNode):
