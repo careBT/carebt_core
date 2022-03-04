@@ -55,24 +55,20 @@ class TreeNode(ABC):
             if len(_params) == 2:
                 self.__out_params = _params[1].strip().split(' ')
 
-            self.get_logger().trace('{} in_params:  {}'
-                                    .format(self.__class__.__name__,
-                                            self.__in_params))
-            self.get_logger().trace('{} out_params: {}'
-                                    .format(self.__class__.__name__,
-                                            self.__out_params))
+            self.get_logger().trace(f'{self.__class__.__name__} in_params:  {self.__in_params}')
+            self.get_logger().trace(f'{self.__class__.__name__} out_params: {self.__out_params}')
 
             # create in params
             for p in filter(None, self.__in_params):
                 p = p.replace('?', '_', 1)
-                self.get_logger().trace('in: {}'.format(p))
-                exec('self.{} = None'.format(p))
+                self.get_logger().trace(f'in: {p}')
+                exec(f'self.{p} = None')
 
             # create out params
             for p in filter(None, self.__out_params):
                 p = p.replace('?', '_', 1)
-                self.get_logger().trace('out: {}'.format(p))
-                exec('self.{} = None'.format(p))
+                self.get_logger().trace(f'out: {p}')
+                exec(f'self.{p} = None')
 
     # PRIVATE
 
@@ -136,9 +132,8 @@ class TreeNode(ABC):
         The `on_timeout` callback is called in case the node timed out. To set the
         timer use `set_timeout`.
         """
-        self.get_logger().warn('{}.on_timeout is not overridden, thus the default '
-                               'is called (abort).'
-                               .format(self.__class__.__name__))
+        self.get_logger().warn(f'{self.__class__.__name__}.on_timeout is not overridden, '
+                               + 'thus the default is called (abort).')
         self.abort()
         self.set_contingency_message('TIMEOUT')
 
@@ -198,8 +193,7 @@ class TreeNode(ABC):
     def cancel_timeout_timer(self) -> None:
         """Cancel the timeout timer of the node."""
         if(self.__timeout_timer is not None):
-            self.get_logger().trace('{} -> cancel timeout timer'
-                                    .format(self.__class__.__name__))
+            self.get_logger().trace(f'{self.__class__.__name__} -> cancel timeout timer')
             self.__timeout_timer.cancel()
             # set the timer to None to make sure that all references (bound method)
             # are released and the object gets destroyed by gc

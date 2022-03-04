@@ -107,17 +107,15 @@ class ParallelNode(ControlNode, ABC):
     def _internal_prepare_next_tick(self) -> None:
         if(self.get_status() != NodeStatus.ABORTED):
             if(self._success_count >= self._success_threshold):
-                self.get_logger().debug('_success_count >= _success_threshold -- {} >= {}'
-                                        .format(self._success_count,
-                                                self._success_threshold))
+                self.get_logger().debug(f'_success_count >= _success_threshold -- '
+                                        + f'{self._success_count} >= {self._success_threshold}')
                 self.set_status(NodeStatus.SUCCESS)
             elif(self._fail_count >
                  len(self._child_ec_list) - self._success_threshold):
                 self.get_logger().debug('_fail_count > len(_current_children) - '
-                                        '_success_threshold -- {} > {} - {}'
-                                        .format(self._fail_count,
-                                                len(self._child_ec_list),
-                                                self._success_threshold))
+                                        + f'_success_threshold -- {self._fail_count} > '
+                                        + f'{len(self._child_ec_list)} - '
+                                        + f'{self._success_threshold}')
                 self.set_status(NodeStatus.FAILURE)
                 self.set_contingency_message(self.__last_child_contingency_msg)
 
@@ -134,7 +132,7 @@ class ParallelNode(ControlNode, ABC):
 
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
-        self.get_logger().info('aborting {}'.format(self.__class__.__name__))
+        self.get_logger().info(f'aborting {self.__class__.__name__}')
         if(self._child_ec_list[self._child_ptr].instance is not None):
             self.set_status(NodeStatus.ABORTED)
             self.set_contingency_message(self._child_ec_list[self._child_ptr]

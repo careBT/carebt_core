@@ -50,24 +50,24 @@ class SimplePrintLogger(AbstractLogger):
 
     def trace(self, msg: str):
         if(self._log_level <= LogLevel.TRACE):
-            print('{} TRACE {}'.format(self._get_time(), msg))
+            print(f'{self._get_time()} TRACE {msg}')
 
     def debug(self, msg: str):
         if(self._log_level <= LogLevel.DEBUG):
-            print('{} DEBUG {}'.format(self._get_time(), msg))
+            print(f'{self._get_time()} DEBUG {msg}')
 
     def info(self, msg: str):
         if(self._log_level <= LogLevel.INFO):
-            print('{} INFO {}'.format(self._get_time(), msg))
+            print(f'{self._get_time()} INFO {msg}')
 
     def warn(self, msg: str):
         if(self._log_level <= LogLevel.WARN):
             print(_PrintColors.BOLD + _PrintColors.ORANGE
-                  + '{} WARN {}'.format(self._get_time(), msg)
+                  + f'{self._get_time()} WARN {msg}'
                   + _PrintColors.DEFAULT)
 
     def error(self, msg: str):
         if(self._log_level <= LogLevel.ERROR):
             print(_PrintColors.BOLD + _PrintColors.RED
-                  + '{} ERROR {}'.format(self._get_time(), msg)
+                  + f'{self._get_time()} ERROR {msg}'
                   + _PrintColors.DEFAULT)

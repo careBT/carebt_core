@@ -41,7 +41,7 @@ class CreateRandomNumberAction(ActionNode):
 
     def on_tick(self) -> None:
         self._number = random.randint(1, 10)
-        print('CreateRandomNumberAction: number = {}'.format(self._number))
+        print(f'CreateRandomNumberAction: number = {self._number}')
         self.set_status(NodeStatus.SUCCESS)
 
 ########################################################################
@@ -64,7 +64,7 @@ class PrintNumberAction(ActionNode):
         super().__init__(bt_runner, '?number')
 
     def on_tick(self) -> None:
-        print('PrintNumberAction: number = {}'.format(self._number))
+        print(f'PrintNumberAction: number = {self._number}')
         self.set_status(NodeStatus.SUCCESS)
 
 ########################################################################

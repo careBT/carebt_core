@@ -43,7 +43,7 @@ class ActionNode(TreeNode, ABC):
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         """Init the `ActionNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
-        self.get_logger().info('creating {}'.format(self.__class__.__name__))
+        self.get_logger().info(f'creating {self.__class__.__name__}')
 
     # PROTECTED
 
@@ -53,14 +53,13 @@ class ActionNode(TreeNode, ABC):
                 int((current_ts - self._last_ts).total_seconds() * 1000) >= self._throttle_ms):
             if(self.get_status() == NodeStatus.IDLE or
                     self.get_status() == NodeStatus.RUNNING):
-                self.bt_runner.get_logger().trace('ticking {} - {}'
-                                                  .format(self.__class__.__name__,
-                                                          self.get_status()))
+                self.bt_runner.get_logger().trace(f'ticking {self.__class__.__name__} - '
+                                                  + f'{self.get_status()}')
                 self.on_tick()
                 self._last_ts = current_ts
 
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
-        self.bt_runner.get_logger().info('aborting {}'.format(self.__class__.__name__))
+        self.bt_runner.get_logger().info(f'aborting {self.__class__.__name__}')
         self.on_abort()
         self.set_status(NodeStatus.ABORTED)

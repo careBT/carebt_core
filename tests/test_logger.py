@@ -35,23 +35,23 @@ class CustomLogger(AbstractLogger):
 
     def trace(self, msg: str):
         if(self._log_level == LogLevel.TRACE):
-            mock('TRACE {}'.format(msg))
+            mock(f'TRACE {msg}')
 
     def debug(self, msg: str):
         if(self._log_level == LogLevel.DEBUG):
-            mock('DEBUG {}'.format(msg))
+            mock(f'DEBUG {msg}')
 
     def info(self, msg: str):
         if(self._log_level <= LogLevel.INFO):
-            mock('INFO {}'.format(msg))
+            mock(f'INFO {msg}')
 
     def warn(self, msg: str):
         if(self._log_level <= LogLevel.WARN):
-            mock('WARN {}'.format(msg))
+            mock(f'WARN {msg}')
 
     def error(self, msg: str):
         if(self._log_level <= LogLevel.ERROR):
-            mock('ERROR {}'.format(msg))
+            mock(f'ERROR {msg}')
 
 
 class TestLogger:

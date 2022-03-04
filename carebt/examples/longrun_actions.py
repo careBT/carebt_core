@@ -50,14 +50,13 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
     def on_tick(self) -> None:
         if(self._tick_count < self._ticks):
-            print('AddTwoNumbersMultiTickAction: (tick_count = {}/{})'
-                  .format(self._tick_count, self._ticks))
+            print(f'AddTwoNumbersMultiTickAction: (tick_count = '
+                  + f'{self._tick_count}/{self._ticks})')
             self._tick_count += 1
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            print('AddTwoNumbersMultiTickAction: DONE {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            print(f'AddTwoNumbersMultiTickAction: DONE {self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
 ########################################################################
@@ -98,14 +97,14 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
 
     def on_tick(self) -> None:
         if(self._tick_count < self._ticks):
-            print('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = {}/{})'
-                  .format(self._tick_count, self._ticks))
+            print(f'AddTwoNumbersMultiTickActionWithTimeout: (tick_count = '
+                  + f'{self._tick_count}/{self._ticks})')
             self._tick_count += 1
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            print('AddTwoNumbersMultiTickActionWithTimeout: DONE {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            print(f'AddTwoNumbersMultiTickActionWithTimeout: '
+                  + f'DONE {self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
     def on_timeout(self) -> None:
@@ -148,8 +147,7 @@ class AddTwoNumbersLongRunningAction(ActionNode):
         super().__init__(bt_runner, '?calctime ?x ?y => ?z')
 
     def on_init(self) -> None:
-        print('AddTwoNumbersLongRunningAction: calculating {} ms ...'
-              .format(self._calctime))
+        print(f'AddTwoNumbersLongRunningAction: calculating {self._calctime} ms ...')
         self.set_status(NodeStatus.SUSPENDED)
         Timer(self._calctime / 1000, self.done_callback).start()
 
@@ -158,6 +156,5 @@ class AddTwoNumbersLongRunningAction(ActionNode):
 
     def done_callback(self) -> None:
         self._z = self._x + self._y
-        print('AddTwoNumbersLongRunningAction: DONE {} + {} = {}'
-              .format(self._x, self._y, self._z))
+        print(f'AddTwoNumbersLongRunningAction: DONE {self._x} + {self._y} = {self._z}')
         self.set_status(NodeStatus.SUCCESS)

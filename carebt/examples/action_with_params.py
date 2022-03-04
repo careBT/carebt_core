@@ -48,6 +48,5 @@ class AddTwoNumbersAction(ActionNode):
 
     def on_tick(self) -> None:
         self._z = self._x + self._y
-        print('AddTwoNumbersAction: calculating: {} + {} = {}'
-              .format(self._x, self._y, self._z))
+        print(f'AddTwoNumbersAction: calculating: {self._x} + {self._y} = {self._z}')
         self.set_status(NodeStatus.SUCCESS)

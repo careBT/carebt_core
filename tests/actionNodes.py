@@ -103,10 +103,8 @@ class AddTwoNumbersAction(ActionNode):
 
     def on_tick(self) -> None:
         self._z = self._x + self._y
-        mock('AddTwoNumbersAction: calculating: {} + {} = {}'
-             .format(self._x, self._y, self._z))
-        print('AddTwoNumbersAction: calculating: {} + {} = {}'
-              .format(self._x, self._y, self._z))
+        mock(f'AddTwoNumbersAction: calculating: {self._x} + {self._y} = {self._z}')
+        print(f'AddTwoNumbersAction: calculating: {self._x} + {self._y} = {self._z}')
         self.set_status(NodeStatus.SUCCESS)
 
     def on_delete(self) -> None:
@@ -201,10 +199,10 @@ class AddTwoNumbersActionWithFailure(ActionNode):
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
             self._z = self._x + self._y
-            mock('AddTwoNumbersActionWithFailure: calculating: {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersActionWithFailure: calculating: {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock('AddTwoNumbersActionWithFailure: calculating: '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print('AddTwoNumbersActionWithFailure: calculating: '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
     def on_delete(self) -> None:
@@ -251,18 +249,16 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
     def on_tick(self) -> None:
         if(self.tick_count <= self._ticks):
-            mock('AddTwoNumbersMultiTickAction: (tick_count = {}/{})'
-                 .format(self.tick_count, self._ticks))
-            print('AddTwoNumbersMultiTickAction: (tick_count = {}/{})'
-                  .format(self.tick_count, self._ticks))
+            mock(f'AddTwoNumbersMultiTickAction: (tick_count = {self.tick_count}/{self._ticks})')
+            print(f'AddTwoNumbersMultiTickAction: (tick_count = {self.tick_count}/{self._ticks})')
             self.tick_count += 1
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            mock('AddTwoNumbersMultiTickAction: DONE {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersMultiTickAction: DONE {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock(f'AddTwoNumbersMultiTickAction: DONE '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print(f'AddTwoNumbersMultiTickAction: DONE '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
     def on_delete(self) -> None:
@@ -310,18 +306,18 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
 
     def on_tick(self) -> None:
         if(self.tick_count <= self._ticks):
-            mock('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = {}/{})'
-                 .format(self.tick_count, self._ticks))
-            print('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = {}/{})'
-                  .format(self.tick_count, self._ticks))
+            mock('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = '
+                 + f'{self.tick_count}/{self._ticks})')
+            print('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = '
+                  + f'{self.tick_count}/{self._ticks})')
             self.tick_count += 1
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            mock('AddTwoNumbersMultiTickActionWithTimeout: DONE {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersMultiTickActionWithTimeout: DONE {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock('AddTwoNumbersMultiTickActionWithTimeout: DONE '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print('AddTwoNumbersMultiTickActionWithTimeout: DONE '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
     def on_timeout(self) -> None:
@@ -373,18 +369,18 @@ class AddTwoNumbersThrottledMultiTickAction(ActionNode):
 
     def on_tick(self) -> None:
         if(self.tick_count <= self._ticks):
-            mock('AddTwoNumbersThrottledMultiTickAction: (tick_count = {}/{})'
-                 .format(self.tick_count, self._ticks))
-            print('AddTwoNumbersThrottledMultiTickAction: (tick_count = {}/{})'
-                  .format(self.tick_count, self._ticks))
+            mock('AddTwoNumbersThrottledMultiTickAction: (tick_count = '
+                 + f'{self.tick_count}/{self._ticks})')
+            print('AddTwoNumbersThrottledMultiTickAction: (tick_count = '
+                  + f'{self.tick_count}/{self._ticks})')
             self.tick_count += 1
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            mock('AddTwoNumbersThrottledMultiTickAction: DONE {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersThrottledMultiTickAction: DONE {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock('AddTwoNumbersThrottledMultiTickAction: DONE '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print('AddTwoNumbersThrottledMultiTickAction: DONE '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
     def on_delete(self) -> None:
@@ -430,20 +426,18 @@ class AddTwoNumbersLongRunningAction(ActionNode):
         mock('on_init AddTwoNumbersLongRunningAction')
 
     def on_tick(self) -> None:
-        mock('AddTwoNumbersLongRunningAction: calculating {} ms ...'
-             .format(self._calctime))
-        print('AddTwoNumbersLongRunningAction: calculating {} ms ...'
-              .format(self._calctime))
+        mock(f'AddTwoNumbersLongRunningAction: calculating {self._calctime} ms ...')
+        print(f'AddTwoNumbersLongRunningAction: calculating {self._calctime} ms ...')
         self.set_status(NodeStatus.SUSPENDED)
         self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
         self.__done_timer.start()
 
     def done_callback(self) -> None:
         self._z = self._x + self._y
-        mock('AddTwoNumbersLongRunningAction: done: {} + {} = {}'
-             .format(self._x, self._y, self._z))
-        print('AddTwoNumbersLongRunningAction: done: {} + {} = {}'
-              .format(self._x, self._y, self._z))
+        mock('AddTwoNumbersLongRunningAction: done: '
+             + f'{self._x} + {self._y} = {self._z}')
+        print('AddTwoNumbersLongRunningAction: done: '
+              + f'{self._x} + {self._y} = {self._z}')
         self.set_status(NodeStatus.SUCCESS)
 
     def on_abort(self) -> None:
@@ -513,12 +507,10 @@ class AddTwoNumbersLongRunningActionWithAbort(ActionNode):
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
-            mock('AddTwoNumbersLongRunningActionWithAbort: calculating {} ms ... '
-                 '(timeout = {} ms)'
-                 .format(self._calctime, self.__TIMEOUT))
-            print('AddTwoNumbersLongRunningActionWithAbort: calculating {} ms ... '
-                  '(timeout = {} ms)'
-                  .format(self._calctime, self.__TIMEOUT))
+            mock(f'AddTwoNumbersLongRunningActionWithAbort: calculating {self._calctime} ms ... '
+                 + f'(timeout = {self.__TIMEOUT} ms)')
+            print(f'AddTwoNumbersLongRunningActionWithAbort: calculating {self._calctime} ms ... '
+                  + f'(timeout = {self.__TIMEOUT} ms)')
             self.set_status(NodeStatus.SUSPENDED)
             self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
             self.__done_timer.start()
@@ -529,10 +521,10 @@ class AddTwoNumbersLongRunningActionWithAbort(ActionNode):
         # careBT tick
         if(self.get_status() == NodeStatus.SUSPENDED):
             self._z = self._x + self._y
-            mock('AddTwoNumbersLongRunningActionWithAbort: done_callback: {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersLongRunningActionWithAbort: done_callback: {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock('AddTwoNumbersLongRunningActionWithAbort: done_callback: '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print('AddTwoNumbersLongRunningActionWithAbort: done_callback: '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
             self.__done_timer.cancel()
 
@@ -599,12 +591,10 @@ class AddTwoNumbersLongRunningActionMissingCallback(ActionNode):
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
-            mock('AddTwoNumbersLongRunningActionMissingCallback: calculating {} ms ... '
-                 '(timeout = {} ms)'
-                 .format(self._calctime, self.__TIMEOUT))
-            print('AddTwoNumbersLongRunningActionMissingCallback: calculating {} ms ... '
-                  '(timeout = {} ms)'
-                  .format(self._calctime, self.__TIMEOUT))
+            mock('AddTwoNumbersLongRunningActionMissingCallback: calculating '
+                 + f'{self._calctime} ms ... (timeout = {self.__TIMEOUT} ms)')
+            print('AddTwoNumbersLongRunningActionMissingCallback: calculating '
+                  + f'{self._calctime} ms ... (timeout = {self.__TIMEOUT} ms)')
             self.set_status(NodeStatus.SUSPENDED)
             self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
             self.__done_timer.start()
@@ -615,10 +605,10 @@ class AddTwoNumbersLongRunningActionMissingCallback(ActionNode):
         # careBT tick
         if(self.get_status() == NodeStatus.SUSPENDED):
             self._z = self._x + self._y
-            mock('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock('AddTwoNumbersLongRunningActionMissingCallback: done_callback: '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print('AddTwoNumbersLongRunningActionMissingCallback: done_callback: '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
             self.__done_timer.cancel()
 
@@ -679,12 +669,10 @@ class AddTwoNumbersLongRunningActionMissingCallback2(ActionNode):
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('NOT_TWO_NUMBERS_PROVIDED')
         else:
-            mock('AddTwoNumbersLongRunningActionMissingCallback2: calculating {} ms ... '
-                 '(timeout = {} ms)'
-                 .format(self._calctime, self.__TIMEOUT))
-            print('AddTwoNumbersLongRunningActionMissingCallback2: calculating {} ms ... '
-                  '(timeout = {} ms)'
-                  .format(self._calctime, self.__TIMEOUT))
+            mock('AddTwoNumbersLongRunningActionMissingCallback2: calculating '
+                 + f'{self._calctime} ms ... (timeout = {self.__TIMEOUT} ms)')
+            print('AddTwoNumbersLongRunningActionMissingCallback2: calculating '
+                  + f'{self._calctime} ms ... (timeout = {self.__TIMEOUT} ms)')
             self.set_status(NodeStatus.SUSPENDED)
             self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
             self.__done_timer.start()
@@ -695,10 +683,10 @@ class AddTwoNumbersLongRunningActionMissingCallback2(ActionNode):
         # careBT tick
         if(self.get_status() == NodeStatus.SUSPENDED):
             self._z = self._x + self._y
-            mock('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
-                 .format(self._x, self._y, self._z))
-            print('AddTwoNumbersLongRunningActionMissingCallback: done_callback: {} + {} = {}'
-                  .format(self._x, self._y, self._z))
+            mock('AddTwoNumbersLongRunningActionMissingCallback: done_callback: '
+                 + f'{self._x} + {self._y} = {self._z}')
+            print('AddTwoNumbersLongRunningActionMissingCallback: done_callback: '
+                  + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
             self.__done_timer.cancel()
 
@@ -738,8 +726,8 @@ class ShowNumberAction(ActionNode):
             self._number = -1
 
     def on_tick(self) -> None:
-        mock('ShowNumberAction: The numer is: {}!'.format(self._number))
-        print('ShowNumberAction: The numer is: {}!'.format(self._number))
+        mock(f'ShowNumberAction: The numer is: {self._number}!')
+        print(f'ShowNumberAction: The numer is: {self._number}!')
         self.set_status(NodeStatus.SUCCESS)
 
     def on_delete(self) -> None:
@@ -851,8 +839,8 @@ class TickCountingAction(ActionNode):
         mock('__init__ TickCountingAction')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingAction id = {}'.format(self._id))
-        print('on_init TickCountingAction id = {}'.format(self._id))
+        mock(f'on_init TickCountingAction id = {self._id}')
+        print(f'on_init TickCountingAction id = {self._id}')
         self._count = 1
         if(self._goal is None):
             self._goal = 10
@@ -862,32 +850,30 @@ class TickCountingAction(ActionNode):
     def on_tick(self) -> None:
         if(self._count >= self._goal):
             if(self._success is True):
-                mock('TickCountingAction id = {} DONE with SUCCESS'.format(self._id))
-                print('TickCountingAction id = {} DONE with SUCCESS'.format(self._id))
+                mock(f'TickCountingAction id = {self._id} DONE with SUCCESS')
+                print(f'TickCountingAction id = {self._id} DONE with SUCCESS')
                 self.set_status(NodeStatus.SUCCESS)
             else:
-                mock('TickCountingAction id = {} DONE with FAILURE'.format(self._id))
-                print('TickCountingAction id = {} DONE with FAILURE'.format(self._id))
+                mock(f'TickCountingAction id = {self._id} DONE with FAILURE')
+                print(f'TickCountingAction id = {self._id} DONE with FAILURE')
                 self.set_status(NodeStatus.FAILURE)
                 self.set_contingency_message('COUNTING_ERROR')
         else:
-            mock('TickCountingAction id = {} tick: {}/{}'
-                 .format(self._id, self._count, self._goal))
-            print('TickCountingAction id = {} tick: {}/{}'
-                  .format(self._id, self._count, self._goal))
+            mock(f'TickCountingAction id = {self._id} tick: {self._count}/{self._goal}')
+            print(f'TickCountingAction id = {self._id} tick: {self._count}/{self._goal}')
             self._count += 1
             self.set_status(NodeStatus.RUNNING)
 
     def on_abort(self) -> None:
-        mock('on_abort TickCountingAction id = {}'.format(self._id))
-        print('on_abort TickCountingAction id = {}'.format(self._id))
+        mock(f'on_abort TickCountingAction id = {self._id}')
+        print(f'on_abort TickCountingAction id = {self._id}')
 
     def on_delete(self) -> None:
-        mock('on_delete TickCountingAction id = {}'.format(self._id))
-        print('on_delete TickCountingAction id = {}'.format(self._id))
+        mock(f'on_delete TickCountingAction id = {self._id}')
+        print(f'on_delete TickCountingAction id = {self._id}')
 
     def __del__(self):
-        mock('__del__ TickCountingAction id = {}'.format(self._id))
+        mock(f'__del__ TickCountingAction id = {self._id}')
 
 ########################################################################
 
@@ -923,10 +909,8 @@ class FailOnCountAction(ActionNode):
             self.set_status(NodeStatus.FAILURE)
             self.set_contingency_message('COUNTING_ERROR')
         else:
-            mock('FailOnCountAction tick: {}/{}'
-                 .format(self._count, self._goal))
-            print('FailOnCountAction tick: {}/{}'
-                  .format(self._count, self._goal))
+            mock(f'FailOnCountAction tick: {self._count}/{self._goal}')
+            print(f'FailOnCountAction tick: {self._count}/{self._goal}')
             self._count += 1
             self.set_status(NodeStatus.RUNNING)
 

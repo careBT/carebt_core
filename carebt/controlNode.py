@@ -67,9 +67,8 @@ class ControlNode(TreeNode, ABC):
         current_ts = datetime.now()
         if(self._throttle_ms is None
            or int((current_ts - self._last_ts).total_seconds() * 1000) >= self._throttle_ms):
-            self.bt_runner.get_logger().trace('ticking {} - {}'
-                                              .format(self.__class__.__name__,
-                                                      self.get_status()))
+            self.bt_runner.get_logger().trace(f'ticking {self.__class__.__name__} '
+                                              + f'- {self.get_status()}')
             tick = True
             self._last_ts = current_ts
 
@@ -95,10 +94,10 @@ class ControlNode(TreeNode, ABC):
 
     def _internal_bind_in_params(self, child_ec: ExecutionContext) -> None:
         if(len(child_ec.call_in_params) != len(child_ec.instance._internal_get_in_params())):
-            self.get_logger().warn('{} takes {} argument(s), but {} was/were provided'
-                                   .format(child_ec.node.__name__,
-                                           len(child_ec.instance._internal_get_in_params()),
-                                           len(child_ec.call_in_params)))
+            self.get_logger().warn(f'{child_ec.node.__name__} takes '
+                                   + f'{len(child_ec.instance._internal_get_in_params())} '
+                                   + f'argument(s), but {len(child_ec.call_in_params)} '
+                                   + f'was/were provided')
         for i, var in enumerate(child_ec.call_in_params):
             if(isinstance(var, str) and var[0] == '?'):
                 var = var.replace('?', '_', 1)
@@ -130,10 +129,10 @@ class ControlNode(TreeNode, ABC):
 
     @final
     def _internal_apply_contingencies(self, child_ec: ExecutionContext):
-        self.get_logger().debug('searching contingency-handler for: {} - {} - {}'
-                                .format(child_ec.instance.__class__.__name__,
-                                        child_ec.instance.get_status(),
-                                        child_ec.instance.get_contingency_message()))
+        self.get_logger().debug('searching contingency-handler for: '
+                                + f'{child_ec.instance.__class__.__name__} - '
+                                + f'{child_ec.instance.get_status()} - '
+                                + f'{child_ec.instance.get_contingency_message()}')
 
         # iterate over contingency_handler_list
         for contingency_handler in self._contingency_handler_list:
@@ -145,21 +144,19 @@ class ControlNode(TreeNode, ABC):
                 regexClassName = re.compile(contingency_handler[0].__name__)
             regexMessage = re.compile(contingency_handler[2])
 
-            self.get_logger().debug('checking contingency_handler: {} -{} - {}'
-                                    .format(regexClassName.pattern,
-                                            contingency_handler[1],
-                                            regexMessage.pattern))
+            self.get_logger().debug(f'checking contingency_handler: {regexClassName.pattern} - '
+                                    + f'{contingency_handler[1]} - {regexMessage.pattern}')
+
             # check if contingency-handler matches
             if(bool(re.match(regexClassName,
                              child_ec.instance.__class__.__name__))
                     and child_ec.instance.get_status() in contingency_handler[1]
                     and bool(re.match(regexMessage,
                                       child_ec.instance.get_contingency_message()))):
-                self.get_logger().debug('{} -> run contingency_handler {}'
-                                        .format(child_ec.instance.__class__.__name__,
-                                                contingency_handler[3]))
+                self.get_logger().debug(f'{child_ec.instance.__class__.__name__} -> '
+                                        + f'run contingency_handler {contingency_handler[3]}')
                 # execute function attached to the contingency-handler
-                exec('self.{}()'.format(contingency_handler[3]))
+                exec(f'self.{contingency_handler[3]}()')
                 break
 
     # PUBLIC
@@ -210,15 +207,13 @@ class ControlNode(TreeNode, ABC):
         that the node was 'fixed'.
 
         """
-        self.get_logger().trace('{} -> fix_current_child called'
-                                .format(self.__class__.__name__))
+        self.get_logger().trace(f'{self.__class__.__name__} -> fix_current_child called')
         self.set_current_child_status(NodeStatus.FIXED)
 
     @final
     def abort_current_child(self) -> None:
         """Abort the currently executing child."""
-        self.get_logger().trace('{} -> abort_current_child called'
-                                .format(self.__class__.__name__))
+        self.get_logger().trace(f'{self.__class__.__name__} -> abort_current_child called')
         if(self._child_ptr < len(self._child_ec_list)
            and self._child_ec_list[self._child_ptr].instance is not None):
             self._child_ec_list[self._child_ptr].instance.abort()
@@ -233,6 +228,6 @@ class ControlNode(TreeNode, ABC):
             Status of the node
 
         """
-        self.get_logger().trace('{} -> set_current_child_status to {}'
-                                .format(self.__class__.__name__, node_status))
+        self.get_logger().trace(f'{self.__class__.__name__} -> set_current_child_status '
+                                + f'to {node_status}')
         self._child_ec_list[self._child_ptr].instance.set_status(node_status)

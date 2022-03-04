@@ -97,13 +97,13 @@ class RateControlNode(ControlNode, ABC):
            or self.get_status() == NodeStatus.FAILURE
            or self.get_status() == NodeStatus.ABORTED
            or self.get_status() == NodeStatus.FIXED):
-            self.get_logger().info('finished {}'.format(self.__class__.__name__))
+            self.get_logger().info(f'finished {self.__class__.__name__}')
             self._child_ec_list[0].instance.on_delete()
             self._child_ec_list[0].instance = None
 
     def _internal_on_abort(self) -> None:
         super()._internal_on_abort()
-        self.get_logger().info('aborting {}'.format(self.__class__.__name__))
+        self.get_logger().info(f'aborting {self.__class__.__name__}')
         if(self._child_ec_list[self._child_ptr].instance is not None):
             self.set_status(NodeStatus.ABORTED)
             self.set_contingency_message(self._child_ec_list[self._child_ptr]

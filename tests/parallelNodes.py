@@ -81,8 +81,7 @@ class TickCountingParallel(ParallelNode):
         mock('__init__ TickCountingParallel')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingParallel success_threshold = {}'
-             .format(self.get_success_threshold()))
+        mock(f'on_init TickCountingParallel success_threshold = {self.get_success_threshold()}')
         self.set_success_threshold(self._success_threshold)
         self.add_child(TickCountingAction, '1 ?g1 ?s1 => ?cnt1')
         self.add_child(TickCountingAction, '2 ?g2 ?s2 => ?cnt2')
@@ -127,8 +126,8 @@ class TickCountingParallelWithAbort(ParallelNode):
         mock('__init__ TickCountingParallelWithAbort')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingParallelWithAbort success_threshold = {}'
-             .format(self.get_success_threshold()))
+        mock('on_init TickCountingParallelWithAbort success_threshold = '
+             + f'{self.get_success_threshold()}')
         self.set_success_threshold(self._success_threshold)
         self.add_child(TickCountingAction, '1 ?g1 ?s1 => ?cnt1')
         self.add_child(TickCountingAction, '2 ?g2 ?s2 => ?cnt2')
@@ -182,8 +181,8 @@ class TickCountingParallelDelAdd1(ParallelNode):
         mock('__init__ TickCountingParallelDelAdd1')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingParallelDelAdd1 success_threshold = {}'
-             .format(self.get_success_threshold()))
+        mock('on_init TickCountingParallelDelAdd1 success_threshold = '
+             + f'{self.get_success_threshold()}')
         self.set_success_threshold(self._success_threshold)
         self.add_child(TickCountingAction, '1 ?g1 ?s1 => ?cnt1')
         self.add_child(TickCountingAction, '2 ?g2 ?s2 => ?cnt2')
@@ -238,8 +237,8 @@ class TickCountingParallelDelAdd2(ParallelNode):
         mock('__init__ TickCountingParallelDelAdd2')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingParallelDelAdd2 success_threshold = {}'
-             .format(self.get_success_threshold()))
+        mock('on_init TickCountingParallelDelAdd2 success_threshold = '
+             + f'{self.get_success_threshold()}')
         self.set_success_threshold(self._success_threshold)
         self.add_child(TickCountingAction, '1 ?g1 ?s1 => ?cnt1')
         self.add_child(TickCountingAction, '2 ?g2 ?s2 => ?cnt2')
@@ -295,8 +294,8 @@ class TickCountingParallelDel(ParallelNode):
         mock('__init__ TickCountingParallelDel')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingParallelDel success_threshold = {}'
-             .format(self.get_success_threshold()))
+        mock('on_init TickCountingParallelDel success_threshold = '
+             + f'{self.get_success_threshold()}')
         self.set_success_threshold(self._success_threshold)
         self.add_child(TickCountingAction, '1 ?g1 ?s1 => ?cnt1')
         self.add_child(TickCountingAction, '2 ?g2 ?s2 => ?cnt2')
@@ -350,8 +349,8 @@ class TickCountingParallelDelAllAdd(ParallelNode):
         mock('__init__ TickCountingParallelDelAllAdd')
 
     def on_init(self) -> None:
-        mock('on_init TickCountingParallelDelAllAdd success_threshold = {}'
-             .format(self.get_success_threshold()))
+        mock('on_init TickCountingParallelDelAllAdd success_threshold = '
+             + f'{self.get_success_threshold()}')
         self.set_success_threshold(self._success_threshold)
         self.add_child(TickCountingAction, '1 ?g1 ?s1 => ?cnt1')
         self.add_child(TickCountingAction, '2 ?g2 ?s2 => ?cnt2')
