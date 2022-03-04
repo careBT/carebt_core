@@ -155,9 +155,9 @@ class ControlNode(TreeNode, ABC):
                     and child_ec.instance.get_status() in contingency_handler[1]
                     and bool(re.match(regexMessage,
                                       child_ec.instance.get_contingency_message()))):
-                self.get_logger().info('{} -> run contingency_handler {}'
-                                       .format(child_ec.instance.__class__.__name__,
-                                               contingency_handler[3]))
+                self.get_logger().debug('{} -> run contingency_handler {}'
+                                        .format(child_ec.instance.__class__.__name__,
+                                                contingency_handler[3]))
                 # execute function attached to the contingency-handler
                 exec('self.{}()'.format(contingency_handler[3]))
                 break
