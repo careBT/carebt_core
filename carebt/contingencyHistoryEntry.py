@@ -1,4 +1,4 @@
-# Copyright 2021 Andreas Steck (steck.andi@gmail.com)
+# Copyright 2022 Andreas Steck (steck.andi@gmail.com)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
