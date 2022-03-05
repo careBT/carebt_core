@@ -228,9 +228,10 @@ in the same way as ``SUCCESS`` the execution continues with the ``PrintNumberAct
     :language: python
     :lines: 169-172
 
-The ``on_delete`` callback is called right after all child nodes have finished their execution. It is checked
-whether a contingency-handler was executed. In that case the contingency-message is set accordingly to indicate
-that to the parent node.
+The ``on_delete`` callback is called right after all child nodes have finished their execution. In this example,
+it is checked whether a contingency-handler was executed. If that was the case the contingency-message is set
+accordingly to indicate that to the parent node. Thus, the parent node will be able to analyse the contingency-message,
+as well as the contingency-history to figure out how the task was completed with `SUCCESS`.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
