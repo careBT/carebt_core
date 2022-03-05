@@ -153,7 +153,7 @@ class TestLogger:
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO bt execution finished\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO status:  NodeStatus.SUCCESS\n'  # noqa: E501
-                           '....-..-.. ..:..:.. INFO message: \n'  # noqa: E501
+                           '....-..-.. ..:..:.. INFO contingency-message: \n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n')  # noqa: E501
         print(mock_print.getvalue())
         assert bool(re.match(regex, mock_print.getvalue()))
@@ -190,7 +190,7 @@ class TestLogger:
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
                                        call('INFO bt execution finished'),  # noqa: E501
                                        call('INFO status:  NodeStatus.SUCCESS'),  # noqa: E501
-                                       call('INFO message: '),  # noqa: E501
+                                       call('INFO contingency-message: '),  # noqa: E501
                                        call('INFO ---------------------------------------------------')]  # noqa: E501
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
