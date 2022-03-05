@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from abc import ABC
+from typing import List
 
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.controlNode import ControlNode
@@ -58,7 +59,7 @@ class ParallelNode(ControlNode, ABC):
         self.__last_child_contingency_msg = ''
 
         # list for the child nodes
-        self._child_ec_list = []
+        self._child_ec_list: List[ExecutionContext] = []
         self._created_child_size = 0
 
         self._success_threshold = success_threshold

@@ -17,6 +17,7 @@ from datetime import datetime
 import re
 from typing import Callable
 from typing import final
+from typing import List
 from typing import TYPE_CHECKING
 
 from carebt.executionContext import ExecutionContext
@@ -40,7 +41,7 @@ class ControlNode(TreeNode, ABC):
         super().__init__(bt_runner, params)
 
         # list for the child nodes
-        self._child_ec_list = []
+        self._child_ec_list: List[ExecutionContext] = []
 
         # the current child pointer
         self._child_ptr = 0

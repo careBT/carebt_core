@@ -12,14 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 from carebt.treeNode import TreeNode
 
 
 class ExecutionContext():
 
     def __init__(self, parent: TreeNode, node: TreeNode, params: str):
-        self.call_in_params = []
-        self.call_out_params = []
+        self.call_in_params: List[str] = []
+        self.call_out_params: List[str] = []
 
         if(params is not None):
             params = params.replace('   ', ' ')

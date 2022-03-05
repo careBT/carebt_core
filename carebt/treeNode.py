@@ -17,6 +17,7 @@ from abc import abstractmethod
 from datetime import datetime
 from threading import Timer
 from typing import final
+from typing import List
 from typing import TYPE_CHECKING
 
 from carebt.nodeStatus import NodeStatus
@@ -43,8 +44,8 @@ class TreeNode(ABC):
         self.__node_status = NodeStatus.IDLE
         self.__contingency_message = ''
         self.__params = params
-        self.__in_params = []
-        self.__out_params = []
+        self.__in_params: List[str] = []
+        self.__out_params: List[str] = []
         self.__timeout_timer = None
 
         # create local variables
