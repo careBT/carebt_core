@@ -124,7 +124,7 @@ class TestSequenceWithContingencies:
                            r'PrintNumberAction: number = 0\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
-        assert bt_runner.get_contingency_message() == ''
+        assert bt_runner.get_contingency_message() == 'MISSING_PARAM_FIXED'
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_ContingencySequence1_both_missing(self, mock_print):
@@ -135,7 +135,7 @@ class TestSequenceWithContingencies:
                            r'PrintNumberAction: number = 0\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
-        assert bt_runner.get_contingency_message() == ''
+        assert bt_runner.get_contingency_message() == 'MISSING_PARAM_FIXED'
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_ContingencySequence1_to_large(self, mock_print):
@@ -149,4 +149,4 @@ class TestSequenceWithContingencies:
                            r'PrintNumberAction: number = [0-9]+\n')
         assert bool(re.match(regex, mock_print.getvalue()))
         assert bt_runner.get_status() == NodeStatus.SUCCESS
-        assert bt_runner.get_contingency_message() == ''
+        assert bt_runner.get_contingency_message() == 'TOO_LARGE_RESULT_FIXED'
