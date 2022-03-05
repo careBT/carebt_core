@@ -65,15 +65,24 @@ situations by performing an alternative sequence of actions. Therefore, in **car
 to the parent node with the attributes when they should be triggered. This trigger takes the name of the child node,
 the status of the child node and the contingency-message into account. 
 
-In **careBT** each node does not just complete with SUCCESS or FAILURE, but also with an additional message. Especially in case
-that something goes wrong it is important to also provide the reason for the failure and not only the information that the task
-failed. Only that allows to perform an adequate reaction to the failure. For example, when a path planner fails to plan the path
-to a desired goal, several failures can occur. The start position might be blocked by an obstacle, the goal position might be blocked
-by an obstacle, the goal position migth be outside of the map or no path could be found (although start and goal position are valid).
-In case that the start position is blocked by an obstacle this position could be cleared in the map with some clearance and then the
-path planner can be triggered again. Otherwise, in case that the goal position is blocked by an obstacle the alternative could be to
-navigate the robot in the region of the desired goal and check the surroundings there if the desired goal region is still blocked or
-can be reached now.
+In **careBT** each node does not just complete with `SUCCESS` or `FAILURE`, but also with an additional contingency message.
+Especially in case that something goes wrong it is important to also provide the reason for the failure and not only the
+information that the task failed. Only that allows to perform an adequate reaction to the failure. For example, when a path planner
+fails to plan the path to a desired goal, several failures can occur. The start position might be blocked by an obstacle, the goal
+position might be blocked by an obstacle, the goal position migth be outside of the map or no path could be found (although start
+and goal position are valid). In case that the start position is blocked by an obstacle this position could be cleared in the map
+with some clearance and then the path planner can be triggered again. Otherwise, in case that the goal position is blocked by an
+obstacle the alternative could be to navigate the robot in the region of the desired goal and check the surroundings there if the
+desired goal region is still blocked or can be reached now.
+
+Furthermore, in **careBT** a control node has - in addition to the status and the contingency message - a contingency history.
+This contingency history documents which contingency handlers were triggered in which situations. This can be used, for example,
+in the `on_delete` callback to finally set the contingency message taking the executed contingency handlers into account.
+For example, in case the contingency handeler fixes the situation, the node finishes with `SUCCESS` and typically an empty
+contingency message. But in such a case the parent might want 'to know' that it was necessary to run a contingency handler to
+complete the task. And thus, setting the contingency message in the `on_delete` callback depending on the contingency history
+allows to provide this additional information. Additionally, this contingency history can be accessed by the parent node to
+check on its own how the task was completed.
 
 
 Dynamic sub-tree generation at runtime
@@ -117,9 +126,8 @@ as well as a complex type (e.g. class, dict, list).
 Maintaining a model of the world
 --------------------------------
 
-To reflect and maintain a model of the world, a knowledge base should be used. For most scenarios a data store with a
-simple tell/ask interface is sufficient. For example, such a knowledge base holds the information about the different
-locations the robot
+To reflect and maintain a model of the world, a knowledge base should be used. For example, such a knowledge base holds
+the information about the different locations the robot
 can drive to, the different objects the robot can manipulate, the persons the robot can recognize and so on. Furthermore,
 information gathered at runtime is also reflected and updated there. For example, the status of current tasks the robot
 should perform or the orders it should deliver.

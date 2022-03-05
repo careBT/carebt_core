@@ -28,7 +28,7 @@ Or use the provided file: :download:`longrun_actions.py <../../carebt/examples/l
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 15-61
+    :lines: 15-60
     :linenos:
 
 The code explained
@@ -63,7 +63,7 @@ it is ticked again.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 51-61
+    :lines: 51-60
 
 
 Run the example
@@ -105,7 +105,7 @@ Or use the provided file: :download:`longrun_actions.py <../../carebt/examples/l
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 66-117
+    :lines: 65-116
     :linenos:
 
 The code explained
@@ -123,14 +123,14 @@ timeout is greater than the throttling.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 91-97
+    :lines: 90-96
 
 The ``on_timeout`` function is called is case the specified timeout timer expires. In this example,
 it is implemented that the current node is aborted and the contingency-message is set to 'TIMEOUT'.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 111-114
+    :lines: 110-113
 
 The ``on_abort`` function is called in case that the node is aborted. This function is the place
 to do some cleanup which needs to be done in case the 'running' actions (resources) are aborted.
@@ -138,7 +138,7 @@ In this example only a message is printed on standard output.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 116-117
+    :lines: 115-116
 
 
 Run the example
@@ -173,7 +173,7 @@ Start the Python interpreter and run the ``AddTwoNumbersMultiTickAction`` node:
     2021-12-01 20:29:17 WARN ---------------------------------------------------
     2021-12-01 20:29:17 WARN bt execution finished
     2021-12-01 20:29:17 WARN status:  NodeStatus.ABORTED
-    2021-12-01 20:29:17 WARN message: TIMEOUT
+    2021-12-01 20:29:17 WARN contingency-message: TIMEOUT
     2021-12-01 20:29:17 WARN ---------------------------------------------------
 
 .. hint::
@@ -190,7 +190,7 @@ Or use the provided file: :download:`longrun_actions.py <../../carebt/examples/l
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 122-163
+    :lines: 121-160
     :linenos:
 
 
@@ -203,7 +203,7 @@ registered which is called as soon as the timer has expired.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 150-154
+    :lines: 149-152
 
 In the ``on_tick`` function a print statement is implemented to demonstrate that the ``on_tick`` function
 is never called in this example as the node is directly set to ``SUSPENDED``. The ``on_tick`` function
@@ -211,14 +211,14 @@ could also be removed in this case!
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 156-157
+    :lines: 154-155
 
 In the ``done_callback`` the calculation is performed, the result is bound to the output parameter and
 the status of the node is set to ``SUCCESS``.
 
 .. literalinclude:: ../../carebt/examples/longrun_actions.py
     :language: python
-    :lines: 159-163
+    :lines: 157-160
 
 
 Run the example

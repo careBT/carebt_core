@@ -52,7 +52,7 @@ The first statements are the includes for the Python random library, the **careB
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
     :language: python
-    :lines: 15-21
+    :lines: 15-20
 
 The ``CreateRandomNumberAction`` is a custom ``ActionNode`` which generates a random number which is bound to
 the output parameter *?number*.

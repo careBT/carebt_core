@@ -74,3 +74,21 @@ Start the Python interpreter and run the ``HelloWorldAction`` node:
     >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.run(HelloWorldAction)
     HelloWorldAction: Hello World !!!
+
+Or run it with log-level set to `INFO`:
+
+.. code-block:: python
+
+    >>> import carebt
+    >>> from carebt import LogLevel
+    >>> from carebt.examples.helloworld import HelloWorldAction
+    >>> bt_runner = carebt.BehaviorTreeRunner()
+    >>> bt_runner.get_logger().set_log_level(LogLevel.INFO)
+    >>> bt_runner.run(HelloWorldAction)
+    2022-03-05 16:30:11 INFO creating HelloWorldAction
+    HelloWorldAction: Hello World !!!
+    2022-03-05 16:30:11 INFO ---------------------------------------------------
+    2022-03-05 16:30:11 INFO bt execution finished
+    2022-03-05 16:30:11 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 16:30:11 INFO contingency-message: 
+    2022-03-05 16:30:11 INFO ---------------------------------------------------

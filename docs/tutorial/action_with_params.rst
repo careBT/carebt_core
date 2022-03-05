@@ -73,7 +73,7 @@ node is not ticked again.
 
 .. literalinclude:: ../../carebt/examples/action_with_params.py
     :language: python
-    :lines: 49-53
+    :lines: 49-52
 
 Run the example
 ^^^^^^^^^^^^^^^

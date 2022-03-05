@@ -24,7 +24,7 @@ of contingency-handlers.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 15-78
+    :lines: 15-79
     :linenos:
 
 The code explained
@@ -40,7 +40,7 @@ In this case the node completes with ``FAILURE`` and provides the contingency-me
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 60-66
+    :lines: 61-67
 
 In the ``on_tick`` function the result of the calculation is checked whether it is greater than ten. This is,
 of course, just for demo purposes. In case **_z** is greater than ten the node fails and provides the
@@ -48,41 +48,53 @@ contingency-message 'RESULT_TOO_LARGE'.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 68-78
+    :lines: 69-79
 
 Run the example
 ^^^^^^^^^^^^^^^
 
-Start the Python interpreter and run the ``AddTwoNumbersActionWithFailures`` node:
+Start the Python interpreter and run the ``AddTwoNumbersActionWithFailures`` node.
+The log-level is set to `INFO` to see some more details on the execution:
 
 .. code-block:: python
 
     >>> import carebt
+    >>> from carebt import LogLevel
     >>> from carebt.examples.sequence_with_contingencies import AddTwoNumbersActionWithFailures
     >>> bt_runner = carebt.BehaviorTreeRunner()
+    >>> bt_runner.get_logger().set_log_level(LogLevel.INFO)
     >>> bt_runner.run(AddTwoNumbersActionWithFailures, '3 5 => ?x')
+    2022-03-05 17:09:01 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 3 + 5 = 8
+    2022-03-05 17:09:01 INFO ---------------------------------------------------
+    2022-03-05 17:09:01 INFO bt execution finished
+    2022-03-05 17:09:01 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 17:09:01 INFO contingency-message: 
+    2022-03-05 17:09:01 INFO ---------------------------------------------------
     >>> bt_runner.run(AddTwoNumbersActionWithFailures, '3 => ?x')
-    2021-11-25 21:50:54 WARN AddTwoNumbersActionWithFailures takes 2 argument(s), but 1 was/were provided
-    2021-11-25 21:50:54 WARN ---------------------------------------------------
-    2021-11-25 21:50:54 WARN bt execution finished
-    2021-11-25 21:50:54 WARN status:  NodeStatus.FAILURE
-    2021-11-25 21:50:54 WARN message: ONE_PARAM_MISSING
-    2021-11-25 21:50:54 WARN ---------------------------------------------------
+    2022-03-05 17:11:53 INFO creating AddTwoNumbersActionWithFailures
+    2022-03-05 17:11:53 WARN AddTwoNumbersActionWithFailures takes 2 argument(s), but 1 was/were provided
+    2022-03-05 17:11:53 WARN ---------------------------------------------------
+    2022-03-05 17:11:53 WARN bt execution finished
+    2022-03-05 17:11:53 WARN status:  NodeStatus.FAILURE
+    2022-03-05 17:11:53 WARN contingency-message: ONE_PARAM_MISSING
+    2022-03-05 17:11:53 WARN ---------------------------------------------------
     >>> bt_runner.run(AddTwoNumbersActionWithFailures, '=> ?x')
-    2021-11-25 21:51:03 WARN AddTwoNumbersActionWithFailures takes 2 argument(s), but 0 was/were provided
-    2021-11-25 21:51:03 WARN ---------------------------------------------------
-    2021-11-25 21:51:03 WARN bt execution finished
-    2021-11-25 21:51:03 WARN status:  NodeStatus.FAILURE
-    2021-11-25 21:51:03 WARN message: BOTH_PARAMS_MISSING
-    2021-11-25 21:51:03 WARN ---------------------------------------------------
+    2022-03-05 17:12:35 INFO creating AddTwoNumbersActionWithFailures
+    2022-03-05 17:12:35 WARN AddTwoNumbersActionWithFailures takes 2 argument(s), but 0 was/were provided
+    2022-03-05 17:12:35 WARN ---------------------------------------------------
+    2022-03-05 17:12:35 WARN bt execution finished
+    2022-03-05 17:12:35 WARN status:  NodeStatus.FAILURE
+    2022-03-05 17:12:35 WARN contingency-message: BOTH_PARAMS_MISSING
+    2022-03-05 17:12:35 WARN ---------------------------------------------------
     >>> bt_runner.run(AddTwoNumbersActionWithFailures, '7 5 => ?x')
+    2022-03-05 17:12:59 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 7 + 5 = 12 -> RESULT_TOO_LARGE
-    2021-11-25 21:51:10 WARN ---------------------------------------------------
-    2021-11-25 21:51:10 WARN bt execution finished
-    2021-11-25 21:51:10 WARN status:  NodeStatus.FAILURE
-    2021-11-25 21:51:10 WARN message: RESULT_TOO_LARGE
-    2021-11-25 21:51:10 WARN ---------------------------------------------------
+    2022-03-05 17:12:59 WARN ---------------------------------------------------
+    2022-03-05 17:12:59 WARN bt execution finished
+    2022-03-05 17:12:59 WARN status:  NodeStatus.FAILURE
+    2022-03-05 17:12:59 WARN contingency-message: RESULT_TOO_LARGE
+    2022-03-05 17:12:59 WARN ---------------------------------------------------
 
 Create a sequence without contingency-handling
 ----------------------------------------------
@@ -95,7 +107,7 @@ Or use the provided file: :download:`sequence_with_contingencies.py <../../careb
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 83-111
+    :lines: 84-112
     :linenos:
 
 The code explained
@@ -112,32 +124,48 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
 .. code-block:: python
 
     >>> import carebt
+    >>> from carebt import LogLevel
     >>> from carebt.examples.sequence_with_contingencies import SimpleSequence
     >>> bt_runner = carebt.BehaviorTreeRunner()
+    >>> bt_runner.get_logger().set_log_level(LogLevel.INFO)
     >>> bt_runner.run(SimpleSequence, '2 5')
+    2022-03-05 17:14:21 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 2 + 5 = 7
+    2022-03-05 17:14:21 INFO creating PrintNumberAction
     PrintNumberAction: number = 7
+    2022-03-05 17:14:21 INFO finished SimpleSequence
+    2022-03-05 17:14:21 INFO ---------------------------------------------------
+    2022-03-05 17:14:21 INFO bt execution finished
+    2022-03-05 17:14:21 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 17:14:21 INFO contingency-message: 
+    2022-03-05 17:14:21 INFO ---------------------------------------------------
     >>> bt_runner.run(SimpleSequence, '2')
-    2021-11-26 21:55:03 WARN SimpleSequence takes 2 argument(s), but 1 was/were provided
-    2021-11-26 21:55:03 WARN ---------------------------------------------------
-    2021-11-26 21:55:03 WARN bt execution finished
-    2021-11-26 21:55:03 WARN status:  NodeStatus.FAILURE
-    2021-11-26 21:55:03 WARN message: ONE_PARAM_MISSING
-    2021-11-26 21:55:03 WARN ---------------------------------------------------
+    2022-03-05 17:14:56 WARN SimpleSequence takes 2 argument(s), but 1 was/were provided
+    2022-03-05 17:14:56 INFO creating AddTwoNumbersActionWithFailures
+    2022-03-05 17:14:56 INFO finished SimpleSequence
+    2022-03-05 17:14:56 WARN ---------------------------------------------------
+    2022-03-05 17:14:56 WARN bt execution finished
+    2022-03-05 17:14:56 WARN status:  NodeStatus.FAILURE
+    2022-03-05 17:14:56 WARN contingency-message: ONE_PARAM_MISSING
+    2022-03-05 17:14:56 WARN ---------------------------------------------------
     >>> bt_runner.run(SimpleSequence, '')
-    2021-11-26 21:55:11 WARN SimpleSequence takes 2 argument(s), but 0 was/were provided
-    2021-11-26 21:55:11 WARN ---------------------------------------------------
-    2021-11-26 21:55:11 WARN bt execution finished
-    2021-11-26 21:55:11 WARN status:  NodeStatus.FAILURE
-    2021-11-26 21:55:11 WARN message: BOTH_PARAMS_MISSING
-    2021-11-26 21:55:11 WARN ---------------------------------------------------
+    2022-03-05 17:15:21 WARN SimpleSequence takes 2 argument(s), but 0 was/were provided
+    2022-03-05 17:15:21 INFO creating AddTwoNumbersActionWithFailures
+    2022-03-05 17:15:21 INFO finished SimpleSequence
+    2022-03-05 17:15:21 WARN ---------------------------------------------------
+    2022-03-05 17:15:21 WARN bt execution finished
+    2022-03-05 17:15:21 WARN status:  NodeStatus.FAILURE
+    2022-03-05 17:15:21 WARN contingency-message: BOTH_PARAMS_MISSING
+    2022-03-05 17:15:21 WARN ---------------------------------------------------
     >>> bt_runner.run(SimpleSequence, '6 8')
+    2022-03-05 17:15:43 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 6 + 8 = 14 -> RESULT_TOO_LARGE
-    2021-11-26 21:55:17 WARN ---------------------------------------------------
-    2021-11-26 21:55:17 WARN bt execution finished
-    2021-11-26 21:55:17 WARN status:  NodeStatus.FAILURE
-    2021-11-26 21:55:17 WARN message: RESULT_TOO_LARGE
-    2021-11-26 21:55:17 WARN ---------------------------------------------------
+    2022-03-05 17:15:43 INFO finished SimpleSequence
+    2022-03-05 17:15:43 WARN ---------------------------------------------------
+    2022-03-05 17:15:43 WARN bt execution finished
+    2022-03-05 17:15:43 WARN status:  NodeStatus.FAILURE
+    2022-03-05 17:15:43 WARN contingency-message: RESULT_TOO_LARGE
+    2022-03-05 17:15:43 WARN ---------------------------------------------------
 
 The first execution shows the standard case where two input parameters are provided which have a sum
 smaller than ten. As in this case the ``AddTwoNumbersActionWithFailures`` node completes with
@@ -158,7 +186,7 @@ Or use the provided file: :download:`sequence_with_contingencies.py <../../careb
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 116-171
+    :lines: 117-181
     :linenos:
 
 
@@ -172,14 +200,14 @@ function is called.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 150-153
+    :lines: 151-154
 
 The ``fix_large_result`` function removes all children from the sequence and adds the two new child nodes
 ``CreateRandomNumberAction`` and ``PrintNumberAction``.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 162-166
+    :lines: 163-167
 
 The second contingency-handler is also attached to the ``AddTwoNumbersActionWithFailures`` child and triggers 
 in case the child node completes with ``FAILURE`` and the contingency-message matches the regular expression 
@@ -189,7 +217,7 @@ for example, as follows: ``r'ONE_PARAM_MISSING|BOTH_PARAMS_MISSING'`` or ``r'.*_
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 155-160
+    :lines: 156-161
 
 The ``fix_missing_input`` function sets the output parameter ``_c`` resp. ``?c`` to zero and the currently
 executing child - which is the ``AddTwoNumbersActionWithFailures`` - to ``FIXED``. As ``FIXED`` is handled
@@ -198,7 +226,15 @@ in the same way as ``SUCCESS`` the execution continues with the ``PrintNumberAct
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
     :language: python
-    :lines: 168-171
+    :lines: 169-172
+
+The ``on_delete`` callback is called right after all child nodes have finished their execution. It is checked
+whether a contingency-handler was executed. In that case the contingency-message is set accordingly to indicate
+that to the parent node.
+
+.. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py
+    :language: python
+    :lines: 174-181
 
 
 Run the example
@@ -209,24 +245,71 @@ Start the Python interpreter and run the ``ContingencySequence`` node:
 .. code-block:: python
 
     >>> import carebt
+    >>> from carebt import LogLevel
     >>> from carebt.examples.sequence_with_contingencies import ContingencySequence
     >>> bt_runner = carebt.BehaviorTreeRunner()
+    >>> bt_runner.get_logger().set_log_level(LogLevel.INFO)
     >>> bt_runner.run(ContingencySequence, '6 4')
+    2022-03-05 17:16:26 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 6 + 4 = 10
+    2022-03-05 17:16:26 INFO creating PrintNumberAction
     PrintNumberAction: number = 10
+    2022-03-05 17:16:26 INFO finished ContingencySequence
+    2022-03-05 17:16:26 INFO ---------------------------------------------------
+    2022-03-05 17:16:26 INFO bt execution finished
+    2022-03-05 17:16:26 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 17:16:26 INFO contingency-message: 
+    2022-03-05 17:16:26 INFO ---------------------------------------------------
     >>> bt_runner.run(ContingencySequence, '6')
-    2021-11-26 22:41:59 WARN ContingencySequence takes 2 argument(s), but 1 was/were provided
+    2022-03-05 17:42:54 WARN ContingencySequence takes 2 argument(s), but 1 was/were provided
+    2022-03-05 17:42:54 INFO creating AddTwoNumbersActionWithFailures
     fix_missing_input: set ?c = 0
+    2022-03-05 17:42:54 INFO creating PrintNumberAction
     PrintNumberAction: number = 0
+    2022-03-05 17:42:54 INFO finished ContingencySequence
+    2022-03-05 17:42:54 INFO ---------------------------------------------------
+    2022-03-05 17:42:54 INFO bt execution finished
+    2022-03-05 17:42:54 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 17:42:54 INFO contingency-message: MISSING_PARAM_FIXED
+    2022-03-05 17:42:54 INFO contingency-history: [0] AddTwoNumbersActionWithFailures
+    2022-03-05 17:42:54 INFO                          NodeStatus.FAILURE
+    2022-03-05 17:42:54 INFO                          ONE_PARAM_MISSING
+    2022-03-05 17:42:54 INFO                          fix_missing_input
+    2022-03-05 17:42:54 INFO ---------------------------------------------------
     >>> bt_runner.run(ContingencySequence, '')
-    2021-11-26 22:42:07 WARN ContingencySequence takes 2 argument(s), but 0 was/were provided
+    2022-03-05 17:43:23 WARN ContingencySequence takes 2 argument(s), but 0 was/were provided
+    2022-03-05 17:43:23 INFO creating AddTwoNumbersActionWithFailures
     fix_missing_input: set ?c = 0
+    2022-03-05 17:43:23 INFO creating PrintNumberAction
     PrintNumberAction: number = 0
+    2022-03-05 17:43:23 INFO finished ContingencySequence
+    2022-03-05 17:43:23 INFO ---------------------------------------------------
+    2022-03-05 17:43:23 INFO bt execution finished
+    2022-03-05 17:43:23 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 17:43:23 INFO contingency-message: MISSING_PARAM_FIXED
+    2022-03-05 17:43:23 INFO contingency-history: [0] AddTwoNumbersActionWithFailures
+    2022-03-05 17:43:23 INFO                          NodeStatus.FAILURE
+    2022-03-05 17:43:23 INFO                          BOTH_PARAMS_MISSING
+    2022-03-05 17:43:23 INFO                          fix_missing_input
+    2022-03-05 17:43:23 INFO ---------------------------------------------------
     >>> bt_runner.run(ContingencySequence, '6 9')
+    2022-03-05 17:43:48 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 6 + 9 = 15 -> RESULT_TOO_LARGE
     fix_large_result
-    CreateRandomNumberAction: number = 1
-    PrintNumberAction: number = 1
+    2022-03-05 17:43:48 INFO creating CreateRandomNumberAction
+    CreateRandomNumberAction: number = 5
+    2022-03-05 17:43:48 INFO creating PrintNumberAction
+    PrintNumberAction: number = 5
+    2022-03-05 17:43:48 INFO finished ContingencySequence
+    2022-03-05 17:43:48 INFO ---------------------------------------------------
+    2022-03-05 17:43:48 INFO bt execution finished
+    2022-03-05 17:43:48 INFO status:  NodeStatus.SUCCESS
+    2022-03-05 17:43:48 INFO contingency-message: TOO_LARGE_RESULT_FIXED
+    2022-03-05 17:43:48 INFO contingency-history: [0] AddTwoNumbersActionWithFailures
+    2022-03-05 17:43:48 INFO                          NodeStatus.FAILURE
+    2022-03-05 17:43:48 INFO                          RESULT_TOO_LARGE
+    2022-03-05 17:43:48 INFO                          fix_large_result
+    2022-03-05 17:43:48 INFO ---------------------------------------------------
 
 Again, the first execution demonstrates the 'good' case where two input parameters with a sum smaller
 than ten are provided. Thus, the ``AddTwoNumbersActionWithFailures`` completes with ``SUCCESS`` and the
@@ -235,4 +318,5 @@ are missing. The ``fix_missing_input`` contingency-handler-function is executed 
 and fixes the ``AddTwoNumbersActionWithFailures``. Thus, the sequence execution conntinues with
 ``PrintNumberAction``. The next execution demonstrates the case when the sum of the two input parameters
 is greater than ten. In this case the ``fix_large_result`` contingency-handler-function is executed which
-removes all child nodes and add two new ones.
+removes all child nodes and add two new ones. The last three runs show, how the execution of the contingency
+handlers is documented by the contingency-history. 

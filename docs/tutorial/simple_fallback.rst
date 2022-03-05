@@ -70,7 +70,7 @@ Start the Python interpreter and run the ``SimpleFallback`` node:
     2021-11-30 20:55:46 WARN ---------------------------------------------------
     2021-11-30 20:55:46 WARN bt execution finished
     2021-11-30 20:55:46 WARN status:  NodeStatus.FAILURE
-    2021-11-30 20:55:46 WARN message: RESULT_TOO_LARGE
+    2021-11-30 20:55:46 WARN contingency-message: RESULT_TOO_LARGE
     2021-11-30 20:55:46 WARN ---------------------------------------------------
 
 In the first execution of the ``SimpleFallback`` node the first child already completes
