@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from carebt import ActionNode
+from carebt import ContingencyHistoryEntry
 from carebt import NodeStatus
 from carebt import SequenceNode
 from carebt.examples.simple_sequence import CreateRandomNumberAction
@@ -169,3 +170,12 @@ class ContingencySequence(SequenceNode):
         print('fix_missing_input: set ?c = 0')
         self._c = 0
         self.fix_current_child()
+
+    def on_delete(self) -> None:
+        if len(self.get_contingency_history()) > 0:
+            entry: ContingencyHistoryEntry = self.get_contingency_history()[-1]
+            if(entry.contingency_message == 'ONE_PARAM_MISSING'
+               or entry.contingency_message == 'BOTH_PARAMS_MISSING'):
+                self.set_contingency_message('MISSING_PARAM_FIXED')
+            elif entry.contingency_message == 'RESULT_TOO_LARGE':
+                self.set_contingency_message('TOO_LARGE_RESULT_FIXED')
