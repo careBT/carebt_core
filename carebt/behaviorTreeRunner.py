@@ -156,6 +156,6 @@ class BehaviorTreeRunner:
         else:
             self.get_logger().warn('---------------------------------------------------')
             self.get_logger().warn('bt execution finished')
-            self.get_logger().info(f'status:  {self._instance.get_status()}')
-            self.get_logger().info(f'message: {self._instance.get_contingency_message()}')
+            self.get_logger().warn(f'status:  {self._instance.get_status()}')
+            self.get_logger().warn(f'message: {self._instance.get_contingency_message()}')
             self.get_logger().warn('---------------------------------------------------')
