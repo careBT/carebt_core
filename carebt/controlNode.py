@@ -171,8 +171,8 @@ class ControlNode(TreeNode, ABC):
 
     @final
     def register_contingency_handler(self,
-                                     node: TreeNode,
-                                     node_status_list: NodeStatus,
+                                     node,
+                                     node_status_list: List[NodeStatus],
                                      contingency_message: str,
                                      contingency_function: Callable) -> None:
         """Register a contingency-handler.
