@@ -14,6 +14,7 @@
 
 from threading import Timer
 
+from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.nodeStatus import NodeStatus
 from carebt.sequenceNode import SequenceNode
 from tests.actionNodes import AddTwoNumbersAction
@@ -167,6 +168,12 @@ class AddTwoNumbersSequence3(SequenceNode):
         self._result = 999
 
     def on_delete(self) -> None:
+        if len(self.get_contingency_history()) > 0:
+            entry: ContingencyHistoryEntry = self.get_contingency_history()[-1]
+            if(entry.status == NodeStatus.FAILURE
+                    and entry.contingency_message == 'NOT_TWO_NUMBERS_PROVIDED'
+                    and entry.function == 'fix_missing_numbers_handler'):
+                self.set_contingency_message('MISSING_NUMBERS_FIXED')
         mock('on_delete AddTwoNumbersSequence3')
 
     def __del__(self):

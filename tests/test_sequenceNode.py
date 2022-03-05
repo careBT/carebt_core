@@ -187,7 +187,8 @@ class TestSequenceNode:
         bt_runner.run(AddTwoNumbersSequence3, '1')
         assert mock.called
         assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
-        assert bt_runner._instance.get_contingency_message() == ''
+        assert bt_runner._instance.get_contingency_message() == 'MISSING_NUMBERS_FIXED'
+        assert len(bt_runner._instance.get_contingency_history()) == 1
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ AddTwoNumbersSequence3'),
                                        call('on_init AddTwoNumbersSequence3'),

@@ -20,6 +20,7 @@ from typing import final
 from typing import List
 from typing import TYPE_CHECKING
 
+from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.nodeStatus import NodeStatus
 
 if TYPE_CHECKING:
@@ -43,6 +44,7 @@ class TreeNode(ABC):
         # PRIVATE
         self.__node_status = NodeStatus.IDLE
         self.__contingency_message = ''
+        self.__contingency_history: List[ContingencyHistoryEntry] = []
         self.__params = params
         self.__in_params: List[str] = []
         self.__out_params: List[str] = []
@@ -102,6 +104,10 @@ class TreeNode(ABC):
     @final
     def _internal_get_out_params(self) -> list:
         return self.__out_params
+
+    @final
+    def _internal_append_to_contingency_history(self, entry: ContingencyHistoryEntry):
+        self.__contingency_history.append(entry)
 
     # PUBLIC
 
@@ -218,6 +224,21 @@ class TreeNode(ABC):
            or node_status == NodeStatus.FIXED
            or node_status == NodeStatus.ABORTED):
             self.cancel_timeout_timer()
+
+    @final
+    def get_contingency_history(self) -> list:
+        """Return the contincency-history.
+
+        Returns the contincency-history of the node. This history documents which
+        contingencies occured during execution of the node.
+
+        Returns
+        -------
+        list
+            The contingency history
+
+        """
+        return self.__contingency_history
 
     @final
     def get_contingency_message(self) -> str:

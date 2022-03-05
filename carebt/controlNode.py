@@ -20,6 +20,7 @@ from typing import final
 from typing import List
 from typing import TYPE_CHECKING
 
+from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.executionContext import ExecutionContext
 from carebt.nodeStatus import NodeStatus
 from carebt.treeNode import TreeNode
@@ -156,6 +157,12 @@ class ControlNode(TreeNode, ABC):
                                       child_ec.instance.get_contingency_message()))):
                 self.get_logger().debug(f'{child_ec.instance.__class__.__name__} -> '
                                         + f'run contingency_handler {contingency_handler[3]}')
+                # append ContingencyHistoryEntry to history
+                self._internal_append_to_contingency_history(
+                    ContingencyHistoryEntry(child_ec.instance.__class__.__name__,
+                                            child_ec.instance.get_status(),
+                                            child_ec.instance.get_contingency_message(),
+                                            contingency_handler[3]))
                 # execute function attached to the contingency-handler
                 exec(f'self.{contingency_handler[3]}()')
                 break

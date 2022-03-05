@@ -15,6 +15,7 @@
 from time import sleep
 
 from carebt.abstractLogger import AbstractLogger, LogLevel
+from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.nodeStatus import NodeStatus
 from carebt.rootNode import RootNode
 from carebt.simplePrintLogger import SimplePrintLogger
@@ -152,10 +153,26 @@ class BehaviorTreeRunner:
             self.get_logger().info('bt execution finished')
             self.get_logger().info(f'status:  {self._instance.get_status()}')
             self.get_logger().info(f'message: {self._instance.get_contingency_message()}')
+            entry: ContingencyHistoryEntry
+            for idx, entry in enumerate(self._instance.get_contingency_history()):
+                if idx == 0:
+                    self.get_logger().info(f'history: [{idx}] {entry.node_name} - {entry.status}'
+                                           + f' - {entry.contingency_message} - {entry.function}')
+                else:
+                    self.get_logger().info(f'         [{idx}] {entry.node_name} - {entry.status}'
+                                           + f' - {entry.contingency_message} - {entry.function}')
             self.get_logger().info('---------------------------------------------------')
         else:
             self.get_logger().warn('---------------------------------------------------')
             self.get_logger().warn('bt execution finished')
             self.get_logger().warn(f'status:  {self._instance.get_status()}')
             self.get_logger().warn(f'message: {self._instance.get_contingency_message()}')
+            entry: ContingencyHistoryEntry
+            for idx, entry in enumerate(self._instance.get_contingency_history()):
+                if idx == 0:
+                    self.get_logger().warn(f'history: [{idx}] {entry.node_name} - {entry.status}'
+                                           + f' - {entry.contingency_message} - {entry.function}')
+                else:
+                    self.get_logger().warn(f'         [{idx}] {entry.node_name} - {entry.status}'
+                                           + f' - {entry.contingency_message} - {entry.function}')
             self.get_logger().warn('---------------------------------------------------')
