@@ -101,7 +101,7 @@ class ControlNode(TreeNode, ABC):
                                    + f'argument(s), but {len(child_ec.call_in_params)} '
                                    + f'was/were provided')
         for i, var in enumerate(child_ec.call_in_params):
-            if(isinstance(var, str) and var[0] == '?'):
+            if(isinstance(var, str) and len(var) > 0 and var[0] == '?'):
                 var = var.replace('?', '_', 1)
                 var = getattr(self, var)
             if(i < len(child_ec.instance._internal_get_in_params())):

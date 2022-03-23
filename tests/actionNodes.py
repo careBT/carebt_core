@@ -28,16 +28,28 @@ class HelloWorldAction(ActionNode):
     It demonstrates a simple implementation of a careBT `ActionNode`.
 
     When running the `HelloWorldAction`,
-    'HelloWorldAction: Hello World !!!' is printed on standard output.
+    'HelloWorldAction: Hello World !!!' is printed on standard output. In case
+    a `?name` is provided 'HelloWorldAction: Hello <name> !!!' is printed.
+
+    Input Parameters
+    ----------------
+    ?name : str
+        The name to print
+
     """
 
     def __init__(self, bt_runner):
-        super().__init__(bt_runner)
+        super().__init__(bt_runner, '?name')
         mock('__init__ HelloWorldAction')
+        self._name = None
 
     def on_tick(self) -> None:
-        mock('HelloWorldAction: Hello World !!!')
-        print('HelloWorldAction: Hello World !!!')
+        if self._name is None:
+            mock('HelloWorldAction: Hello World !!!')
+            print('HelloWorldAction: Hello World !!!')
+        else:
+            mock(f'HelloWorldAction: Hello {self._name} !!!')
+            print(f'HelloWorldAction: Hello {self._name} !!!')
         self.set_status(NodeStatus.SUCCESS)
 
     def __del__(self):

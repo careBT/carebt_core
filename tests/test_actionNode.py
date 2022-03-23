@@ -37,7 +37,7 @@ class TestActionNode:
     ########################################################################
 
     def test_HelloWorldAction(self):
-        """Tests if a simple `ActionNode` runs."""
+        """Tests HelloWorldAction."""
         mock.reset_mock()
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.INFO)
@@ -49,6 +49,36 @@ class TestActionNode:
         print(mock.call_args_list)
         assert mock.call_args_list == [call('__init__ HelloWorldAction'),
                                        call('HelloWorldAction: Hello World !!!'),
+                                       call('__del__ HelloWorldAction')]
+
+    def test_HelloWorldAction_alice(self):
+        """Tests HelloWorldAction with name = Alice."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
+        bt_runner.run(HelloWorldAction, '"Alice"')
+        assert mock.called
+        assert bt_runner.get_tick_count() == 1
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello Alice !!!'),
+                                       call('__del__ HelloWorldAction')]
+
+    def test_HelloWorldAction_empty(self):
+        """Tests HelloWorldAction with name = empty string."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.INFO)
+        bt_runner.run(HelloWorldAction, '""')
+        assert mock.called
+        assert bt_runner.get_tick_count() == 1
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ HelloWorldAction'),
+                                       call('HelloWorldAction: Hello  !!!'),
                                        call('__del__ HelloWorldAction')]
 
     ########################################################################

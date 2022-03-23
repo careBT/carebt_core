@@ -147,9 +147,9 @@ class TestLogger:
     def test_action_logger_level_debug(self, mock_print):
         bt_runner = BehaviorTreeRunner()
         bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
-        bt_runner.run(HelloWorldAction)
+        bt_runner.run(HelloWorldAction, '"Alice"')
         regex = re.compile('....-..-.. ..:..:.. INFO creating HelloWorldAction\n'  # noqa: E501
-                           'HelloWorldAction: Hello World !!!\n'  # noqa: E501
+                           'HelloWorldAction: Hello Alice !!!\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO ---------------------------------------------------\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO bt execution finished\n'  # noqa: E501
                            '....-..-.. ..:..:.. INFO status:  NodeStatus.SUCCESS\n'  # noqa: E501
@@ -185,6 +185,7 @@ class TestLogger:
         print(mock.call_args_list)
         assert mock.call_args_list == [call('INFO creating HelloWorldAction'),  # noqa: E501
                                        call('__init__ HelloWorldAction'),  # noqa: E501
+                                       call('WARN HelloWorldAction takes 1 argument(s), but 0 was/were provided'),  # noqa: E501
                                        call('HelloWorldAction: Hello World !!!'),  # noqa: E501
                                        call('__del__ HelloWorldAction'),  # noqa: E501
                                        call('INFO ---------------------------------------------------'),  # noqa: E501
