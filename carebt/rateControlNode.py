@@ -50,6 +50,7 @@ class RateControlNode(ControlNode, ABC):
     def __init__(self, bt_runner: 'BehaviorTreeRunner', throttle_ms: int, params: str = None):
         """Init the `ActionNode` with bt_runner,rate_ms and params."""
         super().__init__(bt_runner, params)
+        self.get_logger().info(f'creating {self.__class__.__name__}')
 
         self._throttle_ms = throttle_ms
         self.set_status(NodeStatus.IDLE)

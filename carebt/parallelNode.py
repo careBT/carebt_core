@@ -55,6 +55,7 @@ class ParallelNode(ControlNode, ABC):
                  success_threshold: int, params: str = None):
         """Init the `ParallelNode` with bt_runner, success_threshold and params."""
         super().__init__(bt_runner, params)
+        self.get_logger().info(f'creating {self.__class__.__name__}')
 
         self.__last_child_contingency_msg = ''
 

@@ -50,6 +50,7 @@ class FallbackNode(ControlNode, ABC):
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         """Init the `FallbackNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
+        self.get_logger().info(f'creating {self.__class__.__name__}')
 
     # PROTECTED
 

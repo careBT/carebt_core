@@ -129,6 +129,7 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
     >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.get_logger().set_log_level(LogLevel.INFO)
     >>> bt_runner.run(SimpleSequence, '2 5')
+    2022-03-05 17:14:21 INFO creating SimpleSequence
     2022-03-05 17:14:21 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 2 + 5 = 7
     2022-03-05 17:14:21 INFO creating PrintNumberAction
@@ -140,6 +141,7 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
     2022-03-05 17:14:21 INFO contingency-message: 
     2022-03-05 17:14:21 INFO ---------------------------------------------------
     >>> bt_runner.run(SimpleSequence, '2')
+    2022-03-05 17:14:56 INFO creating SimpleSequence
     2022-03-05 17:14:56 WARN SimpleSequence takes 2 argument(s), but 1 was/were provided
     2022-03-05 17:14:56 INFO creating AddTwoNumbersActionWithFailures
     2022-03-05 17:14:56 INFO finished SimpleSequence
@@ -149,6 +151,7 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
     2022-03-05 17:14:56 WARN contingency-message: ONE_PARAM_MISSING
     2022-03-05 17:14:56 WARN ---------------------------------------------------
     >>> bt_runner.run(SimpleSequence, '')
+    2022-03-05 17:15:21 INFO creating SimpleSequence
     2022-03-05 17:15:21 WARN SimpleSequence takes 2 argument(s), but 0 was/were provided
     2022-03-05 17:15:21 INFO creating AddTwoNumbersActionWithFailures
     2022-03-05 17:15:21 INFO finished SimpleSequence
@@ -158,6 +161,7 @@ Start the Python interpreter and run the ``SimpleSequence`` node:
     2022-03-05 17:15:21 WARN contingency-message: BOTH_PARAMS_MISSING
     2022-03-05 17:15:21 WARN ---------------------------------------------------
     >>> bt_runner.run(SimpleSequence, '6 8')
+    2022-03-05 17:15:43 INFO creating SimpleSequence
     2022-03-05 17:15:43 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 6 + 8 = 14 -> RESULT_TOO_LARGE
     2022-03-05 17:15:43 INFO finished SimpleSequence
@@ -251,6 +255,7 @@ Start the Python interpreter and run the ``ContingencySequence`` node:
     >>> bt_runner = carebt.BehaviorTreeRunner()
     >>> bt_runner.get_logger().set_log_level(LogLevel.INFO)
     >>> bt_runner.run(ContingencySequence, '6 4')
+    2022-03-05 17:16:26 INFO creating ContingencySequence
     2022-03-05 17:16:26 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 6 + 4 = 10
     2022-03-05 17:16:26 INFO creating PrintNumberAction
@@ -262,6 +267,7 @@ Start the Python interpreter and run the ``ContingencySequence`` node:
     2022-03-05 17:16:26 INFO contingency-message: 
     2022-03-05 17:16:26 INFO ---------------------------------------------------
     >>> bt_runner.run(ContingencySequence, '6')
+    2022-03-05 17:42:54 INFO creating ContingencySequence
     2022-03-05 17:42:54 WARN ContingencySequence takes 2 argument(s), but 1 was/were provided
     2022-03-05 17:42:54 INFO creating AddTwoNumbersActionWithFailures
     fix_missing_input: set ?c = 0
@@ -278,6 +284,7 @@ Start the Python interpreter and run the ``ContingencySequence`` node:
     2022-03-05 17:42:54 INFO                          fix_missing_input
     2022-03-05 17:42:54 INFO ---------------------------------------------------
     >>> bt_runner.run(ContingencySequence, '')
+    2022-03-05 17:43:23 INFO creating ContingencySequence
     2022-03-05 17:43:23 WARN ContingencySequence takes 2 argument(s), but 0 was/were provided
     2022-03-05 17:43:23 INFO creating AddTwoNumbersActionWithFailures
     fix_missing_input: set ?c = 0
@@ -294,6 +301,7 @@ Start the Python interpreter and run the ``ContingencySequence`` node:
     2022-03-05 17:43:23 INFO                          fix_missing_input
     2022-03-05 17:43:23 INFO ---------------------------------------------------
     >>> bt_runner.run(ContingencySequence, '6 9')
+    2022-03-05 17:43:48 INFO creating ContingencySequence
     2022-03-05 17:43:48 INFO creating AddTwoNumbersActionWithFailures
     AddTwoNumbersActionWithFailures: calculating: 6 + 9 = 15 -> RESULT_TOO_LARGE
     fix_large_result

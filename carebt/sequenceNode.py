@@ -54,6 +54,7 @@ class SequenceNode(ControlNode, ABC):
     def __init__(self, bt_runner: 'BehaviorTreeRunner', params: str = None):
         """Init the `SequenceNode` with bt_runner and params."""
         super().__init__(bt_runner, params)
+        self.get_logger().info(f'creating {self.__class__.__name__}')
 
     # PROTECTED
 
