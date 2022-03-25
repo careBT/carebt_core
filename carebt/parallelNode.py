@@ -94,14 +94,14 @@ class ParallelNode(ControlNode, ABC):
                         cur_child_state = child_ec.instance.get_status()
                         if(cur_child_state == NodeStatus.SUCCESS
                            or cur_child_state == NodeStatus.FIXED):
-                            child_ec.instance.on_delete()
+                            child_ec.instance._internal_on_delete()
                             child_ec.instance = None
                             self._success_count += 1
                         elif(cur_child_state == NodeStatus.FAILURE
                              or cur_child_state == NodeStatus.ABORTED):
                             self.__last_child_contingency_msg = child_ec.instance\
                                                                 .get_contingency_message()
-                            child_ec.instance.on_delete()
+                            child_ec.instance._internal_on_delete()
                             child_ec.instance = None
                             self._fail_count += 1
 
@@ -128,7 +128,7 @@ class ParallelNode(ControlNode, ABC):
                        (child_ec.instance.get_status() == NodeStatus.RUNNING or
                             child_ec.instance.get_status() == NodeStatus.SUSPENDED)):
                         child_ec.instance._internal_on_abort()
-                        child_ec.instance.on_delete()
+                        child_ec.instance._internal_on_delete()
                         child_ec.instance = None
 
     def _internal_on_abort(self) -> None:
@@ -144,7 +144,7 @@ class ParallelNode(ControlNode, ABC):
                (child_ec.instance.get_status() == NodeStatus.RUNNING or
                     child_ec.instance.get_status() == NodeStatus.SUSPENDED)):
                 child_ec.instance._internal_on_abort()
-                child_ec.instance.on_delete()
+                child_ec.instance._internal_on_delete()
                 child_ec.instance = None
         self.on_abort()
 
@@ -202,7 +202,7 @@ class ParallelNode(ControlNode, ABC):
         self._created_child_size -= 1
         if(self._child_ec_list[pos].instance is not None):
             self._child_ec_list[pos].instance._internal_on_abort()
-            self._child_ec_list[pos].instance.on_delete()
+            self._child_ec_list[pos].instance._internal_on_delete()
             self._child_ec_list[pos].instance = None
         del self._child_ec_list[pos]
 

@@ -93,6 +93,9 @@ class TreeNode(ABC):
     def _internal_on_abort(self) -> None:
         self.cancel_timeout_timer()
 
+    def _internal_on_delete(self) -> None:
+        self.on_delete()
+
     @final
     def _internal_get_bt_runner(self) -> 'BehaviorTreeRunner':
         return self.bt_runner

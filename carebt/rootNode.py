@@ -73,7 +73,7 @@ class RootNode(ControlNode, ABC):
            or self.get_status() == NodeStatus.FAILURE
            or self.get_status() == NodeStatus.ABORTED
            or self.get_status() == NodeStatus.FIXED):
-            self._child_ec_list[0].instance.on_delete()
+            self._child_ec_list[0].instance._internal_on_delete()
             # forward status and contingency-message to RootNode
             self.set_status(self._child_ec_list[0].instance.get_status())
             self.set_contingency_message(self._child_ec_list[0]
