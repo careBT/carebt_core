@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 
 project = 'careBT'
 author = 'Andreas Steck'
-
+master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
 
