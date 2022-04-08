@@ -27,7 +27,10 @@ Framework integration
 
 The following framework integrations of **careBT** are currently available:
 
-* ROS2: https://github.com/careBT/carebt_ros2
+* ROS2:
+
+  * https://carebt-ros2.readthedocs.io/
+  * https://github.com/careBT/carebt_ros2
 
 Background
 ----------
