@@ -99,7 +99,7 @@ class ControlNode(TreeNode, ABC):
             self.get_logger().warn(f'{child_ec.node.__name__} takes '
                                    + f'{len(child_ec.instance._internal_get_in_params())} '
                                    + f'argument(s), but {len(child_ec.call_in_params)} '
-                                   + f'was/were provided')
+                                   + 'was/were provided')
         for i, var in enumerate(child_ec.call_in_params):
             if(isinstance(var, str) and len(var) > 0 and var[0] == '?'):
                 var = var.replace('?', '_', 1)

@@ -109,7 +109,7 @@ class ParallelNode(ControlNode, ABC):
     def _internal_prepare_next_tick(self) -> None:
         if(self.get_status() != NodeStatus.ABORTED):
             if(self._success_count >= self._success_threshold):
-                self.get_logger().debug(f'_success_count >= _success_threshold -- '
+                self.get_logger().debug('_success_count >= _success_threshold -- '
                                         + f'{self._success_count} >= {self._success_threshold}')
                 self.set_status(NodeStatus.SUCCESS)
             elif(self._fail_count >

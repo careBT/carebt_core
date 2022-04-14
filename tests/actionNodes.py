@@ -267,9 +267,9 @@ class AddTwoNumbersMultiTickAction(ActionNode):
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            mock(f'AddTwoNumbersMultiTickAction: DONE '
+            mock('AddTwoNumbersMultiTickAction: DONE '
                  + f'{self._x} + {self._y} = {self._z}')
-            print(f'AddTwoNumbersMultiTickAction: DONE '
+            print('AddTwoNumbersMultiTickAction: DONE '
                   + f'{self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 

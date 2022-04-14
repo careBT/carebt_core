@@ -50,7 +50,7 @@ class AddTwoNumbersMultiTickAction(ActionNode):
 
     def on_tick(self) -> None:
         if(self._tick_count < self._ticks):
-            print(f'AddTwoNumbersMultiTickAction: (tick_count = '
+            print('AddTwoNumbersMultiTickAction: (tick_count = '
                   + f'{self._tick_count}/{self._ticks})')
             self._tick_count += 1
             self.set_status(NodeStatus.RUNNING)
@@ -97,13 +97,13 @@ class AddTwoNumbersMultiTickActionWithTimeout(ActionNode):
 
     def on_tick(self) -> None:
         if(self._tick_count < self._ticks):
-            print(f'AddTwoNumbersMultiTickActionWithTimeout: (tick_count = '
+            print('AddTwoNumbersMultiTickActionWithTimeout: (tick_count = '
                   + f'{self._tick_count}/{self._ticks})')
             self._tick_count += 1
             self.set_status(NodeStatus.RUNNING)
         else:
             self._z = self._x + self._y
-            print(f'AddTwoNumbersMultiTickActionWithTimeout: '
+            print('AddTwoNumbersMultiTickActionWithTimeout: '
                   + f'DONE {self._x} + {self._y} = {self._z}')
             self.set_status(NodeStatus.SUCCESS)
 
