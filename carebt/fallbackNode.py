@@ -178,4 +178,4 @@ class FallbackNode(ControlNode, ABC):
            and self._child_ec_list[self._child_ptr].instance is not None):
             self._child_ec_list[self._child_ptr].instance._internal_on_delete()
         self._child_ec_list.clear()
-        self._child_ptr = 0
+        self._child_ptr = -1
