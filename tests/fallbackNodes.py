@@ -165,7 +165,14 @@ class AddTwoNumbersFallback5(FallbackNode):
 
 
 class AddTwoNumbersFallback6(FallbackNode):
-    """The `AddTwoNumbersFallback6` example node."""
+    """The `AddTwoNumbersFallback6` example node.
+
+    The `AddTwoNumbersFallback6` has two child nodes and a registered
+    contingency-handler. The first node fails, and thus, the `handle_missing_numbers
+    handler is executed. The handler removes all child nodes and adds two new children.
+    The first of the two newly added children complete with `SUCCESS` and thus, the
+    `AddTwoNumbersFallback6` also completes with `SUCCESS`.
+    """
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner)
@@ -197,7 +204,13 @@ class AddTwoNumbersFallback6(FallbackNode):
 
 
 class AddTwoNumbersFallback7(FallbackNode):
-    """The `AddTwoNumbersFallback7` example node."""
+    """The `AddTwoNumbersFallback7` example node.
+
+    The `AddTwoNumbersFallback7` has two child nodes and an execution timeout set to
+    1000ms. The execution of the first child node is configured to 2000ms (first parameter)
+    and thus, the `on_timeout` callback is executed. This callback aborts the
+    `AddTwoNumbersLongRunningAction` and thus also the `AddTwoNumbersFallback7`.
+    """
 
     def __init__(self, bt_runner):
         super().__init__(bt_runner)
