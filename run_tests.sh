@@ -1,3 +1,3 @@
 #!/bin/bash
 
-coverage run --branch --source=carebt -m pytest --cache-clear --flake8 -s -vv && coverage html
+coverage run --branch --source=carebt -m pytest --cache-clear --ignore=docs --flake8 -s -vv && coverage html
