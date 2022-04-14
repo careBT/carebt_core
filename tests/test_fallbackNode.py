@@ -23,6 +23,7 @@ from tests.fallbackNodes import AddTwoNumbersFallback3
 from tests.fallbackNodes import AddTwoNumbersFallback4
 from tests.fallbackNodes import AddTwoNumbersFallback5
 from tests.fallbackNodes import AddTwoNumbersFallback6
+from tests.fallbackNodes import AddTwoNumbersFallback6a
 from tests.fallbackNodes import AddTwoNumbersFallback7
 from tests.fallbackNodes import AsyncAddChildFallback
 from tests.fallbackNodes import RemoveAllChildrenFallback
@@ -187,6 +188,34 @@ class TestFallbackNode:
                                        call('__del__ HelloWorldAction'),
                                        call('on_delete AddTwoNumbersFallback6'),
                                        call('__del__ AddTwoNumbersFallback6')]
+
+    ########################################################################
+
+    def test_AddTwoNumbersFallback6a(self):
+        """Tests the AddTwoNumbersFallback6a."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.DEBUG)
+        bt_runner.run(AddTwoNumbersFallback6a)
+        assert mock.called
+        assert bt_runner.get_status() == NodeStatus.SUCCESS
+        assert bt_runner.get_contingency_message() == ''
+        print(mock.call_args_list)
+        assert mock.call_args_list == [call('__init__ AddTwoNumbersFallback6a'),
+                                       call('on_init AddTwoNumbersFallback6a'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: You did not provide two numbers!'),  # noqa: E501
+                                       call('AddTwoNumbersFallback6a: handle_missing_numbers'),
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
+                                       call('__init__ AddTwoNumbersActionWithFailure'),
+                                       call('on_init AddTwoNumbersActionWithFailure'),
+                                       call('AddTwoNumbersActionWithFailure: calculating: 3 + 6 = 9'),  # noqa: E501
+                                       call('on_delete AddTwoNumbersActionWithFailure'),
+                                       call('__del__ AddTwoNumbersActionWithFailure'),
+                                       call('on_delete AddTwoNumbersFallback6a'),
+                                       call('__del__ AddTwoNumbersFallback6a')]
 
     ########################################################################
 

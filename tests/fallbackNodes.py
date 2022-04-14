@@ -170,7 +170,8 @@ class AddTwoNumbersFallback6(FallbackNode):
     The `AddTwoNumbersFallback6` has two child nodes and a registered
     contingency-handler. The first node fails, and thus, the `handle_missing_numbers
     handler is executed. The handler removes all child nodes and adds two new children.
-    The first of the two newly added children complete with `SUCCESS` and thus, the
+    As the children are added with `insert_child_after_current` the secondly added child
+    is executed which completes with `SUCCESS` and thus, the
     `AddTwoNumbersFallback6` also completes with `SUCCESS`.
     """
 
@@ -181,7 +182,7 @@ class AddTwoNumbersFallback6(FallbackNode):
     def on_init(self) -> None:
         mock('on_init AddTwoNumbersFallback6')
         self.append_child(AddTwoNumbersActionWithFailure, '3 => ?result')
-        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '4 8 => ?result')
 
         self.register_contingency_handler(AddTwoNumbersActionWithFailure,
                                           [NodeStatus.FAILURE],
@@ -199,6 +200,45 @@ class AddTwoNumbersFallback6(FallbackNode):
 
     def __del__(self):
         mock('__del__ AddTwoNumbersFallback6')
+
+########################################################################
+
+
+class AddTwoNumbersFallback6a(FallbackNode):
+    """The `AddTwoNumbersFallback6a` example node.
+
+    The `AddTwoNumbersFallback6a` has two child nodes and a registered
+    contingency-handler. The first node fails, and thus, the `handle_missing_numbers
+    handler is executed. The handler removes all child nodes and adds two new children.
+    The first of the two newly added children complete with `SUCCESS` and thus, the
+    `AddTwoNumbersFallback6` also completes with `SUCCESS`.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ AddTwoNumbersFallback6a')
+
+    def on_init(self) -> None:
+        mock('on_init AddTwoNumbersFallback6a')
+        self.append_child(AddTwoNumbersActionWithFailure, '3 => ?result')
+        self.append_child(AddTwoNumbersActionWithFailure, '4 8 => ?result')
+
+        self.register_contingency_handler(AddTwoNumbersActionWithFailure,
+                                          [NodeStatus.FAILURE],
+                                          'NOT_TWO_NUMBERS_PROVIDED',
+                                          self.handle_missing_numbers)
+
+    def handle_missing_numbers(self):
+        mock('AddTwoNumbersFallback6a: handle_missing_numbers')
+        self.remove_all_children()
+        self.append_child(AddTwoNumbersActionWithFailure, '3 6 => ?result')
+        self.append_child(HelloWorldAction)
+
+    def on_delete(self) -> None:
+        mock('on_delete AddTwoNumbersFallback6a')
+
+    def __del__(self):
+        mock('__del__ AddTwoNumbersFallback6a')
 
 ########################################################################
 
