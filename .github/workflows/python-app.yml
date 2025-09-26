@@ -38,6 +38,6 @@ jobs:
     - name: Upload coverage to Qlty
       uses: qltysh/qlty-action/coverage@v2
       with:
-        token: ${{ secrets.QLTY_API_KEY }}
+        token: ${{ secrets.QLTCP_API_KEY }}
         files: coverage.xml
         tag: unit        
