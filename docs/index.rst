@@ -6,6 +6,8 @@
 careBT - contingency aware Behavior Trees
 =========================================
 
+View source on GitHub: https://github.com/careBT/carebt_core
+
 .. toctree::
    :maxdepth: 2
    :caption: Basics:
