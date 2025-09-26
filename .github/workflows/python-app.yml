@@ -33,11 +33,3 @@ jobs:
       run: |
         coverage run --branch --source=carebt -m pytest
         coverage xml
-
-    # Step 5: Upload coverage to Code Climate
-    - name: Upload coverage to Code Climate
-      uses: codeclimate/codeclimate-action@v0.5.0
-      with:
-        coverageCommand: coverage xml
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CodeClimate }}
