@@ -26,7 +26,7 @@ jobs:
       run: |
         coverage run --branch --source=carebt -m pytest
 
-    - uses: paambaati/codeclimate-action@v2.5.3
+    - uses: paambaati/codeclimate-action@v2
       if: always()
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CodeClimate }}
