@@ -36,7 +36,7 @@ jobs:
 
     # Step5: Upload coverage to Qlty
     - name: Upload coverage to Qlty
-      uses: qltysh/qlty-action/coverage@v2
+      uses: qltysh/qlty-action/coverage@v2.2.0
       with:
         token: ${{ secrets.QLTCP_API_KEY }}
         files: coverage.xml
