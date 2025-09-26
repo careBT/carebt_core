@@ -33,3 +33,11 @@ jobs:
       run: |
         coverage run --branch --source=carebt -m pytest
         coverage xml
+
+    # Step5: Upload coverage to Qlty
+    - name: Upload coverage to Qlty
+      uses: qltysh/qlty-action/coverage@v2
+      with:
+        token: ${{ secrets.QLTY_API_KEY }}
+        files: coverage.xml
+        tag: unit        
