@@ -30,6 +30,7 @@ from tests.sequenceNodes import AddTwoNumbersSequence7
 from tests.sequenceNodes import AddTwoNumbersSequence8
 from tests.sequenceNodes import AddTwoNumbersSequence9
 from tests.sequenceNodes import AsyncAddChildSequence
+from tests.sequenceNodes import ParallelWithSequenceAbortOnNoneChild
 from tests.sequenceNodes import RemoveAllChildrenSequence
 from tests.sequenceNodes import SequenceWithSuccessMessage_1
 from tests.sequenceNodes import SequenceWithSuccessMessage_2
@@ -710,3 +711,27 @@ class TestSequenceNode:
                                        call('ShowNumberAction: The numer is: 14!'),
                                        call('on_delete ShowNumberAction'),
                                        call('__del__ ShowNumberAction')]
+
+    ########################################################################
+
+    def test_abort_sequence_with_none_child_instance(self):
+        """Test that aborting a SequenceNode works when current child instance is None.
+
+        This test reproduces the bug where _internal_on_abort crashes with
+        AttributeError when the current child's instance is None. The scenario:
+        - A ParallelNode (success_threshold=2) has two children:
+          1. SequenceWithImmediateFirstChild: first child completes immediately,
+             pointer advances to second child (which hasn't been instantiated yet)
+          2. AddTwoNumbersActionWithFailure: fails immediately (no params)
+        - The parallel fails and aborts the still-RUNNING sequence
+        - The sequence's _internal_on_abort is called with child_ptr pointing to
+          a child whose instance is None
+        - Without the fix, this causes: AttributeError: 'NoneType' object has no
+          attribute 'get_status'
+        """
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(ParallelWithSequenceAbortOnNoneChild)
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_contingency_message() == 'NOT_TWO_NUMBERS_PROVIDED'

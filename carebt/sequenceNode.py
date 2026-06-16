@@ -123,7 +123,8 @@ class SequenceNode(ControlNode, ABC):
             self.set_contingency_message(self._child_ec_list[self._child_ptr]
                                          .instance.get_contingency_message())
         # abort current child if RUNNING or SUSPENDED
-        if(self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.RUNNING or
+        if self._child_ec_list[self._child_ptr].instance is not None \
+            and (self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.RUNNING or
            self._child_ec_list[self._child_ptr].instance.get_status() == NodeStatus.SUSPENDED):
             self._child_ec_list[self._child_ptr].instance._internal_on_abort()
 

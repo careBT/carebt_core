@@ -16,6 +16,7 @@ from threading import Timer
 
 from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.nodeStatus import NodeStatus
+from carebt.parallelNode import ParallelNode
 from carebt.sequenceNode import SequenceNode
 from tests.actionNodes import AddTwoNumbersAction
 from tests.actionNodes import AddTwoNumbersActionWithFailure
@@ -628,3 +629,63 @@ class AddTwoNumbersDynamic(SequenceNode):
         for self.v in values:
             self.append_child(AddTwoNumbersAction, 'v[0] 5 => ?result')
             self.append_child(ShowNumberAction, '?result')
+
+########################################################################
+
+
+class SequenceWithImmediateFirstChild(SequenceNode):
+    """A SequenceNode where the first child completes immediately.
+
+    Used to test the scenario where _internal_on_abort is called when the
+    current child's instance is None (because the first child already completed
+    and the pointer advanced to the second child which hasn't been created yet).
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner)
+        mock('__init__ SequenceWithImmediateFirstChild')
+
+    def on_init(self) -> None:
+        mock('on_init SequenceWithImmediateFirstChild')
+        self.append_child(AddTwoNumbersAction, '3 6 => ?result')
+        self.append_child(ShowNumberAction, '?result')
+
+    def on_abort(self) -> None:
+        mock('on_abort SequenceWithImmediateFirstChild')
+
+    def on_delete(self) -> None:
+        mock('on_delete SequenceWithImmediateFirstChild')
+
+    def __del__(self):
+        mock('__del__ SequenceWithImmediateFirstChild')
+
+########################################################################
+
+
+class ParallelWithSequenceAbortOnNoneChild(ParallelNode):
+    """A ParallelNode that triggers abort on a SequenceNode with None child instance.
+
+    This ParallelNode has success_threshold=2. It contains:
+    - SequenceWithImmediateFirstChild (first child completes immediately, pointer advances)
+    - AddTwoNumbersActionWithFailure (fails immediately because no params provided)
+
+    When the failing action causes the parallel to fail, it aborts the still-RUNNING
+    sequence. At that point, the sequence's current child pointer points to a child
+    whose instance is None (not yet created). Without the None check in
+    _internal_on_abort, this causes an AttributeError.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 2)
+        mock('__init__ ParallelWithSequenceAbortOnNoneChild')
+
+    def on_init(self) -> None:
+        mock('on_init ParallelWithSequenceAbortOnNoneChild')
+        self.add_child(SequenceWithImmediateFirstChild)
+        self.add_child(AddTwoNumbersActionWithFailure)
+
+    def on_delete(self) -> None:
+        mock('on_delete ParallelWithSequenceAbortOnNoneChild')
+
+    def __del__(self):
+        mock('__del__ ParallelWithSequenceAbortOnNoneChild')
