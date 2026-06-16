@@ -1,0 +1,17 @@
+{
+    "name": "careBT",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "postCreateCommand": "pip install -e . && pip install pytest",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.testing.pytestArgs": ["tests", "-s", "-vv"],
+                "python.testing.unittestEnabled": false,
+                "python.testing.pytestEnabled": true
+            },
+            "extensions": [
+                "ms-python.python"
+            ]
+        }
+    }
+}
