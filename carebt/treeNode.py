@@ -15,6 +15,7 @@
 from abc import ABC
 from abc import abstractmethod
 from datetime import datetime
+from threading import RLock
 from threading import Timer
 from typing import final
 from typing import List
@@ -48,6 +49,7 @@ class TreeNode(ABC):
         self.__params = params
         self.__in_params: List[str] = []
         self.__out_params: List[str] = []
+        self._status_lock = RLock()
         self.__timeout_timer = None
 
         # create local variables
@@ -219,14 +221,15 @@ class TreeNode(ABC):
             Current status of the node
 
         """
-        self.__node_status = node_status
-        # If the status of the node is set to one of the following,
-        # make sure that the timeout timer is canceled.
-        if(node_status == NodeStatus.SUCCESS
-           or node_status == NodeStatus.FAILURE
-           or node_status == NodeStatus.FIXED
-           or node_status == NodeStatus.ABORTED):
-            self.cancel_timeout_timer()
+        with self._status_lock:
+            self.__node_status = node_status
+            # If the status of the node is set to one of the following,
+            # make sure that the timeout timer is canceled.
+            if(node_status == NodeStatus.SUCCESS
+               or node_status == NodeStatus.FAILURE
+               or node_status == NodeStatus.FIXED
+               or node_status == NodeStatus.ABORTED):
+                self.cancel_timeout_timer()
 
     @final
     def get_contingency_history(self) -> list:
@@ -273,7 +276,8 @@ class TreeNode(ABC):
             The contingency message
 
         """
-        self.__contingency_message = contingency_message
+        with self._status_lock:
+            self.__contingency_message = contingency_message
 
     @final
     def abort(self) -> None:

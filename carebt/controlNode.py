@@ -75,12 +75,21 @@ class ControlNode(TreeNode, ABC):
             self._last_ts = current_ts
 
         # tick child nodes and apply contingency-handler
-        self._internal_tick_child_nodes(tick)
+        locked_status_locks = []
+        for ec in self._child_ec_list:
+            if ec.instance is not None:
+                ec.instance._status_lock.acquire()
+                locked_status_locks.append(ec.instance._status_lock)
+        try:
+            self._internal_tick_child_nodes(tick)
 
-        if(tick is True):
-            self.on_tick()
+            if(tick is True):
+                self.on_tick()
 
-        self._internal_prepare_next_tick()
+            self._internal_prepare_next_tick()
+        finally:
+            for lock in locked_status_locks:
+                lock.release()
 
     # @abstractmethod
     def _internal_create_child_nodes(self) -> None:
