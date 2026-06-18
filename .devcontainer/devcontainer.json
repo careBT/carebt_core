@@ -1,7 +1,7 @@
 {
     "name": "careBT",
     "image": "mcr.microsoft.com/devcontainers/python:3.12",
-    "postCreateCommand": "pip install -e . && pip install pytest",
+    "postCreateCommand": "pip install -e . && pip install pytest build twine",
     "customizations": {
         "vscode": {
             "settings": {
