@@ -64,15 +64,15 @@ class TickCountingParallel(ParallelNode):
     ?g1: int
         The goal of child 1
     ?s1: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g2: int
         The goal of child 1
     ?s2: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g3: int
         The goal of child 1
     ?s3: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
 
     """
 
@@ -109,15 +109,15 @@ class TickCountingParallelWithAbort(ParallelNode):
     ?g1: int
         The goal of child 1
     ?s1: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g2: int
         The goal of child 1
     ?s2: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g3: int
         The goal of child 1
     ?s3: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
 
     """
 
@@ -164,15 +164,15 @@ class TickCountingParallelDelAdd1(ParallelNode):
     ?g1: int
         The goal of child 1
     ?s1: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g2: int
         The goal of child 1
     ?s2: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g3: int
         The goal of child 1
     ?s3: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
 
     """
 
@@ -220,15 +220,15 @@ class TickCountingParallelDelAdd2(ParallelNode):
     ?g1: int
         The goal of child 1
     ?s1: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g2: int
         The goal of child 1
     ?s2: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g3: int
         The goal of child 1
     ?s3: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
 
     """
 
@@ -277,15 +277,15 @@ class TickCountingParallelDel(ParallelNode):
     ?g1: int
         The goal of child 1
     ?s1: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g2: int
         The goal of child 1
     ?s2: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g3: int
         The goal of child 1
     ?s3: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
 
     """
 
@@ -332,15 +332,15 @@ class TickCountingParallelDelAllAdd(ParallelNode):
     ?g1: int
         The goal of child 1
     ?s1: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g2: int
         The goal of child 1
     ?s2: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
     ?g3: int
         The goal of child 1
     ?s3: int
-        Wether child 1 should succeed or fail
+        Whether child 1 should succeed or fail
 
     """
 

@@ -837,7 +837,7 @@ class TickCountingAction(ActionNode):
     ?goal : int (Default = 10)
         The goal tick count.
     ?success : bool (Default = True)
-        Wether the node should succeed or fail.
+        Whether the node should succeed or fail.
 
     Output Parameters
     -----------------
