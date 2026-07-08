@@ -484,3 +484,153 @@ class AsyncAddChildParallel(ParallelNode):
         self.set_status(NodeStatus.RUNNING)
         self.add_child(HelloWorldAction)
         self.add_child(HelloWorldAction)
+
+########################################################################
+
+
+class AddOnMod3Parallel(ParallelNode):
+    """The `AddOnMod3Parallel` example node.
+
+    The `AddOnMod3Parallel` has one child that increments a counter on each tick.
+    In the parallel node's `on_tick`, whenever the counter mod 3 == 0, a new
+    `HelloWorldAction` child is added. The goal is to reach 5 successful
+    HelloWorldAction completions.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 5, '')
+        mock('__init__ AddOnMod3Parallel')
+
+    def on_init(self) -> None:
+        mock('on_init AddOnMod3Parallel')
+        self._cnt = 0
+        self.add_child(TickCountingAction, '1 99 True => ?cnt')
+
+        self.register_contingency_handler(TickCountingAction,
+                                          [NodeStatus.RUNNING],
+                                          '.*',
+                                          self.handle_contingency)
+
+    def handle_contingency(self) -> None:
+        if self._cnt is not None and self._cnt > 0 and self._cnt % 3 == 0:
+            mock(f'on_tick AddOnMod3Parallel: cnt={self._cnt} -> adding HelloWorldAction')
+            self.add_child(HelloWorldAction, '"Alice"')
+
+    def on_delete(self) -> None:
+        mock('on_delete AddOnMod3Parallel')
+
+    def __del__(self):
+        mock('__del__ AddOnMod3Parallel')
+
+########################################################################
+
+
+class DynamicFailWithRunningChildParallel(ParallelNode):
+    """Parallel node where dynamically added children fail but a running child keeps it alive.
+
+    A TickCountingAction runs for 15 ticks. Every 3 ticks, a HelloWorldAction("fail")
+    is added via contingency handler. With success_threshold=3, the parallel node should
+    NOT fail prematurely because the TickCountingAction is still running and could
+    trigger more children to be added.
+
+    After the TickCountingAction completes with SUCCESS, and only failures were
+    accumulated from HelloWorldActions, the node should then fail because no running
+    children remain and success_threshold cannot be reached.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 3, '')
+        mock('__init__ DynamicFailWithRunningChildParallel')
+
+    def on_init(self) -> None:
+        mock('on_init DynamicFailWithRunningChildParallel')
+        self._cnt = 0
+        self.add_child(TickCountingAction, '1 15 True => ?cnt')
+
+        self.register_contingency_handler(TickCountingAction,
+                                          [NodeStatus.RUNNING],
+                                          '.*',
+                                          self.handle_contingency)
+
+    def handle_contingency(self) -> None:
+        if self._cnt is not None and self._cnt > 0 and self._cnt % 3 == 0:
+            mock(f'DynamicFailWithRunningChildParallel: cnt={self._cnt} -> adding failing child')
+            self.add_child(HelloWorldAction, '"fail"')
+
+    def on_delete(self) -> None:
+        mock('on_delete DynamicFailWithRunningChildParallel')
+
+    def __del__(self):
+        mock('__del__ DynamicFailWithRunningChildParallel')
+
+
+########################################################################
+
+
+class StaticAllFailParallel(ParallelNode):
+    """Parallel node where all children are added upfront and all fail.
+
+    Three HelloWorldAction("fail") children are added with success_threshold=2.
+    All fail immediately. With no running children remaining, the parallel node
+    should detect failure correctly.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 2, '')
+        mock('__init__ StaticAllFailParallel')
+
+    def on_init(self) -> None:
+        mock('on_init StaticAllFailParallel')
+        self.add_child(HelloWorldAction, '"fail"')
+        self.add_child(HelloWorldAction, '"fail"')
+        self.add_child(HelloWorldAction, '"fail"')
+
+    def on_delete(self) -> None:
+        mock('on_delete StaticAllFailParallel')
+
+    def __del__(self):
+        mock('__del__ StaticAllFailParallel')
+
+
+########################################################################
+
+
+class DynamicFailThenSucceedParallel(ParallelNode):
+    """Parallel node where early failures don't prevent eventual success.
+
+    Every 3 ticks, alternately a HelloWorldAction("fail") or 
+    HelloWorldAction("Alice") is added. With success_threshold=2, the node
+    should eventually succeed once enough successful children complete,
+    despite earlier failures.
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, 2, '')
+        mock('__init__ DynamicFailThenSucceedParallel')
+
+    def on_init(self) -> None:
+        mock('on_init DynamicFailThenSucceedParallel')
+        self._cnt = 0
+        self._add_count = 0
+        self.add_child(TickCountingAction, '1 20 True => ?cnt')
+
+        self.register_contingency_handler(TickCountingAction,
+                                          [NodeStatus.RUNNING],
+                                          '.*',
+                                          self.handle_contingency)
+
+    def handle_contingency(self) -> None:
+        if self._cnt is not None and self._cnt > 0 and self._cnt % 3 == 0:
+            self._add_count += 1
+            if self._add_count % 2 == 1:
+                mock(f'DynamicFailThenSucceedParallel - cnt={self._cnt} -> adding failing child')
+                self.add_child(HelloWorldAction, '"fail"')
+            else:
+                mock(f'DynamicFailThenSucceedParallel - cnt={self._cnt} -> adding success child')
+                self.add_child(HelloWorldAction, '"Alice"')
+
+    def on_delete(self) -> None:
+        mock('on_delete DynamicFailThenSucceedParallel')
+
+    def __del__(self):
+        mock('__del__ DynamicFailThenSucceedParallel')

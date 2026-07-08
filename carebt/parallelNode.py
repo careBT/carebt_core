@@ -66,6 +66,7 @@ class ParallelNode(ControlNode, ABC):
         self._success_threshold = success_threshold
         self._success_count = 0
         self._fail_count = 0
+        self._had_dynamic_children = False
 
     # PROTECTED
 
@@ -112,14 +113,28 @@ class ParallelNode(ControlNode, ABC):
                 self.get_logger().debug('_success_count >= _success_threshold -- '
                                         + f'{self._success_count} >= {self._success_threshold}')
                 self.set_status(NodeStatus.SUCCESS)
-            elif(self._fail_count >
-                 len(self._child_ec_list) - self._success_threshold):
-                self.get_logger().debug('_fail_count > len(_current_children) - '
-                                        + f'_success_threshold -- {self._fail_count} > '
-                                        + f'{len(self._child_ec_list)} - '
-                                        + f'{self._success_threshold}')
-                self.set_status(NodeStatus.FAILURE)
-                self.set_contingency_message(self.__last_child_contingency_msg)
+            elif(self._created_child_size >= self._success_threshold
+                 and self._fail_count > self._created_child_size - self._success_threshold):
+                # For dynamic parallel nodes (children added at runtime),
+                # only fail if no running/suspended children remain
+                can_fail = True
+                if self._had_dynamic_children:
+                    has_running = any(
+                        ec.instance is not None
+                        and ec.instance.get_status() in (NodeStatus.RUNNING,
+                                                         NodeStatus.SUSPENDED)
+                        for ec in self._child_ec_list
+                    )
+                    if has_running:
+                        can_fail = False
+                if can_fail:
+                    self.get_logger().debug('_fail_count > _created_child_size - '
+                                            + f'_success_threshold -- {self._fail_count} > '
+                                            + f'{self._created_child_size} - '
+                                            + f'{self._success_threshold} = '
+                                            + f'{self._created_child_size - self._success_threshold}')
+                    self.set_status(NodeStatus.FAILURE)
+                    self.set_contingency_message(self.__last_child_contingency_msg)
 
             if(self.get_status() == NodeStatus.SUCCESS
                or self.get_status() == NodeStatus.FAILURE):
@@ -187,6 +202,8 @@ class ParallelNode(ControlNode, ABC):
 
         """
         self._child_ec_list.append(ExecutionContext(self, node, params))
+        if self._created_child_size > 0:
+            self._had_dynamic_children = True
 
     def remove_child(self, pos: int) -> None:
         """Remove a child node.

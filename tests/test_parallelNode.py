@@ -19,11 +19,15 @@ from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.nodeStatus import NodeStatus
 from tests.global_mock import mock
+from tests.parallelNodes import AddOnMod3Parallel
 from tests.parallelNodes import AddTwoNumbersParallel
 from tests.parallelNodes import AsyncAddChildParallel
 from tests.parallelNodes import CountAbortParallel
 from tests.parallelNodes import CountAbortParallelWithTick
+from tests.parallelNodes import DynamicFailThenSucceedParallel
+from tests.parallelNodes import DynamicFailWithRunningChildParallel
 from tests.parallelNodes import ParallelRemoveSuccess
+from tests.parallelNodes import StaticAllFailParallel
 from tests.parallelNodes import TickCountingParallel
 from tests.parallelNodes import TickCountingParallelDel
 from tests.parallelNodes import TickCountingParallelDelAdd1
@@ -621,3 +625,97 @@ class TestParallelNode:
                                        call('__del__ HelloWorldAction'),
                                        call('HelloWorldAction: Hello World !!!'),
                                        call('__del__ HelloWorldAction')]
+
+    ########################################################################
+
+    def test_AddOnMod3Parallel(self):
+        """Test the AddOnMod3Parallel node."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AddOnMod3Parallel)
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''
+        assert mock.call_args_list == [call('__init__ AddOnMod3Parallel'),
+                                       call('on_init AddOnMod3Parallel'),
+                                       call('__init__ TickCountingAction'),
+                                       call('on_init TickCountingAction id = 1'),
+                                       call('TickCountingAction id = 1 tick: 1/99'),
+                                       call('TickCountingAction id = 1 tick: 2/99'),
+                                       call('TickCountingAction id = 1 tick: 3/99'),
+                                       call('on_tick AddOnMod3Parallel: cnt=3 -> adding HelloWorldAction'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 4/99'),
+                                       call('HelloWorldAction: Hello Alice !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 5/99'),
+                                       call('TickCountingAction id = 1 tick: 6/99'),
+                                       call('on_tick AddOnMod3Parallel: cnt=6 -> adding HelloWorldAction'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 7/99'),
+                                       call('HelloWorldAction: Hello Alice !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 8/99'),
+                                       call('TickCountingAction id = 1 tick: 9/99'),
+                                       call('on_tick AddOnMod3Parallel: cnt=9 -> adding HelloWorldAction'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 10/99'),
+                                       call('HelloWorldAction: Hello Alice !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 11/99'),
+                                       call('TickCountingAction id = 1 tick: 12/99'),
+                                       call('on_tick AddOnMod3Parallel: cnt=12 -> adding HelloWorldAction'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 13/99'),
+                                       call('HelloWorldAction: Hello Alice !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 14/99'),
+                                       call('TickCountingAction id = 1 tick: 15/99'),
+                                       call('on_tick AddOnMod3Parallel: cnt=15 -> adding HelloWorldAction'),
+                                       call('__init__ HelloWorldAction'),
+                                       call('TickCountingAction id = 1 tick: 16/99'),
+                                       call('HelloWorldAction: Hello Alice !!!'),
+                                       call('__del__ HelloWorldAction'),
+                                       call('on_abort TickCountingAction id = 1'),
+                                       call('on_delete TickCountingAction id = 1'),
+                                       call('__del__ TickCountingAction id = 1'),
+                                       call('on_delete AddOnMod3Parallel'),
+                                       call('__del__ AddOnMod3Parallel')]
+
+    ########################################################################
+
+    def test_DynamicFailWithRunningChildParallel(self):
+        """Test that dynamically added failing children don't cause premature failure."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(DynamicFailWithRunningChildParallel)
+        assert mock.called
+        # The TickCountingAction succeeds (counts as 1 success), but with
+        # success_threshold=3 and multiple failures, it should eventually fail
+        # because it can't reach 3 successes.
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_contingency_message() == 'WRONG_NAME_PROVIDED'
+        # Verify the TickCountingAction was NOT aborted prematurely - it completed
+        assert call('TickCountingAction id = 1 DONE with SUCCESS') in mock.call_args_list
+
+    ########################################################################
+
+    def test_StaticAllFailParallel(self):
+        """Test that static failure detection works."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(StaticAllFailParallel)
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.FAILURE
+        assert bt_runner._instance.get_contingency_message() == 'WRONG_NAME_PROVIDED'
+
+    ########################################################################
+
+    def test_DynamicFailThenSucceedParallel(self):
+        """Test that a parallel node can succeed despite early dynamic failures."""
+        mock.reset_mock()
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(DynamicFailThenSucceedParallel)
+        assert mock.called
+        assert bt_runner._instance.get_status() == NodeStatus.SUCCESS
+        assert bt_runner._instance.get_contingency_message() == ''

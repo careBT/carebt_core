@@ -47,10 +47,16 @@ class HelloWorldAction(ActionNode):
         if self._name is None:
             mock('HelloWorldAction: Hello World !!!')
             print('HelloWorldAction: Hello World !!!')
+            self.set_status(NodeStatus.SUCCESS)
+        elif self._name.upper() == 'FAIL':
+            mock('HelloWorldAction: Hello FAIL !!!')
+            print('HelloWorldAction: Hello FAIL !!!')
+            self.set_status(NodeStatus.FAILURE)
+            self.set_contingency_message('WRONG_NAME_PROVIDED')
         else:
             mock(f'HelloWorldAction: Hello {self._name} !!!')
             print(f'HelloWorldAction: Hello {self._name} !!!')
-        self.set_status(NodeStatus.SUCCESS)
+            self.set_status(NodeStatus.SUCCESS)
 
     def __del__(self):
         mock('__del__ HelloWorldAction')
