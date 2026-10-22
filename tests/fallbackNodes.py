@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from threading import Timer
-
 from carebt.fallbackNode import FallbackNode
 from carebt.nodeStatus import NodeStatus
 from tests.actionNodes import AddTwoNumbersActionWithFailure
@@ -292,7 +290,7 @@ class AsyncAddChildFallback(FallbackNode):
 
     def on_init(self) -> None:
         mock('on_init AsyncAddChildFallback')
-        Timer(0.5, self.done_callback).start()
+        self.create_timer(500, self.done_callback)
 
     def done_callback(self) -> None:
         mock('AsyncAddChildFallback: DONE')

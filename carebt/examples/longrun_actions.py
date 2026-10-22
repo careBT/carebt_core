@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from threading import Timer
+from threading import Thread
+from time import sleep
 
 from carebt import ActionNode
 from carebt import NodeStatus
@@ -123,7 +124,7 @@ class AddTwoNumbersLongRunningAction(ActionNode):
 
     The `AddTwoNumbersLongRunningAction` demonstrates how it looks like when a
     `ActionNode` executes an asynchronous function. To make things simple the
-    asynchronous function is implemented with a simple Python timer and
+    asynchronous function is implemented with a careBT timer and
     the amount of milliseconds the asynchronous function requires to complete
     is provided as input parameter.
 
@@ -149,7 +150,7 @@ class AddTwoNumbersLongRunningAction(ActionNode):
     def on_init(self) -> None:
         print(f'AddTwoNumbersLongRunningAction: calculating {self._calctime} ms ...')
         self.set_status(NodeStatus.SUSPENDED)
-        Timer(self._calctime / 1000, self.done_callback).start()
+        self.create_timer(self._calctime, self.done_callback)
 
     def on_tick(self) -> None:
         print('AddTwoNumbersLongRunningAction: on_tick')
@@ -158,3 +159,68 @@ class AddTwoNumbersLongRunningAction(ActionNode):
         self._z = self._x + self._y
         print(f'AddTwoNumbersLongRunningAction: DONE {self._x} + {self._y} = {self._z}')
         self.set_status(NodeStatus.SUCCESS)
+
+########################################################################
+
+
+class AddTwoNumbersLongRunningActionWithThread(ActionNode):
+    """The `AddTwoNumbersLongRunningActionWithThread` example node.
+
+    The `AddTwoNumbersLongRunningActionWithThread` demonstrates how it looks
+    like when a `ActionNode` executes an asynchronous function which reports
+    its result in another thread. To make things simple the asynchronous
+    function is implemented with a Python thread which sleeps for one second.
+    As the state of a node must never be changed from another thread, the
+    thread hands over the result to the careBT execution engine by creating
+    a careBT timer with a delay of 0 ms. The timer callback is then executed
+    in the thread which ticks the behavior tree.
+
+    Input Parameters
+    ----------------
+    ?success : bool
+        If `True` the asynchronous function succeeds, otherwise it fails
+    ?x : int
+        The first value
+    ?y : int
+        The second value
+
+    Output Parameters
+    -----------------
+    ?z : int
+        The sum of ?x and ?y
+
+    Contingencies
+    -------------
+    FAILURE:
+        CALCULATION_FAILED
+            The asynchronous function failed.
+
+    """
+
+    def __init__(self, bt_runner):
+        super().__init__(bt_runner, '?success ?x ?y => ?z')
+
+    def on_init(self) -> None:
+        print('AddTwoNumbersLongRunningActionWithThread: calculating 1000 ms ...')
+        self.set_status(NodeStatus.SUSPENDED)
+        Thread(target=self.calculate, daemon=True).start()
+
+    def calculate(self) -> None:
+        # executed in another thread -> hand over to the careBT execution engine
+        sleep(1)
+        if(self._success):
+            result = self._x + self._y
+            self.create_timer(0, lambda: self.done_callback(result))
+        else:
+            self.create_timer(0, self.failure_callback)
+
+    def done_callback(self, result: int) -> None:
+        self._z = result
+        print('AddTwoNumbersLongRunningActionWithThread: '
+              + f'DONE {self._x} + {self._y} = {self._z}')
+        self.set_status(NodeStatus.SUCCESS)
+
+    def failure_callback(self) -> None:
+        print('AddTwoNumbersLongRunningActionWithThread: FAILED')
+        self.set_status(NodeStatus.FAILURE)
+        self.set_contingency_message('CALCULATION_FAILED')

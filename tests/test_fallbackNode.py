@@ -237,8 +237,8 @@ class TestFallbackNode:
                                        call('on_timeout AddTwoNumbersFallback7'),
                                        call('on_abort AddTwoNumbersLongRunningAction'),
                                        call('on_delete AddTwoNumbersLongRunningAction'),
-                                       call('on_abort AddTwoNumbersFallback7'),
                                        call('__del__ AddTwoNumbersLongRunningAction'),
+                                       call('on_abort AddTwoNumbersFallback7'),
                                        call('on_delete AddTwoNumbersFallback7'),
                                        call('__del__ AddTwoNumbersFallback7')]
 

@@ -16,6 +16,7 @@ from carebt.abstractLogger import AbstractLogger
 from carebt.abstractLogger import LogLevel
 from carebt.actionNode import ActionNode
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
+from carebt.careBTTimer import CareBTTimer
 from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.controlNode import ControlNode
 from carebt.executionContext import ExecutionContext
@@ -32,6 +33,7 @@ __all__ = ['AbstractLogger',
            'LogLevel',
            'ActionNode',
            'BehaviorTreeRunner',
+           'CareBTTimer',
            'ContingencyHistoryEntry',
            'ControlNode',
            'ExecutionContext',

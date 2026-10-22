@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from threading import Timer
-
 from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.nodeStatus import NodeStatus
 from carebt.parallelNode import ParallelNode
@@ -586,7 +584,7 @@ class AsyncAddChildSequence(SequenceNode):
 
     def on_init(self) -> None:
         mock('on_init AsyncAddChildSequence')
-        Timer(0.5, self.done_callback).start()
+        self.create_timer(500, self.done_callback)
 
     def done_callback(self) -> None:
         mock('AsyncAddChildSequence: DONE')

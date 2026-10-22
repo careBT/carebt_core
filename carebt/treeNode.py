@@ -15,12 +15,13 @@
 from abc import ABC
 from abc import abstractmethod
 from datetime import datetime
-from threading import RLock
-from threading import Timer
+from threading import get_ident
+from typing import Callable
 from typing import final
 from typing import List
 from typing import TYPE_CHECKING
 
+from carebt.careBTTimer import CareBTTimer
 from carebt.contingencyHistoryEntry import ContingencyHistoryEntry
 from carebt.nodeStatus import NodeStatus
 
@@ -49,8 +50,9 @@ class TreeNode(ABC):
         self.__params = params
         self.__in_params: List[str] = []
         self.__out_params: List[str] = []
-        self._status_lock = RLock()
-        self.__timeout_timer = None
+        self.__timeout_timer: CareBTTimer = None
+        self.__timers: List[CareBTTimer] = []
+        self.__deleted = False
 
         # create local variables
         if(self.__params is not None):
@@ -78,13 +80,32 @@ class TreeNode(ABC):
     # PRIVATE
 
     @final
-    def __internal_on_timeout(self):
+    def __internal_on_timeout(self) -> None:
+        self.__timeout_timer = None
         # timeout can only occure when state is RUNNING OR SUSPENDED
         if(self.get_status() == NodeStatus.RUNNING
            or self.get_status() == NodeStatus.SUSPENDED):
             self.on_timeout()
 
-        self.cancel_timeout_timer()
+    @final
+    def __check_thread(self, method: str) -> None:
+        tick_thread_id = self.bt_runner._tick_thread_id
+        if(tick_thread_id is not None and tick_thread_id != get_ident()):
+            self.get_logger().warn(f'{self.__class__.__name__}.{method} called from another '
+                                   + 'thread than the one which ticks the behavior tree')
+
+    @final
+    def __internal_on_timer(self, callback: Callable) -> None:
+        # never call a timer callback on a deleted node
+        if(not self.__deleted):
+            callback()
+
+    @final
+    def __cancel_timers(self) -> None:
+        for timer in list(self.__timers):
+            timer.cancel()
+        self.__timers.clear()
+        self.__timeout_timer = None
 
     # PROTECTED
 
@@ -93,9 +114,11 @@ class TreeNode(ABC):
         raise NotImplementedError
 
     def _internal_on_abort(self) -> None:
-        self.cancel_timeout_timer()
+        self.__cancel_timers()
 
     def _internal_on_delete(self) -> None:
+        self.__deleted = True
+        self.__cancel_timers()
         self.on_delete()
 
     @final
@@ -186,11 +209,41 @@ class TreeNode(ABC):
         return self.__node_status
 
     @final
+    def create_timer(self, delay_ms: int, callback: Callable) -> CareBTTimer:
+        """Create a one-shot timer bound to the lifetime of the node.
+
+        The callback is executed by the careBT execution engine in the thread
+        which ticks the behavior tree, right before the next tick after the timer
+        has expired. Thus, the callback can safely change the state of the node,
+        e.g. call `set_status`. All timers of the node are canceled automatically
+        when the node is aborted or deleted.
+
+        Parameters
+        ----------
+        delay_ms: int
+            The delay in milliseconds after which the callback is executed
+        callback: Callable
+            The function which is called when the timer expires
+
+        Returns
+        -------
+        `CareBTTimer`
+            The timer, which can be used to cancel it
+
+        """
+        self.__timers = [t for t in self.__timers if t.is_active()]
+        timer = self.bt_runner.create_timer(delay_ms,
+                                            lambda: self.__internal_on_timer(callback))
+        self.__timers.append(timer)
+        return timer
+
+    @final
     def set_timeout(self, timeout_ms: int) -> None:
         """Set the timeout.
 
         Set a timeout and starts the timer. In case a timeout occures,
-        the `on_timeout` callback is called.
+        the `on_timeout` callback is called. A previously set timeout is
+        replaced.
 
         Parameters
         ----------
@@ -198,8 +251,8 @@ class TreeNode(ABC):
             The timeout in milliseconds
 
         """
-        self.__timeout_timer = Timer(timeout_ms/1000, self.__internal_on_timeout)
-        self.__timeout_timer.start()
+        self.cancel_timeout_timer()
+        self.__timeout_timer = self.create_timer(timeout_ms, self.__internal_on_timeout)
 
     @final
     def cancel_timeout_timer(self) -> None:
@@ -207,8 +260,6 @@ class TreeNode(ABC):
         if(self.__timeout_timer is not None):
             self.get_logger().trace(f'{self.__class__.__name__} -> cancel timeout timer')
             self.__timeout_timer.cancel()
-            # set the timer to None to make sure that all references (bound method)
-            # are released and the object gets destroyed by gc
             self.__timeout_timer = None
 
     @final
@@ -221,15 +272,15 @@ class TreeNode(ABC):
             Current status of the node
 
         """
-        with self._status_lock:
-            self.__node_status = node_status
-            # If the status of the node is set to one of the following,
-            # make sure that the timeout timer is canceled.
-            if(node_status == NodeStatus.SUCCESS
-               or node_status == NodeStatus.FAILURE
-               or node_status == NodeStatus.FIXED
-               or node_status == NodeStatus.ABORTED):
-                self.cancel_timeout_timer()
+        self.__check_thread('set_status')
+        self.__node_status = node_status
+        # If the status of the node is set to one of the following,
+        # make sure that the timeout timer is canceled.
+        if(node_status == NodeStatus.SUCCESS
+           or node_status == NodeStatus.FAILURE
+           or node_status == NodeStatus.FIXED
+           or node_status == NodeStatus.ABORTED):
+            self.cancel_timeout_timer()
 
     @final
     def get_contingency_history(self) -> list:
@@ -276,8 +327,8 @@ class TreeNode(ABC):
             The contingency message
 
         """
-        with self._status_lock:
-            self.__contingency_message = contingency_message
+        self.__check_thread('set_contingency_message')
+        self.__contingency_message = contingency_message
 
     @final
     def abort(self) -> None:

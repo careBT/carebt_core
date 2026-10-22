@@ -1,7 +1,14 @@
 {
     "name": "careBT",
     "image": "mcr.microsoft.com/devcontainers/python:3.12",
-    "postCreateCommand": "pip install -e . && pip install pytest coverage build twine",
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y --no-install-recommends graphviz && pip install -e . && pip install pytest coverage build twine && pip install -r docs/requirements.txt",
+    "forwardPorts": [8000],
+    "portsAttributes": {
+        "8000": {
+            "label": "careBT docs",
+            "onAutoForward": "notify"
+        }
+    },
     "customizations": {
         "vscode": {
             "settings": {

@@ -72,6 +72,14 @@ BehaviorTreeRunner
    :undoc-members:
    :show-inheritance:
 
+CareBTTimer
+^^^^^^^^^^^
+
+.. automodule:: carebt.careBTTimer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 NodeStatus
 ^^^^^^^^^^
 

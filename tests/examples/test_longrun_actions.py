@@ -19,6 +19,7 @@ from unittest.mock import patch
 from carebt.abstractLogger import LogLevel
 from carebt.behaviorTreeRunner import BehaviorTreeRunner
 from carebt.examples.longrun_actions import AddTwoNumbersLongRunningAction
+from carebt.examples.longrun_actions import AddTwoNumbersLongRunningActionWithThread
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickAction
 from carebt.examples.longrun_actions import AddTwoNumbersMultiTickActionWithTimeout
 from carebt.nodeStatus import NodeStatus
@@ -99,4 +100,29 @@ class TestLongrunActions:
         assert bt_runner.get_contingency_message() == ''
         regex = re.compile(r'AddTwoNumbersLongRunningAction: calculating 2000 ms ...\n'
                            r'AddTwoNumbersLongRunningAction: DONE 3 \+ 4 = 7\n')
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+########################################################################
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_AddTwoNumbersLongRunningActionWithThread_ok(self, mock_print):
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.run(AddTwoNumbersLongRunningActionWithThread, 'True 3 4 => ?result')
+        assert bt_runner.get_status() == NodeStatus.SUCCESS
+        assert bt_runner.get_contingency_message() == ''
+        assert bt_runner._instance._result == 7
+        regex = re.compile(r'AddTwoNumbersLongRunningActionWithThread: calculating 1000 ms ...\n'
+                           r'AddTwoNumbersLongRunningActionWithThread: DONE 3 \+ 4 = 7\n')
+        assert bool(re.match(regex, mock_print.getvalue()))
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_AddTwoNumbersLongRunningActionWithThread_fail(self, mock_print):
+        bt_runner = BehaviorTreeRunner()
+        bt_runner.get_logger().set_log_level(LogLevel.OFF)
+        bt_runner.run(AddTwoNumbersLongRunningActionWithThread, 'False 3 4 => ?result')
+        assert bt_runner.get_status() == NodeStatus.FAILURE
+        assert bt_runner.get_contingency_message() == 'CALCULATION_FAILED'
+        assert not hasattr(bt_runner._instance, '_result')
+        regex = re.compile(r'AddTwoNumbersLongRunningActionWithThread: calculating 1000 ms ...\n'
+                           r'AddTwoNumbersLongRunningActionWithThread: FAILED\n')
         assert bool(re.match(regex, mock_print.getvalue()))

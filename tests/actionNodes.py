@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from threading import Timer
-
 from carebt.actionNode import ActionNode
 from carebt.nodeStatus import NodeStatus
 from tests.global_mock import mock
@@ -416,7 +414,7 @@ class AddTwoNumbersLongRunningAction(ActionNode):
     The `AddTwoNumbersLongRunningAction` is a variation of the
     `AddTwoNumbersAction` which demonstrates how it looks like when a
     `ActionNode` executes an asynchronous function. To make things simple the
-    asynchronous function is implemented with a simple Python timer and
+    asynchronous function is implemented with a careBT timer and
     the amount of milliseconds the asynchronous function requires to complete
     is provided as input parameter.
 
@@ -447,8 +445,7 @@ class AddTwoNumbersLongRunningAction(ActionNode):
         mock(f'AddTwoNumbersLongRunningAction: calculating {self._calctime} ms ...')
         print(f'AddTwoNumbersLongRunningAction: calculating {self._calctime} ms ...')
         self.set_status(NodeStatus.SUSPENDED)
-        self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
-        self.__done_timer.start()
+        self.__done_timer = self.create_timer(self._calctime, self.done_callback)
 
     def done_callback(self) -> None:
         self._z = self._x + self._y
@@ -530,8 +527,7 @@ class AddTwoNumbersLongRunningActionWithAbort(ActionNode):
             print(f'AddTwoNumbersLongRunningActionWithAbort: calculating {self._calctime} ms ... '
                   + f'(timeout = {self.__TIMEOUT} ms)')
             self.set_status(NodeStatus.SUSPENDED)
-            self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
-            self.__done_timer.start()
+            self.__done_timer = self.create_timer(self._calctime, self.done_callback)
 
     def done_callback(self) -> None:
         # make sure that the node is still suspended, this is especially
@@ -614,8 +610,7 @@ class AddTwoNumbersLongRunningActionMissingCallback(ActionNode):
             print('AddTwoNumbersLongRunningActionMissingCallback: calculating '
                   + f'{self._calctime} ms ... (timeout = {self.__TIMEOUT} ms)')
             self.set_status(NodeStatus.SUSPENDED)
-            self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
-            self.__done_timer.start()
+            self.__done_timer = self.create_timer(self._calctime, self.done_callback)
 
     def done_callback(self) -> None:
         # make sure that the node is still suspended, this is especially
@@ -692,8 +687,7 @@ class AddTwoNumbersLongRunningActionMissingCallback2(ActionNode):
             print('AddTwoNumbersLongRunningActionMissingCallback2: calculating '
                   + f'{self._calctime} ms ... (timeout = {self.__TIMEOUT} ms)')
             self.set_status(NodeStatus.SUSPENDED)
-            self.__done_timer = Timer(self._calctime / 1000, self.done_callback)
-            self.__done_timer.start()
+            self.__done_timer = self.create_timer(self._calctime, self.done_callback)
 
     def done_callback(self) -> None:
         # make sure that the node is still suspended, this is especially

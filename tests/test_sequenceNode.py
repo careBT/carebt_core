@@ -560,8 +560,8 @@ class TestSequenceNode:
                                        call('AddTwoNumbersSequence8: on_timeout'),
                                        call('on_abort AddTwoNumbersLongRunningActionWithAbort'),
                                        call('on_delete AddTwoNumbersLongRunningActionWithAbort'),
-                                       call('on_abort AddTwoNumbersSequence8'),
                                        call('__del__ AddTwoNumbersLongRunningActionWithAbort'),
+                                       call('on_abort AddTwoNumbersSequence8'),
                                        call('on_delete AddTwoNumbersSequence8'),
                                        call('__del__ AddTwoNumbersSequence8')]
 
