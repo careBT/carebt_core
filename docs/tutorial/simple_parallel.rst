@@ -84,6 +84,6 @@ Start the Python interpreter and run the ``SimpleParallel`` node:
 In the first execution the first two nodes complete after two resp. four ticks and thus, the
 ``SimpleParallel`` node also completes. The third node is aborted. In the second execution
 the third and second node complete after two resp. four ticks. Again, the ``SimpleParallel``
-node completes as two nodes succedded, and as a consequence the first node is aborted. When aborting
+node completes as two nodes succeeded, and as a consequence the first node is aborted. When aborting
 a node the ``on_abort`` function of this node is called, this is why the message 'AddTwoNumbersMultiTickAction:
 on_abort' is printed on standard output (see implementation of ``AddTwoNumbersMultiTickAction``).

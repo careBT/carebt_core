@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1660"
+   height="1020"
+   viewBox="0 0 1660 1020"
+   font-family="Helvetica, Arial, sans-serif"
+   version="1.1"
+   id="svg230"
+   role="img"
+   aria-labelledby="title desc"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <title
+     id="title">careBT between the advisory layer and the skill layer</title>
+  <desc
+     id="desc">careBT forms the sequencing layer between an advisory layer
+(symbolic planners, AI agents, domain experts) and a skill layer (navigation,
+localization, perception, manipulation, robot base). Advisors receive goal and
+context and return plans, but have no direct robot control. careBT orchestrates
+and parameterizes the skills, receives progress and feedback, keeps a knowledge
+base, and adapts the behavior tree at runtime by inserting, replacing and
+removing nodes and by running contingency handlers.</desc>
+  <defs
+     id="defs11">
+    <marker
+       id="ah"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="8"
+       markerHeight="8"
+       orient="auto-start-reverse">
+      <path
+         d="M0,0 L10,5 L0,10 z"
+         fill="#333"
+         id="path2" />
+    </marker>
+    <marker
+       id="ahg"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="8"
+       markerHeight="8"
+       orient="auto-start-reverse">
+      <path
+         d="M0,0 L10,5 L0,10 z"
+         fill="#2e8b57"
+         id="path5" />
+    </marker>
+    <marker
+       id="ahb"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="8"
+       markerHeight="8"
+       orient="auto-start-reverse">
+      <path
+         d="M0,0 L10,5 L0,10 z"
+         fill="#007bbd"
+         id="path8" />
+    </marker>
+  </defs>
+  <rect
+     width="1660"
+     height="1020"
+     fill="#ffffff"
+     id="rect226"
+     x="0"
+     y="0" />
+  <!-- Layer separators -->
+  <line
+     x1="20"
+     y1="239"
+     x2="1600"
+     y2="239"
+     stroke="#777777"
+     stroke-width="2"
+     stroke-dasharray="14, 8"
+     id="line17" />
+  <line
+     x1="20"
+     y1="798"
+     x2="1600"
+     y2="798"
+     stroke="#777777"
+     stroke-width="2"
+     stroke-dasharray="14, 8"
+     id="line19" />
+  <!-- Layer labels -->
+  <text
+     transform="rotate(90)"
+     font-size="24px"
+     text-anchor="middle"
+     fill="#222222"
+     id="text21"
+     x="106"
+     y="-1635">Advisory Layer</text>
+  <text
+     transform="rotate(90)"
+     font-size="24px"
+     text-anchor="middle"
+     fill="#222222"
+     id="text23"
+     x="511"
+     y="-1635">Sequencing Layer</text>
+  <text
+     transform="rotate(90)"
+     font-size="24px"
+     text-anchor="middle"
+     fill="#222222"
+     id="text25"
+     x="936"
+     y="-1635">Skill Layer</text>
+  <!-- Advisory layer: experts -->
+  <g
+     stroke="#555555"
+     stroke-width="2.5"
+     fill="#f2f2f2"
+     id="g37"
+     transform="translate(0,-64)">
+    <rect
+       x="70"
+       y="105"
+       width="280"
+       height="120"
+       rx="10"
+       id="rect29" />
+    <rect
+       x="390"
+       y="105"
+       width="280"
+       height="120"
+       rx="10"
+       id="rect31" />
+    <rect
+       x="710"
+       y="105"
+       width="280"
+       height="120"
+       rx="10"
+       id="rect33" />
+    <rect
+       x="1030"
+       y="105"
+       width="280"
+       height="120"
+       rx="10"
+       fill="#ffffff"
+       stroke-dasharray="10, 6"
+       id="rect35" />
+  </g>
+  <text
+     x="210"
+     y="94"
+     id="text39"
+     style="font-size:22px;text-anchor:middle;fill:#222222">Symbolic Planner</text>
+  <text
+     x="210"
+     y="126"
+     font-size="16px"
+     fill="#666666"
+     id="text41"
+     style="text-anchor:middle">e.g. PDDL</text>
+  <text
+     x="530"
+     y="126"
+     font-size="16px"
+     fill="#666666"
+     id="text41-6"
+     style="text-anchor:middle">e.g. LLM, VLA</text>
+  <text
+     x="530"
+     y="94"
+     id="text43"
+     style="font-size:22px;text-anchor:middle;fill:#222222">AI Agents</text>
+  <text
+     x="850"
+     y="108"
+     id="text47"
+     style="font-size:22px;text-anchor:middle;fill:#222222">Domain Expert</text>
+  <text
+     x="1170"
+     y="108"
+     id="text51"
+     style="font-size:22px;text-anchor:middle;fill:#222222">...</text>
+  <!-- Expert bus -->
+  <g
+     stroke="#555555"
+     stroke-width="2.5"
+     fill="none"
+     id="g65"
+     transform="translate(0,-64)">
+    <line
+       x1="210"
+       y1="225"
+       x2="210"
+       y2="265"
+       marker-start="url(#ah)"
+       marker-end="url(#ah)"
+       id="line55" />
+    <line
+       x1="530"
+       y1="225"
+       x2="530"
+       y2="265"
+       marker-start="url(#ah)"
+       marker-end="url(#ah)"
+       id="line57" />
+    <line
+       x1="850"
+       y1="225"
+       x2="850"
+       y2="265"
+       marker-start="url(#ah)"
+       marker-end="url(#ah)"
+       id="line59" />
+    <line
+       x1="1170"
+       y1="225"
+       x2="1170"
+       y2="265"
+       marker-start="url(#ah)"
+       marker-end="url(#ah)"
+       id="line61" />
+    <line
+       x1="210"
+       y1="265"
+       x2="1170"
+       y2="265"
+       id="line63" />
+  </g>
+  <!-- Blocked direct control -->
+  <path
+     d="m 1310,101 h 130 v 835 h -26"
+     fill="none"
+     stroke="#c0392b"
+     stroke-width="3.5"
+     stroke-dasharray="12, 8"
+     marker-end="url(#ahr)"
+     id="path73" />
+  <g
+     stroke="#c0392b"
+     stroke-width="7"
+     stroke-linecap="round"
+     id="g79"
+     transform="translate(0,-64)">
+    <line
+       x1="1422"
+       y1="542"
+       x2="1458"
+       y2="578"
+       id="line75" />
+    <line
+       x1="1458"
+       y1="542"
+       x2="1422"
+       y2="578"
+       id="line77" />
+  </g>
+  <text
+     x="1468"
+     y="492"
+     font-size="15px"
+     fill="#c0392b"
+     font-weight="bold"
+     id="text81">no direct</text>
+  <text
+     x="1468"
+     y="512"
+     font-size="15px"
+     fill="#c0392b"
+     font-weight="bold"
+     id="text83">robot control</text>
+  <!-- Control / sequencing layer: careBT -->
+  <rect
+     x="40.052296"
+     y="316.05231"
+     width="1359.8954"
+     height="406.51767"
+     rx="11.999077"
+     fill="#f7fbfe"
+     stroke="#007bbd"
+     stroke-width="5.10459"
+     id="rect85" />
+  <!-- Knowledge base -->
+  <g
+     stroke="#555555"
+     stroke-width="2.5"
+     fill="#ffffff"
+     id="g93"
+     transform="translate(0,-64)">
+    <path
+       d="m 85,470 v 110 a 85,22 0 0 0 170,0 V 470"
+       id="path89" />
+    <ellipse
+       cx="170"
+       cy="470"
+       rx="85"
+       ry="22"
+       id="ellipse91" />
+  </g>
+  <path
+     d="m 85,441 a 85,22 0 0 0 170,0 M 85,476 a 85,22 0 0 0 170,0"
+     fill="none"
+     stroke="#555555"
+     stroke-width="2"
+     id="path95" />
+  <text
+     x="170"
+     y="586"
+     font-size="20px"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#222222"
+     id="text97">Knowledge Base</text>
+  <g
+     font-size="14px"
+     text-anchor="middle"
+     fill="#555555"
+     id="g103"
+     transform="translate(0,-64)">
+    <text
+       x="170"
+       y="676"
+       id="text99">robot state, current task,</text>
+    <text
+       x="170"
+       y="694"
+       id="text101">world state</text>
+  </g>
+  <line
+     x1="255"
+     y1="496"
+     x2="345"
+     y2="496"
+     stroke="#333333"
+     stroke-width="2.5"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line105" />
+  <!-- Behavior tree with careBT logo as root -->
+  <rect
+     x="345"
+     y="351"
+     width="1035"
+     height="335"
+     rx="10"
+     fill="#ffffff"
+     stroke="#555555"
+     stroke-width="2.5"
+     id="rect107" />
+  <text
+     x="680"
+     y="378"
+     font-size="18px"
+     text-anchor="start"
+     fill="#222222"
+     id="text109"><tspan
+   font-weight="bold"
+   id="tspan1570">c</tspan>ontingency aw<tspan
+   font-weight="bold"
+   id="tspan1572">are</tspan> <tspan
+   font-weight="bold"
+   id="tspan1574">B</tspan>ehavior <tspan
+   font-weight="bold"
+   id="tspan1576">T</tspan>rees</text>
+  <g
+     transform="matrix(0.85,0,0,0.85,714.6,300.2)"
+     id="g116">
+    <clipPath
+       id="logoclip">
+      <rect
+         x="8"
+         y="108"
+         width="275"
+         height="80"
+         id="rect111" />
+    </clipPath>
+    <image
+       xlink:href="data:image/png;base64,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"
+       width="296"
+       height="296"
+       clip-path="url(#logoclip)"
+       id="image114" />
+  </g>
+  <!-- Advice interface -->
+  <line
+     x1="734"
+     y1="201"
+     x2="734"
+     y2="351"
+     stroke="#007bbd"
+     stroke-width="4"
+     stroke-dasharray="12,7"
+     marker-end="url(#ahb)"
+     id="line176" />
+  <line
+     x1="668"
+     y1="351"
+     x2="668"
+     y2="201"
+     stroke="#007bbd"
+     stroke-width="4"
+     marker-end="url(#ahb)"
+     id="line178" />
+  <!-- Skill layer -->
+  <rect
+     x="60"
+     y="876"
+     width="200"
+     height="120"
+     rx="10"
+     id="rect198"
+     style="fill:#f2f2f2;stroke:#555555;stroke-width:2.5" />
+  <rect
+     x="290"
+     y="876"
+     width="200"
+     height="120"
+     rx="10"
+     id="rect200"
+     style="fill:#f2f2f2;stroke:#555555;stroke-width:2.5" />
+  <rect
+     x="520"
+     y="876"
+     width="200"
+     height="120"
+     rx="10"
+     id="rect202"
+     style="fill:#f2f2f2;stroke:#555555;stroke-width:2.5" />
+  <rect
+     x="750"
+     y="876"
+     width="200"
+     height="120"
+     rx="10"
+     id="rect204"
+     style="fill:#f2f2f2;stroke:#555555;stroke-width:2.5" />
+  <rect
+     x="980"
+     y="876"
+     width="200"
+     height="120"
+     rx="10"
+     id="rect206"
+     style="fill:#f2f2f2;stroke:#555555;stroke-width:2.5" />
+  <rect
+     x="1210"
+     y="876"
+     width="200"
+     height="120"
+     rx="10"
+     id="rect206-6"
+     style="fill:#ffffff;stroke:#555555;stroke-width:2.5;stroke-dasharray:10,6" />
+  <text
+     x="160"
+     y="943"
+     id="text212"
+     style="font-size:21px;text-anchor:middle;fill:#222222">Navigation</text>
+  <text
+     x="390"
+     y="943"
+     id="text214"
+     style="font-size:21px;text-anchor:middle;fill:#222222">Localization</text>
+  <text
+     x="620"
+     y="943"
+     id="text216"
+     style="font-size:21px;text-anchor:middle;fill:#222222">Perception</text>
+  <text
+     x="850"
+     y="943"
+     id="text220"
+     style="font-size:21px;text-anchor:middle;fill:#222222">Manipulation</text>
+  <text
+     x="1080"
+     y="943"
+     id="text222"
+     style="font-size:21px;text-anchor:middle;fill:#222222">Robot Base</text>
+  <text
+     x="1310"
+     y="943"
+     id="text222-2"
+     style="font-size:21px;text-anchor:middle;fill:#222222">...</text>
+  <!-- Runtime adaptation and contingency handling -->
+  <defs
+     id="defs97">
+    <marker
+       id="aho"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="7"
+       markerHeight="7"
+       orient="auto-start-reverse">
+      <path
+         d="M0,0 L10,5 L0,10 z"
+         fill="#e67e22"
+         id="path91" />
+    </marker>
+    <marker
+       id="ahr"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto-start-reverse">
+      <path
+         d="M0,0 L10,5 L0,10 z"
+         fill="#c0392b"
+         id="path94" />
+    </marker>
+  </defs>
+  <g
+     id="tree7">
+    <g
+       stroke="#444"
+       stroke-width="2.5"
+       fill="none"
+       id="g117">
+      <line
+         x1="837"
+         y1="470"
+         x2="600"
+         y2="545"
+         id="line95" />
+      <line
+         x1="837"
+         y1="470"
+         x2="800"
+         y2="545"
+         stroke="#c0392b"
+         stroke-dasharray="6,5"
+         opacity="0.6"
+         id="line97" />
+      <line
+         x1="837"
+         y1="470"
+         x2="905"
+         y2="545"
+         stroke="#e67e22"
+         id="line99" />
+      <line
+         x1="837"
+         y1="470"
+         x2="1025"
+         y2="545"
+         stroke="#2e8b57"
+         id="line101" />
+      <line
+         x1="600"
+         y1="545"
+         x2="555"
+         y2="625"
+         id="line103" />
+      <line
+         x1="600"
+         y1="545"
+         x2="645"
+         y2="625"
+         id="line106" />
+      <line
+         x1="905"
+         y1="545"
+         x2="870"
+         y2="625"
+         stroke="#e67e22"
+         id="line108" />
+      <line
+         x1="905"
+         y1="545"
+         x2="940"
+         y2="625"
+         stroke="#e67e22"
+         id="line110" />
+      <line
+         x1="1025"
+         y1="545"
+         x2="980"
+         y2="625"
+         stroke="#2e8b57"
+         id="line112" />
+      <line
+         x1="1025"
+         y1="545"
+         x2="1070"
+         y2="625"
+         stroke="#2e8b57"
+         id="line114" />
+    </g>
+    <g
+       stroke="#444"
+       stroke-width="2.5"
+       fill="#fff"
+       id="g125">
+      <circle
+         cx="600"
+         cy="545"
+         r="18"
+         id="circle119" />
+      <circle
+         cx="555"
+         cy="625"
+         r="14"
+         id="circle121" />
+      <circle
+         cx="645"
+         cy="625"
+         r="14"
+         id="circle123" />
+    </g>
+    <g
+       stroke="#2e8b57"
+       stroke-width="3"
+       stroke-dasharray="6,4"
+       fill="#e6f4ec"
+       id="g133">
+      <circle
+         cx="1025"
+         cy="545"
+         r="18"
+         id="circle127" />
+      <circle
+         cx="980"
+         cy="625"
+         r="14"
+         id="circle129" />
+      <circle
+         cx="1070"
+         cy="625"
+         r="14"
+         id="circle131" />
+    </g>
+    <circle
+       cx="1049"
+       cy="523"
+       r="10"
+       fill="#2e8b57"
+       id="circle135" />
+    <path
+       d="M1049,517 V529 M1043,523 H1055"
+       stroke="#fff"
+       stroke-width="2.5"
+       id="path137" />
+    <!-- failed node is replaced by the handler subtree -->
+    <circle
+       cx="800"
+       cy="545"
+       r="20"
+       fill="#fdf0ee"
+       stroke="#c0392b"
+       stroke-width="3"
+       stroke-dasharray="5,4"
+       id="circle139" />
+    <path
+       d="M791,536 L809,554 M809,536 L791,554"
+       stroke="#c0392b"
+       stroke-width="3.5"
+       stroke-linecap="round"
+       id="path141" />
+    <line
+       x1="828"
+       y1="545"
+       x2="876"
+       y2="545"
+       stroke="#333"
+       stroke-width="3"
+       marker-end="url(#ah)"
+       id="line143" />
+    <g
+       stroke="#e67e22"
+       stroke-width="2.5"
+       fill="#fdebd0"
+       id="g149">
+      <circle
+         cx="870"
+         cy="625"
+         r="11"
+         id="circle145" />
+      <circle
+         cx="940"
+         cy="625"
+         r="11"
+         id="circle147" />
+    </g>
+    <path
+       d="M0,-13 L11,-9 V3 Q11,12 0,16 Q-11,12 -11,3 V-9 Z"
+       transform="translate(905,545) scale(1.5)"
+       fill="#fdebd0"
+       stroke="#e67e22"
+       stroke-width="2"
+       id="path151" />
+    <circle
+       cx="930"
+       cy="520"
+       r="10"
+       fill="#2e8b57"
+       id="circle153" />
+    <polyline
+       points="925,520 929,524 936,515"
+       fill="none"
+       stroke="#fff"
+       stroke-width="2.5"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="polyline155" />
+  </g>
+  <!-- contingency event from the skill layer -->
+  <path
+     d="M 800,839.2437 V 567.7158"
+     fill="none"
+     stroke="#c0392b"
+     stroke-width="3.75571"
+     marker-end="url(#ahr)"
+     id="path158" />
+  <circle
+     cx="800"
+     cy="650"
+     r="19"
+     fill="#fff"
+     id="circle160" />
+  <path
+     d="M4,-14 L-8,2 L-1,2 L-4,14 L8,-3 L1,-3 Z"
+     transform="translate(800,650) scale(1.5)"
+     fill="#f1c40f"
+     stroke="#c0392b"
+     stroke-width="1.8"
+     stroke-linejoin="round"
+     id="path162" />
+  <!-- legend: runtime adaptation -->
+  <rect
+     x="1095"
+     y="370"
+     width="270"
+     height="305"
+     rx="10"
+     fill="#fbfbfb"
+     stroke="#bbb"
+     stroke-width="2"
+     id="rect155" />
+  <text
+     x="1230"
+     y="396"
+     font-size="15"
+     font-weight="bold"
+     text-anchor="middle"
+     fill="#555"
+     id="text157">Runtime adaptation</text>
+  <g
+     font-size="17"
+     font-weight="bold"
+     fill="#333"
+     id="g167">
+    <text
+       x="1240"
+       y="446"
+       id="text159">insert</text>
+    <text
+       x="1240"
+       y="511"
+       id="text161">replace</text>
+    <text
+       x="1240"
+       y="576"
+       id="text163">remove</text>
+    <text
+       x="1240"
+       y="641"
+       id="text165">contingency</text>
+  </g>
+  <!-- insert -->
+  <g
+     stroke="#444"
+     stroke-width="2"
+     fill="#fff"
+     id="g179">
+    <line
+       x1="1150"
+       y1="426"
+       x2="1130"
+       y2="452"
+       id="line169" />
+    <line
+       x1="1150"
+       y1="426"
+       x2="1172"
+       y2="452"
+       stroke="#2e8b57"
+       id="line171" />
+    <circle
+       cx="1150"
+       cy="426"
+       r="8"
+       id="circle173" />
+    <circle
+       cx="1130"
+       cy="452"
+       r="8"
+       id="circle175" />
+    <circle
+       cx="1172"
+       cy="452"
+       r="8"
+       stroke="#2e8b57"
+       stroke-dasharray="4,3"
+       fill="#e6f4ec"
+       id="circle177" />
+  </g>
+  <circle
+     cx="1204"
+     cy="452"
+     r="9"
+     fill="#2e8b57"
+     id="circle181" />
+  <path
+     d="M1204,446 V458 M1198,452 H1210"
+     stroke="#fff"
+     stroke-width="2.5"
+     id="path183" />
+  <!-- replace -->
+  <circle
+     cx="1130"
+     cy="505"
+     r="10"
+     fill="#f2f2f2"
+     stroke="#aaa"
+     stroke-width="2"
+     stroke-dasharray="4,3"
+     id="circle185" />
+  <path
+     d="M1124,499 L1136,511 M1136,499 L1124,511"
+     stroke="#c0392b"
+     stroke-width="2.5"
+     id="path187" />
+  <line
+     x1="1148"
+     y1="505"
+     x2="1180"
+     y2="505"
+     stroke="#333"
+     stroke-width="2.5"
+     marker-end="url(#ah)"
+     id="line189" />
+  <circle
+     cx="1204"
+     cy="505"
+     r="10"
+     fill="#e6f4ec"
+     stroke="#2e8b57"
+     stroke-width="2.5"
+     stroke-dasharray="4,3"
+     id="circle191" />
+  <!-- remove -->
+  <g
+     stroke="#444"
+     stroke-width="2"
+     fill="#fff"
+     id="g203">
+    <line
+       x1="1150"
+       y1="556"
+       x2="1130"
+       y2="582"
+       id="line193" />
+    <line
+       x1="1150"
+       y1="556"
+       x2="1172"
+       y2="582"
+       stroke="#aaa"
+       stroke-dasharray="4,3"
+       id="line195" />
+    <circle
+       cx="1150"
+       cy="556"
+       r="8"
+       id="circle197" />
+    <circle
+       cx="1130"
+       cy="582"
+       r="8"
+       id="circle199" />
+    <circle
+       cx="1172"
+       cy="582"
+       r="8"
+       stroke="#aaa"
+       stroke-dasharray="4,3"
+       fill="#f2f2f2"
+       id="circle201" />
+  </g>
+  <path
+     d="M1166,576 L1178,588 M1178,576 L1166,588"
+     stroke="#c0392b"
+     stroke-width="2.5"
+     id="path205" />
+  <!-- contingency -->
+  <path
+     d="M4,-14 L-8,2 L-1,2 L-4,14 L8,-3 L1,-3 Z"
+     transform="translate(1112,635)"
+     fill="#f1c40f"
+     stroke="#c0392b"
+     stroke-width="1.5"
+     stroke-linejoin="round"
+     id="path207" />
+  <line
+     x1="1124"
+     y1="635"
+     x2="1144"
+     y2="635"
+     stroke="#e67e22"
+     stroke-width="2.5"
+     marker-end="url(#aho)"
+     id="line209" />
+  <path
+     d="M0,-13 L11,-9 V3 Q11,12 0,16 Q-11,12 -11,3 V-9 Z"
+     transform="translate(1160,635)"
+     fill="#fdebd0"
+     stroke="#e67e22"
+     stroke-width="2"
+     id="path211" />
+  <line
+     x1="1174"
+     y1="635"
+     x2="1194"
+     y2="635"
+     stroke="#2e8b57"
+     stroke-width="2.5"
+     marker-end="url(#ahg)"
+     id="line213" />
+  <polyline
+     points="1200,636 1206,643 1218,626"
+     fill="none"
+     stroke="#2e8b57"
+     stroke-width="3.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="polyline215" />
+  <!-- Skill bus and interface arrows, mirroring the advisory side -->
+  <line
+     x1="160"
+     y1="836"
+     x2="160"
+     y2="876"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line196"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="390"
+     y1="836"
+     x2="390"
+     y2="876"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line198"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="620"
+     y1="836"
+     x2="620"
+     y2="876"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line200"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="850"
+     y1="836"
+     x2="850"
+     y2="876"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line202"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="1080"
+     y1="836"
+     x2="1080"
+     y2="876"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line204"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="1310"
+     y1="836"
+     x2="1310"
+     y2="876"
+     marker-start="url(#ah)"
+     marker-end="url(#ah)"
+     id="line204-2"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="160"
+     y1="836"
+     x2="1310"
+     y2="836"
+     id="line208"
+     style="fill:none;stroke:#555555;stroke-width:2.5" />
+  <line
+     x1="680"
+     y1="686"
+     x2="680"
+     y2="836"
+     stroke="#007bbd"
+     stroke-width="4"
+     marker-end="url(#ahb)"
+     id="line214" />
+  <line
+     x1="834"
+     y1="836"
+     x2="834"
+     y2="686"
+     stroke="#007bbd"
+     stroke-width="4"
+     stroke-dasharray="12, 7"
+     marker-end="url(#ahb)"
+     id="line216" />
+  <!-- Interface labels -->
+  <text
+     x="762"
+     y="258"
+     fill="#007bbd"
+     id="text169"
+     style="font-weight:bold;font-size:16px">plan</text>
+  <text
+     x="640"
+     y="258"
+     text-anchor="end"
+     fill="#007bbd"
+     id="text171"
+     style="font-weight:bold;font-size:16px">goal/context</text>
+  <text
+     x="656"
+     y="752"
+     text-anchor="end"
+     fill="#007bbd"
+     id="text173"
+     style="font-weight:bold;font-size:16px">orchestrate &amp; parameterize</text>
+  <text
+     x="848"
+     y="752"
+     fill="#007bbd"
+     id="text175"
+     style="font-weight:bold;font-size:16px">progress &amp; feedback</text>
+  <g
+     font-size="12px"
+     fill="#666666"
+     id="g190">
+    <text
+       x="656"
+       y="768"
+       text-anchor="end"
+       id="text187">skill requests, parameters</text>
+    <text
+       x="848"
+       y="768"
+       id="text188">status, results, failures</text>
+  </g>
+  <g
+     font-size="12px"
+     fill="#666666"
+     id="g189"
+     transform="translate(0,-10)">
+    <text
+       x="762"
+       y="284"
+       id="text179">action sequence,</text>
+    <text
+       x="762"
+       y="298"
+       id="text181">parameter advice</text>
+    <text
+       x="640"
+       y="284"
+       text-anchor="end"
+       id="text183">task, goal, world model,</text>
+    <text
+       x="640"
+       y="298"
+       text-anchor="end"
+       id="text185">images, videos, actions</text>
+  </g>
+</svg>

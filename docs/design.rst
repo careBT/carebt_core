@@ -4,20 +4,51 @@ Design/Concepts
 Overview
 --------
 
-**CareBT** was developed to support the implemenmtation of complex robotics applications which operate
-in real world. Such a robot will be faced with a huge amount of different situations which can not be
+**CareBT** was developed to support the implementation of complex robotics applications which operate
+in the real world. Such a robot will be faced with a huge amount of different situations which can not be
 foreseen in advance. Several decisions how the task-tree should further be expanded are not known during
 design-time of the behavior, and have thus to be taken at runtime. To achieve that, the task coordination
 mechanism of the robot has (i) to be able to cope with these situations and provide alternative "plans" how
 the robot should continue its execution, (ii) to be able to modify the currently executing task-tree at
 runtime and (iii) to be able to generate a sub-tree during runtime depending on the current state of the world.
-That involves beeing able to remove nodes from the tree and add new nodes to the tree while "executing"
+That involves being able to remove nodes from the tree and add new nodes to the tree while "executing"
 the tree.
 
 .. note::
 
     Thus, the main difference between **careBT** and typical behavior tree implementations is the built in mechanism
     to modify the task-tree at runtime depending on situation and context.
+
+
+Architecture
+------------
+
+.. figure:: /_static/carebt_overview.svg
+   :alt: careBT as the sequencing layer between an advisory layer (planners, AI agents, domain experts)
+         and a skill layer (navigation, localization, perception, manipulation, robot base)
+   :align: center
+   :width: 100%
+
+   **careBT** in the sequencing layer between the advisory layer and the skill layer.
+
+**CareBT** is located in the sequencing layer, between the advisory layer and the skill layer:
+
+* **Advisory layer**: "expert algorithms" like symbolic planners (e.g. PDDL), AI agents (e.g. LLMs or VLAs) or
+  other domain experts. **CareBT** asks them for advice by providing the goal and the current context, like the task,
+  the world model or camera images. They answer with a plan, like an action sequence or parameter advice, which
+  **careBT** transforms into a sub-tree (see `Dynamic sub-tree generation at runtime`_). The advisors have no direct
+  control over the robot. Their advice is always executed and supervised by **careBT**.
+* **Sequencing layer**: **careBT** executes the behavior tree and maintains a knowledge base with the robot state,
+  the current task and the state of the world (see `Maintaining a model of the world`_). While executing, the tree
+  is adapted to the current situation by inserting, replacing and removing nodes. If something goes wrong, a
+  contingency-handler replaces the failed part of the tree by an alternative solution (see `Contingency handling`_
+  and `Runtime modification of the behavior tree`_).
+* **Skill layer**: the capabilities of the robot like navigation, localization, perception, manipulation or the
+  robot base. **CareBT** orchestrates and parameterizes the skills and receives their progress and feedback.
+  A failure reported by a skill is raised as a contingency in the corresponding node of the tree.
+
+The **careBT-core** is independent of the framework which is used to connect to the skills. This connection is
+provided by a framework integration, like `careBT ROS2 <https://github.com/careBT/carebt_ros2>`__.
 
 In the following several concepts and mechanisms of **careBT** are discussed:
 
@@ -40,12 +71,12 @@ Black-box reusability of (sub-)behaviors
 ----------------------------------------
 
 To create a custom node, respectively a sub-tree in **careBT** a Python class has to be implemented which inherits
-from one of the **careBT** TreeNode classes. These classes are: ActionNode, SequenceNode, ParallelNode and RateControlNode.
+from one of the **careBT** TreeNode classes. These classes are: ActionNode, SequenceNode, FallbackNode, ParallelNode and RateControlNode.
 Thus, a custom node, respectively a sub-tree always has a name (the name of the class). Using this name they can directly
 be executed, as well as being used in a sub-tree. This allows a black-box reusability of each node - without caring about
 how the node is implemented, from which class it is inherited and how the node further expands (or not). To create, for example,
-a sequence of nodes a new node has to be implemented which inherits from SequenceNode. The, nodes which should be executed inside
-this sequence are added as child nodes. As this new node has a name it can be executed and testet, as well as being reused inside
+a sequence of nodes a new node has to be implemented which inherits from SequenceNode. Then, the nodes which should be executed inside
+this sequence are added as child nodes. As this new node has a name it can be executed and tested, as well as being reused inside
 another node to build more complex behaviors.
 
 This strict black-box reusability of nodes accelerates and facilitates the development of complex behaviors. Each node
@@ -58,7 +89,7 @@ grasping an object are developed and tested individually and then composed to th
 Contingency handling
 --------------------
 
-One importand feature of **careBT** is the contingency handling mechanism. This mechanism allows to react to the different
+One important feature of **careBT** is the contingency handling mechanism. This mechanism allows to react to the different
 situations and failures which occur during execution of a behavior. Almost every action performed in a real world
 scenario can possibly go wrong. Thus, a task coordination language should provide mechanisms which allow to react to these
 situations by performing an alternative sequence of actions. Therefore, in **careBT**, contingency-handlers can be attached
@@ -69,7 +100,7 @@ In **careBT** each node does not just complete with `SUCCESS` or `FAILURE`, but 
 Especially in case that something goes wrong it is important to also provide the reason for the failure and not only the
 information that the task failed. Only that allows to perform an adequate reaction to the failure. For example, when a path planner
 fails to plan the path to a desired goal, several failures can occur. The start position might be blocked by an obstacle, the goal
-position might be blocked by an obstacle, the goal position migth be outside of the map or no path could be found (although start
+position might be blocked by an obstacle, the goal position might be outside of the map or no path could be found (although start
 and goal position are valid). In case that the start position is blocked by an obstacle this position could be cleared in the map
 with some clearance and then the path planner can be triggered again. Otherwise, in case that the goal position is blocked by an
 obstacle the alternative could be to navigate the robot in the region of the desired goal and check the surroundings there if the
@@ -78,7 +109,7 @@ desired goal region is still blocked or can be reached now.
 Furthermore, in **careBT** a control node has - in addition to the status and the contingency message - a contingency history.
 This contingency history documents which contingency handlers were triggered in which situations. This can be used, for example,
 in the `on_delete` callback to finally set the contingency message taking the executed contingency handlers into account.
-For example, in case the contingency handeler fixes the situation, the node finishes with `SUCCESS` and typically an empty
+For example, in case the contingency handler fixes the situation, the node finishes with `SUCCESS` and typically an empty
 contingency message. But in such a case the parent might want 'to know' that it was necessary to run a contingency handler to
 complete the task. And thus, setting the contingency message in the `on_delete` callback depending on the contingency history
 allows to provide this additional information. Additionally, this contingency history can be accessed by the parent node to
@@ -100,7 +131,7 @@ An example of that mechanism is shown in the mobile manipulation scenario where 
 well. The implementation of this mechanism in **careBT** is very similar to the one in *SmartTCL*.)
 
 .. important::
-    ``Contingency-handlers`` can be registered in the node which dynamically added the children to beeing able to react to failures which
+    ``Contingency-handlers`` can be registered in the node which dynamically added the children to be able to react to failures which
     might occur at this level. Thus, the contingency handling at the level of the dynamically created sequence works independent from
     the exact execution sequence.
 
@@ -118,7 +149,7 @@ Dataflow between nodes
 
 A **careBT** node can have any number of input or output parameters. Input parameters are used to pass information into a
 node, while the output parameters are used to pass information out of a node. The outputs of a node can be used as inputs for
-another node. These input/output parameters are directly attached to the interface of a node and thus explicitely visible. As
+another node. These input/output parameters are directly attached to the interface of a node and thus explicitly visible. As
 Python is not typed these parameters are also not typed. Hence, a parameter can be a primitive variable (e.g. bool, int, string)
 as well as a complex type (e.g. class, dict, list).
 

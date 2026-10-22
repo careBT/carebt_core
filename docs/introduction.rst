@@ -40,11 +40,11 @@ The work on **careBT** is strongly influenced by the previous work I have done a
 design and implementation of the task coordination language *SmartTCL* [1] [2] [3],
 a Lisp-based implementation of task-nets focusing on handling contingencies which
 typically occur in real world scenarios. One important powerful feature of *SmartTCL* is the
-ability to dynamically create, expand and modify the task-tree during runtime depening
+ability to dynamically create, expand and modify the task-tree during runtime depending
 on the current situation and state of the world. However, *SmartTCL* was developed in the
 context of the *SmartSoft* framework and is bound 
 to some of the *SmartSoft* concepts, especially to the event-pattern. But the existence of
-such an event mechanism should not be taken for granted to beeing able to work together
+such an event mechanism should not be taken for granted to be able to work together
 with other frameworks. Furthermore, *SmartTCL* is implemented in Lisp, which is not widely
 used and has a steep learning curve.
 
@@ -53,8 +53,8 @@ in the past few years. Behavior trees provide basic guidelines and concepts on h
 design and implement a task-tree and its execution engine.
 One of these concepts is, for example, that a node is periodically ticked as long as it is in
 state RUNNING, and switches to one of the states SUCCESS or FAILURE as soon as it completes.
-Behavior trees have already shown their effectivness in developing robotics scenarios.
-Nevertheless, the powerfull mechanisms to dynamically create, expand and modify the task-tree
+Behavior trees have already shown their effectiveness in developing robotics scenarios.
+Nevertheless, the powerful mechanisms to dynamically create, expand and modify the task-tree
 at runtime are not present in classical behavior tree implementations [4] [5] [6]. 
 
 The above led to the idea to develop **careBT** by combining the powerful concepts

@@ -58,7 +58,7 @@ and the output parameter is *?z*. These parameters are then available inside the
     :language: python
     :lines: 40-41
 
-The ``on_init`` function is called rigth after the node was created. It is the place to put the code which should
+The ``on_init`` function is called right after the node was created. It is the place to put the code which should
 be executed once, after the node was created. In this example it is implemented that the two input parameters are
 checked if values are bound to them during creation. If the variables are not bound (``... is None``), the value
 is set zero.
@@ -67,7 +67,7 @@ is set zero.
     :language: python
     :lines: 43-47
 
-In the ``on_tick`` function the two inputs are added and assiged to the output. Furthermore, this calculation is
+In the ``on_tick`` function the two inputs are added and assigned to the output. Furthermore, this calculation is
 printed on standard output and the node status is set to ``SUCCESS``. Thus, the ``AddTwoNumbersAction``
 node is not ticked again.
 

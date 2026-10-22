@@ -19,7 +19,7 @@ First of all, an ``ActionNode`` which 'can' fail is required. Therefore, the
 extended node is called ``AddTwoNumbersActionWithFailures``. It is implemented that
 a failure can be provoked in case that one or both input parameters are missing or
 in case the result of the sum of the two parameters is greater than ten. These are,
-of course, just some 'artificial' failures to beeing able to demonstrate the technics
+of course, just some 'artificial' failures to be able to demonstrate the techniques
 of contingency-handlers.
 
 .. literalinclude:: ../../carebt/examples/sequence_with_contingencies.py

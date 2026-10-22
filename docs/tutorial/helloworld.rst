@@ -56,7 +56,7 @@ in further tutorials.
 In the ``on_tick`` function the code has to be placed which is executed every time the node is ticked. In this example
 this is a simple print statemant which shows the text "HelloWorldAction: Hello World !!!" on the standard output. The
 following line puts the node into the status ``SUCCESS``, which indicates that the execution of the node has completed
-and the execution was succesful. Thus, the ``HelloWorldAction`` node is not ticked again.
+and the execution was successful. Thus, the ``HelloWorldAction`` node is not ticked again.
 
 .. literalinclude:: ../../carebt/examples/helloworld.py
     :language: python

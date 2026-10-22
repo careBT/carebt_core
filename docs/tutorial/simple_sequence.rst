@@ -7,7 +7,7 @@ Overview
 This tutorial demonstrates a couple of simple **careBT** ``SequenceNodes``. For the demos
 the ``ActionNode`` (``AddTwoNumbersAction``) implemented in the previous tutorial is reused
 and two additional ``ActionNodes`` are implemented. The first one (``CreateRandomNumberAction``)
-generates a random numer and provides it as output parameter. The second one (``PrintNumberAction``)
+generates a random number and provides it as output parameter. The second one (``PrintNumberAction``)
 prints the, as input parameter, provided number on standard output.
 
 
@@ -88,7 +88,7 @@ output parameter called *?c*.
     :language: python
     :lines: 89-90
 
-The ``on_init`` function is called rigth after the node was created. It is the place to put the code which should
+The ``on_init`` function is called right after the node was created. It is the place to put the code which should
 be executed once, after the node was created. For a ``SequenceNode`` the child nodes are typically added here.
 
 .. literalinclude:: ../../carebt/examples/simple_sequence.py
