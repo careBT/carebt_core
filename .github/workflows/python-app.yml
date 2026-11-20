@@ -13,13 +13,13 @@ jobs:
 
     steps:
     # Step 1: Checkout the code
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # Step 2: Set up Python
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: "3.12"
 
     # Step 3: Install dependencies
     - name: Install dependencies
