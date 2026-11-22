@@ -23,7 +23,13 @@ with a careBT timer. A further example shows an asynchronous action which report
 
     The **careBT** execution engine is single-threaded. All callbacks (``on_tick``, ``on_timeout``,
     contingency-handlers, timer callbacks, ...) are executed in the thread which ticks the behavior tree.
-    Thus, the state of a node must never be changed from another thread.
+    Thus, the state of a node must never be changed from another thread. ``set_status`` and
+    ``set_contingency_message`` raise a ``RuntimeError`` if they are called from another thread than the
+    one which ticks the behavior tree. This can be relaxed with
+    ``bt_runner.set_strict_thread_safety(False)``; then only a warning is logged and the state is changed anyway.
+    To hand over a result from another thread use ``create_timer(0, ...)``.
+    When the behavior tree is integrated into another event loop (e.g. ROS 2) with ``initialize`` and ``tick``,
+    all callbacks of that event loop should be executed in the same thread which ticks the behavior tree.
 
 Create a multi-tick ActionNode
 ------------------------------

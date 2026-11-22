@@ -263,10 +263,20 @@ class TestTimingIssue:
         assert not action.timeout_called
 
 
-def _run_in_thread(function) -> None:
-    thread = threading.Thread(target=function)
+def _run_in_thread(function) -> list:
+    """Run the function in another thread and return the exceptions it raised."""
+    errors = []
+
+    def target():
+        try:
+            function()
+        except Exception as e:
+            errors.append(e)
+
+    thread = threading.Thread(target=target)
     thread.start()
     thread.join()
+    return errors
 
 
 def _thread_warnings(warn) -> list:
@@ -279,27 +289,46 @@ class TestThreadCheck:
         self.bt_runner = BehaviorTreeRunner()
         self.bt_runner.initialize(TimeoutVsDoneAction, '1000 1000')
 
-    def test_set_status_from_other_thread_warns(self):
-        """After the first tick, set_status from another thread logs exactly one
-        warning that names TimeoutVsDoneAction.set_status.
+    def test_set_status_from_other_thread_raises(self):
+        """After the first tick, set_status from another thread raises a RuntimeError
+        that names TimeoutVsDoneAction.set_status and the status is not changed.
         """
         self.bt_runner.tick()
         action = self.bt_runner._instance._child_ec_list[0].instance
-        with patch.object(self.bt_runner.get_logger(), 'warn') as warn:
-            _run_in_thread(lambda: action.set_status(NodeStatus.SUCCESS))
-        assert len(_thread_warnings(warn)) == 1
-        assert 'TimeoutVsDoneAction.set_status' in _thread_warnings(warn)[0]
+        errors = _run_in_thread(lambda: action.set_status(NodeStatus.SUCCESS))
+        assert len(errors) == 1
+        assert isinstance(errors[0], RuntimeError)
+        assert 'TimeoutVsDoneAction.set_status' in str(errors[0])
+        assert action.get_status() == NodeStatus.SUSPENDED
 
-    def test_set_contingency_message_from_other_thread_warns(self):
-        """The same check as test_set_status_from_other_thread_warns
+    def test_set_contingency_message_from_other_thread_raises(self):
+        """The same check as test_set_status_from_other_thread_raises
         for set_contingency_message.
         """
         self.bt_runner.tick()
         action = self.bt_runner._instance._child_ec_list[0].instance
+        errors = _run_in_thread(lambda: action.set_contingency_message('MSG'))
+        assert len(errors) == 1
+        assert isinstance(errors[0], RuntimeError)
+        assert 'TimeoutVsDoneAction.set_contingency_message' in str(errors[0])
+        assert action.get_contingency_message() == ''
+
+    def test_set_status_from_other_thread_warns_if_not_strict(self):
+        """With strict_thread_safety disabled, set_status and set_contingency_message
+        from another thread log a warning and change the state of the node.
+        """
+        self.bt_runner.set_strict_thread_safety(False)
+        self.bt_runner.tick()
+        action = self.bt_runner._instance._child_ec_list[0].instance
         with patch.object(self.bt_runner.get_logger(), 'warn') as warn:
-            _run_in_thread(lambda: action.set_contingency_message('MSG'))
-        assert len(_thread_warnings(warn)) == 1
-        assert 'TimeoutVsDoneAction.set_contingency_message' in _thread_warnings(warn)[0]
+            errors = _run_in_thread(lambda: (action.set_contingency_message('MSG'),
+                                             action.set_status(NodeStatus.SUCCESS)))
+        assert errors == []
+        warnings = _thread_warnings(warn)
+        assert any('TimeoutVsDoneAction.set_status' in w for w in warnings)
+        assert any('TimeoutVsDoneAction.set_contingency_message' in w for w in warnings)
+        assert action.get_status() == NodeStatus.SUCCESS
+        assert action.get_contingency_message() == 'MSG'
 
     def test_tick_from_other_thread_warns(self):
         """After the first tick on the main thread, a tick() from another thread

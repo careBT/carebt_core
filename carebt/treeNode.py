@@ -89,10 +89,15 @@ class TreeNode(ABC):
 
     @final
     def __check_thread(self, method: str) -> None:
+        # the state of a node must only be changed in the thread which ticks the behavior tree
         tick_thread_id = self.bt_runner._tick_thread_id
         if(tick_thread_id is not None and tick_thread_id != get_ident()):
-            self.get_logger().warn(f'{self.__class__.__name__}.{method} called from another '
-                                   + 'thread than the one which ticks the behavior tree')
+            msg = (f'{self.__class__.__name__}.{method} called from another '
+                   + 'thread than the one which ticks the behavior tree. '
+                   + 'Hand over with create_timer(0, callback) instead.')
+            if(self.bt_runner.get_strict_thread_safety()):
+                raise RuntimeError(msg)
+            self.get_logger().warn(msg)
 
     @final
     def __internal_on_timer(self, callback: Callable) -> None:
@@ -266,10 +271,21 @@ class TreeNode(ABC):
     def set_status(self, node_status: NodeStatus) -> None:
         """Set the current status of the node.
 
+        Must be called in the thread which ticks the behavior tree. Otherwise,
+        a `RuntimeError` is raised, or a warning is logged in case
+        strict thread safety of the `BehaviorTreeRunner` is disabled. To report
+        a result from another thread, hand over with `create_timer(0, callback)`.
+
         Parameters
         ----------
         node_status: `NodeStatus`
             Current status of the node
+
+        Raises
+        ------
+        RuntimeError
+            If called from another thread than the one which ticks the behavior tree
+            and strict thread safety is enabled
 
         """
         self.__check_thread('set_status')
@@ -321,10 +337,20 @@ class TreeNode(ABC):
         message is set in case the node completes with `FAILURE` to
         provide more details what went wrong.
 
+        Must be called in the thread which ticks the behavior tree. Otherwise,
+        a `RuntimeError` is raised, or a warning is logged in case
+        strict thread safety of the `BehaviorTreeRunner` is disabled.
+
         Parameters
         ----------
         contingency_message: str
             The contingency message
+
+        Raises
+        ------
+        RuntimeError
+            If called from another thread than the one which ticks the behavior tree
+            and strict thread safety is enabled
 
         """
         self.__check_thread('set_contingency_message')

@@ -48,9 +48,13 @@ class BehaviorTreeRunner:
 
     .. hint::
 
-        A warning is logged in case `set_status` or `set_contingency_message`
-        of a node is called from another thread than the one which ticks the
-        behavior tree, or in case `tick` is called from different threads.
+        In case `set_status` or `set_contingency_message` of a node is called
+        from another thread than the one which ticks the behavior tree, a
+        `RuntimeError` is raised if strict thread safety is enabled (default).
+        Otherwise, only a warning is logged (see `set_strict_thread_safety`). To hand over a result from another
+        thread, use `create_timer(0, callback)` of the node or the runner, which
+        can be called from another thread.
+        A warning is logged in case `tick` is called from different threads.
     """
 
     def __init__(self):
@@ -59,6 +63,7 @@ class BehaviorTreeRunner:
         self._tick_count = 0
         self._instance = None
         self._tick_thread_id = None
+        self._strict_thread_safety = True
         self.__scheduler = sched.scheduler(monotonic, sleep)
         self._logger = SimplePrintLogger()
         self.get_logger().set_log_level(LogLevel.WARN)
@@ -79,6 +84,44 @@ class BehaviorTreeRunner:
 
         """
         self._tick_rate_ms = tick_rate_ms
+
+    def get_tick_rate_ms(self) -> int:
+        """Return the tick rate in milliseconds.
+
+        Returns
+        -------
+        int
+            The tick rate in milliseconds
+
+        """
+        return self._tick_rate_ms
+
+    def set_strict_thread_safety(self, strict_thread_safety: bool) -> None:
+        """Set whether thread safety is strictly enforced.
+
+        If `True` (default), a `RuntimeError` is raised in case `set_status` or
+        `set_contingency_message` of a node is called from another thread than
+        the one which ticks the behavior tree. If `False`, only a warning is
+        logged and the state of the node is changed anyway.
+
+        Parameters
+        ----------
+        strict_thread_safety: bool
+            `True` to raise a `RuntimeError`, `False` to log a warning
+
+        """
+        self._strict_thread_safety = strict_thread_safety
+
+    def get_strict_thread_safety(self) -> bool:
+        """Return whether thread safety is strictly enforced.
+
+        Returns
+        -------
+        bool
+            `True` if a `RuntimeError` is raised, `False` if a warning is logged
+
+        """
+        return self._strict_thread_safety
 
     def get_tick_count(self) -> int:
         """Return the current tick count.
